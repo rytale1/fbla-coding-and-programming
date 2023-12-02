@@ -1,25 +1,29 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React, { useState } from "react";
 
-function Home() {
+// Define the type for the component props (if needed)
+interface HomePageProps {}
+
+// Create the functional component
+const Home: React.FC<HomePageProps> = () => {
+    // Define state variables using the useState hook
+    const [counter, setCounter] = useState<number>(0);
+
+    // Define a function to handle button click
+    const handleButtonClick = () => {
+        // Update the counter state when the button is clicked
+        setCounter(counter + 1);
+    };
+
+    // Return the JSX structure of the component
     return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>I love men</p>
-                <p>HOLA</p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
-            </header>
+        <div style={{ textAlign: "center", marginTop: "50px" }}>
+            <h1>Welcome to My Homepage</h1>
+            <p>This is a simple React TypeScript homepage.</p>
+            <p>Counter: {counter}</p>
+            <button onClick={handleButtonClick}>Click me</button>
         </div>
     );
-}
+};
 
+// Export the component for use in other files
 export default Home;
