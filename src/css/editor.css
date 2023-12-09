@@ -1,0 +1,525 @@
+.menueditor {
+    display: flex;
+    flex-wrap: wrap;
+    z-index: 10;
+    width: '100%';
+    border: 1px solid gray;
+    margin-top: 15px;
+    padding: 5px;
+}
+
+.mainTextEditor {
+    width: 100%;
+    height: -webkit-calc(100vh - 260px);
+    height: -moz-calc(100vh - 260px);
+    height: calc(100vh - 260px);
+    overflow-y: scroll;
+    border: 1px solid gray;
+    margin-bottom: 5px;
+
+}
+
+.aiArtDetail {
+    display: 'flex';
+    flex-direction: 'column';
+    width: 'fit-content';
+    height: -webkit-calc(100vh - 200px);
+    height: -moz-calc(100vh - 200px);
+    height: calc(100vh - 200px);
+    overflow: scroll;
+    margin-top: 50px;
+
+}
+
+
+.aiSegmentDiv {
+    min-height: -webkit-calc(100vh - 310px);
+    min-height: -moz-calc(100vh - 310px);
+    min-height: calc(100vh - 310px);
+    width: 100%;
+    margin-left: 15px;
+    padding: 0px 0px 0px 0px;
+}
+
+.aiSegmentDivNoImage {
+    min-height: 240px;
+    width: 100%;
+    margin-left: 15px;
+    padding: 0px 0px 0px 0px;
+}
+
+.aiArtPanelDiv {
+    width: 100%;
+    margin: 0px;
+    padding: 0px 0px 0px 0px;
+}
+
+.aiArtPanelDivLimitHeight {
+    max-height: -webkit-calc(100vh - 150px);
+    max-height: -moz-calc(100vh - 150px);
+    max-height: calc(100vh - 150px);
+}
+
+.aiArtPanel {
+    width: 100%;
+    margin: 0px;
+    padding-left: 30px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    background-color: #000000;
+}
+
+.aiArtPanelLimitHeight {
+    max-height: -webkit-calc(100vh - 170px);
+    max-height: -moz-calc(100vh - 170px);
+    max-height: calc(100vh - 170px);
+    overflow: scroll;
+}
+
+.darkMode {
+    background-color: #000000;
+}
+
+
+.aiArtPanelColumn {
+    max-height: -webkit-calc(100vh - 170px);
+    max-height: -moz-calc(100vh - 170px);
+    max-height: calc(100vh - 170px);
+    width: 100%;
+    margin: 0px;
+    padding-left: 12px;
+    padding-top: 10px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    background-color: #ffffff;
+}
+
+.aiArtPanelColumnDark {
+    max-height: -webkit-calc(100vh - 170px);
+    max-height: -moz-calc(100vh - 170px);
+    max-height: calc(100vh - 170px);
+    width: 100%;
+    margin: 0px;
+    padding-left: 12px;
+    padding-top: 10px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    background-color: #000000;
+}
+
+
+@media screen and (max-width: 768px) {
+    .aiSegmentPanel {
+        min-width: '300px';
+        max-height: -webkit-calc(100vh - 170px);
+        max-height: -moz-calc(100vh - 170px);
+        max-height: calc(100vh - 170px);
+        width: 100%;
+        margin: 0px;
+        padding-left: 12px;
+        padding-top: 10px;
+        overflow-x: scroll;
+        overflow-y: hidden;
+    }
+}
+
+
+@media screen and (min-width: 768px) {
+    .aiSegmentPanel {
+        min-width: '300px';
+        max-height: -webkit-calc(100vh - 170px);
+        max-height: -moz-calc(100vh - 170px);
+        max-height: calc(100vh - 170px);
+        max-width: min(-webkit-calc(100vw - 470px), 100%);
+        max-width: min(-moz-calc(100vw - 470px), 100%);
+        max-width: min(calc(100vw - 470px), 100%);
+        /*
+        max-width: max(calc(100vw - 430px), 430px);*/
+        width: 100%;
+        margin: 0px;
+        padding-left: 12px;
+        padding-top: 10px;
+        overflow-x: scroll;
+        overflow-y: hidden;
+    }
+}
+
+.aiArtPanelFlex {
+    display: 'flex';
+    column-gap: '2px';
+    row-gap: '2px';
+    flex-wrap: 'wrap';
+    justify-content: 'space-between'
+}
+
+.image-with-delete-button-container {
+    position: relative;
+}
+
+.delete-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    border: 1px solid black;
+    font-size: 2.5rem;
+    color: white;
+    cursor: pointer;
+}
+
+.aiArtImage {
+    border: 1px solid black;
+    cursor: pointer;
+    width: 25%;
+    height: auto;
+}
+
+@media (max-width: 1600px) {
+    .aiArtImage {
+        border: 1px solid black;
+        cursor: pointer;
+        width: 50%;
+        height: auto;
+    }
+}
+
+@media (max-width: 992px) {
+    .aiArtImage {
+        border: 1px solid black;
+        cursor: pointer;
+        width: 33%;
+        height: auto;
+    }
+}
+
+
+@media (min-width: 768px) {
+    .mainTextEditor {
+        width: 100%;
+        height: -webkit-calc(100vh - 260px);
+        height: -moz-calc(100vh - 260px);
+        height: calc(100vh - 230px);
+        overflow-y: scroll;
+        border: 1px solid gray;
+        margin-bottom: 5px;
+
+    }
+}
+
+@media (min-width: 1200px) {
+    .mainTextEditor {
+        width: 100%;
+        height: -webkit-calc(100vh - 180px);
+        height: -moz-calc(100vh - 180px);
+        height: calc(100vh - 180px);
+        overflow-y: scroll;
+        border: 1px solid gray;
+        margin-bottom: 5px;
+
+    }
+}
+
+.notesSection {
+    width: 100%;
+    max-width: 1200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: -webkit-calc(100vh - 139px);
+    height: -moz-calc(100vh - 139px);
+    height: calc(100vh - 139px);
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-right: 0px
+}
+
+.answerSection {
+    width: 100%;
+    max-width: 1200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: -webkit-calc(100vh - 290px);
+    height: -moz-calc(100vh - 290px);
+    height: calc(100vh - 340px);
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-right: 0px
+}
+
+
+.pdfSection {
+    width: auto;
+    border: 1px solid black;
+    max-width: 95%;
+    overflow-y: auto;
+    overflow-x: auto;
+    height: -webkit-calc(100vh - 175px);
+    height: -moz-calc(100vh - 175px);
+    height: calc(100vh - 175px);
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-right: 0px
+}
+
+.docSection {
+    width: 100%;
+    border: 1px solid black;
+    max-width: 95%;
+    overflow-y: auto;
+    overflow-x: auto;
+    height: -webkit-calc(100vh - 175px);
+    height: -moz-calc(100vh - 175px);
+    height: calc(100vh - 95px);
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-right: 0px
+}
+
+@media (min-width: 768px) {
+    .pdfSection {
+        width: auto;
+        border: 1px solid black;
+        max-width: 95%;
+        overflow-y: auto;
+        overflow-x: auto;
+        height: -webkit-calc(100vh - 115px);
+        height: -moz-calc(100vh - 115px);
+        height: calc(100vh - 125px);
+        padding-left: 8px;
+        padding-right: 8px;
+        margin-right: 0px
+    }
+}
+
+.templateSection {
+    margin-left: 3px;
+    width: 100%;
+    align-items: center;
+    justify-items: center;
+    align-content: center;
+    max-width: 800px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: -webkit-calc(100vh - 150px);
+    max-height: -moz-calc(100vh - 150px);
+    max-height: calc(100vh - 150px);
+    padding: 20px;
+}
+
+
+.documentSection {
+    margin-left: 3px;
+    width: 100%;
+    align-items: center;
+    justify-items: center;
+    align-content: center;
+    max-width: 1200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: -webkit-calc(100vh - 150px);
+    height: -moz-calc(100vh - 150px);
+    height: calc(100vh - 150px);
+    padding: 20px;
+}
+
+.group-item {
+    display: flex;
+    padding-left: 2px;
+    padding-right: 2px;
+    gap: 0.3rem;
+    height: 36px;
+}
+
+.group-border {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    width: 2px;
+    max-height: 30px;
+    /* or 100px */
+    border-right: 1px solid lightgray;
+}
+
+.menu-item {
+    padding: 0.5rem 0.75rem
+}
+
+.menu-item .is-active {
+    color: #55db55;
+}
+
+.vertical-tab {
+    position: absolute;
+    top: 270px;
+    right: -88px;
+    /* adjust the left position to attach the tab to the left border */
+    display: inline-block;
+    padding: 6px;
+    width: 120px;
+    height: 32px;
+    margin: 0;
+    text-align: center;
+    color: white;
+    background-color: #4286f4;
+    transform: rotate(-90deg);
+    transform-origin: left top;
+    border-radius: 15px 15px 0 0;
+    cursor: pointer;
+}
+
+.vertical-tab p {
+    white-space: nowrap;
+    font-size: '0.7rem';
+}
+
+
+.dropzone {
+    text-align: center;
+    padding: 30px;
+    border: 3px dashed #999999;
+    background-color: #dde9f5;
+    color: #555555;
+    cursor: pointer;
+    margin-bottom: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+.dropzoneActive {
+    text-align: center;
+    padding: 30px;
+    border: 3px dashed #000000;
+    background-color: #d6f0d9;
+    color: #333333;
+    margin-bottom: 10px;
+    height: 100%;
+    width: 100%;
+
+}
+
+.dropzoneDrag {
+    text-align: center;
+    padding: 30px;
+    border: 3px dashed #eeeeee;
+    background-color: #b0d1f3;
+    color: #bdbdbd;
+    margin-bottom: 10px;
+    height: 100%;
+    width: 100%;
+
+}
+
+.dropzoneReject {
+    text-align: center;
+    padding: 30px;
+    border: 3px dashed #000000;
+    background-color: #f68f72;
+    color: #333333;
+    margin-bottom: 10px;
+    height: 100%;
+    width: 100%;
+
+}
+
+.ProseMirror {
+    padding: 1rem;
+    outline: none;
+    padding-top: 2.5rem;
+}
+
+.ProseMirror .bubble-menu {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    color: #333;
+    height: 36px;
+    padding: 0 8px;
+    position: absolute;
+    z-index: 1;
+}
+
+.ProseMirror>*+* {
+    margin-top: 0.75em;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+    padding: 0 1rem;
+}
+
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+    line-height: 1.1;
+}
+
+.ProseMirror code {
+    background-color: rgba(97, 97, 97, 0.1);
+    color: #616161;
+}
+
+.ProseMirror pre {
+    background: #0d0d0d;
+    color: #fff;
+    font-family: 'JetBrainsMono', monospace;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+}
+
+.ProseMirror pre code {
+    color: inherit;
+    padding: 0;
+    background: none;
+    font-size: 0.8rem;
+}
+
+.ProseMirror img {
+    max-width: 100%;
+    height: auto;
+}
+
+.ProseMirror blockquote {
+    padding-left: 1rem;
+    border-left: 2px solid rgba(13, 13, 13, 0.1);
+}
+
+.ProseMirror hr {
+    border: none;
+    border-top: 2px solid rgba(13, 13, 13, 0.1);
+    margin: 2rem 0;
+}
+
+::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    border: 4px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box;
+    border-radius: 8px;
+    background-color: rgb(182, 182, 182);
+}
+
+::-webkit-scrollbar-track {
+    border: 4px solid transparent;
+    background-clip: padding-box;
+    border-radius: 8px;
+    background-color: transparent;
+}

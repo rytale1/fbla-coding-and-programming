@@ -1,0 +1,1129 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  font-display: swap;
+}
+
+
+.actionButton {
+  font-weight: 600;
+  width: '250px';
+  font-size: '1.0rem';
+  height: '80px';
+  background-color: 'primary.main';
+  text-transform: 'none';
+}
+
+.my-masonry-grid {
+  display: -webkit-box;
+  /* Not needed if autoprefixing */
+  display: -ms-flexbox;
+  /* Not needed if autoprefixing */
+  display: flex;
+  margin-left: -30px;
+  /* gutter size offset */
+  width: auto;
+  background-color: white;
+}
+
+.my-masonry-grid-dark {
+  display: -webkit-box;
+  /* Not needed if autoprefixing */
+  display: -ms-flexbox;
+  /* Not needed if autoprefixing */
+  display: flex;
+  margin-left: -30px;
+  /* gutter size offset */
+  width: auto;
+  background-color: black;
+}
+
+.my-masonry-grid_column {
+  padding: 3px;
+  /* gutter size */
+  background-clip: padding-box;
+}
+
+/* Style your items */
+.my-masonry-grid_column>div {
+  /* change div to reference your elements you put in <Masonry> */
+  background: grey;
+  margin-bottom: 6px;
+}
+
+/* ==========================================================================
+  01. SIGN UP & LOGIN STYLES
+  =========================================================================== */
+.auth-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: left;
+}
+
+.auth-inner {
+  width: 95%;
+  max-width: 600px;
+  margin: auto;
+  margin-top: 100px;
+  background: #ffffff;
+  box-shadow: 0px 14px 20px rgba(34, 35, 58, 0.2);
+  padding: 40px 25px 45px 25px;
+  border-radius: 15px;
+  transition: all .3s;
+  top: 50%;
+}
+
+.auth-wrapper .form-control:focus {
+  border-color: #167bff;
+  box-shadow: none;
+}
+
+.auth-wrapper h3 {
+  text-align: center;
+  margin: 0;
+  line-height: 1;
+  padding-bottom: 20px;
+}
+
+.auth-dialog {
+  text-align: center;
+  width: 100%;
+  max-width: 500;
+  height: 100%;
+  max-height: 700;
+}
+
+.form-input {
+  padding-bottom: 15px;
+}
+
+.form-error {
+  color: red;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.form-error-msg {
+  color: #c62828;
+  font-size: 0.8rem;
+  padding: 5px;
+  margin-left: 8px;
+}
+
+.form-padding {
+  padding-top: 30px;
+}
+
+.auth-wrapper label {
+  padding-bottom: 3px;
+}
+
+.custom-control-label {
+  font-weight: 400;
+  display: inline-block;
+}
+
+.inline-checkbox {
+  width: 90%;
+  white-space: nowrap;
+  display: inline;
+  overflow-x: hidden;
+}
+
+.forgot-password,
+.forgot-password a {
+  text-align: center;
+  font-size: 15px;
+  padding-top: 0px;
+  color: #7f7d7d;
+  margin: 0;
+}
+
+.create-account a {
+  color: #167bff;
+}
+
+.create-account,
+.create-account a {
+  text-align: center;
+  font-size: 18px;
+  padding-top: 18px;
+  padding-bottom: 8px;
+  margin: 0;
+}
+
+.forgot-password a {
+  color: #167bff;
+}
+
+.inputWithButton {
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.form2perrow {
+  width: 40%;
+}
+
+.inputWithButton button {
+  position: absolute;
+  right: 0;
+  top: 5px;
+  border: none;
+  background-color: transparent;
+}
+
+.btn-Submit {
+  width: 210px;
+}
+
+.accountHide {
+  display: none;
+}
+
+.accountShow {
+  display: block;
+}
+
+ul.paymentdesc {
+  list-style: disc;
+}
+
+ul li::before.paymentdesc {
+  list-style: circle;
+  content: "\2022";
+  color: red;
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+.payment-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: left;
+}
+
+.payment-inner {
+  width: 95%;
+  max-width: 1024px;
+  padding: 30px;
+  margin: auto;
+  margin-top: 120px;
+  background: #ffffff;
+  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+  border-radius: 15px;
+  transition: all .3s;
+  top: 50%;
+}
+
+/* ==========================================================================
+  02. COURSES STUDIO STYLES
+  =========================================================================== */
+.course-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: left;
+}
+
+.course-top {
+  padding-top: 80px;
+}
+
+.course-inner {
+  width: 95%;
+  max-width: 1024;
+  margin: auto;
+  margin-top: 120px;
+  background: #ffffff;
+  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+  border-radius: 15px;
+  transition: all .3s;
+  top: 50%;
+}
+
+.course-header {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.course-innerpadding {
+  padding: 20px 35px 20px 35px;
+}
+
+.course-wrapper .form-control:focus {
+  border-color: #167bff;
+  box-shadow: none;
+}
+
+.course-wrapper h3 {
+  text-align: center;
+  margin: 0;
+  line-height: 1;
+  padding-bottom: 20px;
+}
+
+.course-wrapper label {
+  padding-bottom: 3px;
+}
+
+.course-image {
+  width: 300px;
+  padding: 15px;
+  float: left;
+}
+
+.course-listing {
+  float: left;
+}
+
+.course-price {
+  font-size: 1.0rem;
+  font-weight: 700;
+  color: rgb(79, 71, 71);
+  margin-top: 15px;
+  ;
+}
+
+.course-price-detail {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: rgb(79, 71, 71);
+  margin-top: 15px;
+  ;
+}
+
+.btn_share {
+  padding: 15px;
+  font-weight: 700;
+}
+
+.btn_action {
+  padding: 30px;
+  margin: 20px;
+}
+
+.btn_icons {
+  transform: scale(1.3);
+}
+
+/* Links */
+#footer a:link {
+  color: #333333;
+  text-decoration: none;
+}
+
+#footer a:visited {
+  color: #333333;
+  text-decoration: none;
+}
+
+#footer a:hover {
+  color: #000000;
+  text-decoration: underline;
+}
+
+#footer a:active {
+  color: #333333;
+  text-decoration: none;
+}
+
+.landing:link {
+  color: #333333;
+  text-decoration: underline;
+}
+
+.landing:visited {
+  color: #333333;
+}
+
+.landing:hover {
+  color: #000000;
+}
+
+.landing:active {
+  color: #333333;
+}
+
+.editorMenu {
+  transition: all .2s ease-in-out;
+}
+
+.editorMenu:hover {
+  background-color: lavender;
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.link18:link {
+  color: #000;
+  font-size: 1.5rem;
+  text-decoration: none;
+  height: 100%;
+  width: 100%;
+}
+
+.link18:visited {
+  color: #000;
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+
+.link18:hover {
+  color: teal;
+  text-decoration: underline;
+
+}
+
+.link18:active {
+  color: teal;
+}
+
+.legend-label {
+  display: inline-flex;
+  align-items: center;
+  padding-right: 10px;
+}
+
+/* React Tags CSS*/
+
+.ReactTags__tags {
+  position: relative;
+}
+
+.ReactTags__clearAll {
+  cursor: pointer;
+  padding: 10px;
+  margin: 10px;
+  background: #f88d8d;
+  color: #fff;
+  border: none;
+}
+
+
+a.subNav:link {
+  text-decoration: underline;
+}
+
+a.subNav:visited {
+  text-decoration: underline;
+}
+
+a.subNav:hover {
+  /* MUST OCCUR AFTER VISITED */
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+a.subNav:active {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+
+/* Styles for the input */
+.ReactTags__tagInput {
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.ReactTags__tagInput input.ReactTags__tagInputField,
+.ReactTags__tagInput input.ReactTags__tagInputField:focus {
+  height: 50px;
+  margin: 10;
+  font-size: 16px;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  border-color: rgb(187, 181, 181);
+}
+
+.ReactTags__editInput {
+  border-radius: 1px;
+}
+
+.ReactTags__editTagInput {
+  display: inline-flex;
+}
+
+/* Styles for selected tags */
+.ReactTags__selected span.ReactTags__tag {
+  border: 1px solid #ddd;
+  background: #166faf;
+  color: white;
+  font-size: 14px;
+  display: inline-block;
+  padding: 5px;
+  margin: 8px;
+  border-radius: 2px;
+}
+
+.ReactTags__selected a.ReactTags__remove {
+  color: #aaa;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+/* Styles for suggestions */
+.ReactTags__suggestions {
+  position: absolute;
+}
+
+.ReactTags__suggestions ul {
+  list-style-type: none;
+  box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
+  background: white;
+  width: 200px;
+}
+
+.ReactTags__suggestions li {
+  border-bottom: 1px solid #ddd;
+  padding: 5px 10px;
+  margin: 0;
+}
+
+.ReactTags__suggestions li mark {
+  text-decoration: underline;
+  background: none;
+  font-weight: 600;
+}
+
+.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
+  background: #b7cfe0;
+  cursor: pointer;
+}
+
+.ReactTags__remove {
+  border: none;
+  cursor: pointer;
+  background: none;
+  color: white;
+}
+
+.divpadding {
+  padding: 20px 35px 20px 35px;
+}
+
+.divpaddinglr {
+  padding: 0px 35px 0px 35px;
+}
+
+.sectionpadding {
+  padding: 5px;
+}
+
+.divpaddingborder {
+  padding: 20px;
+  border: '10px solid #eeeeee';
+}
+
+.rowpadding {
+  padding-top: 8px;
+}
+
+.divwidth500 {
+  min-width: 360px;
+}
+
+.divheight500 {
+  min-height: 500px;
+}
+
+.divheight400 {
+  min-height: 400px;
+  max-height: 400px;
+}
+
+.divheight300 {
+  min-height: 300px;
+  max-height: 300px;
+}
+
+.divheight250 {
+  min-height: 250px;
+}
+
+.divheight300 {
+  min-height: 300px;
+}
+
+.divButtonSubtitle {
+  font-size: 0.8rem;
+}
+
+.divButton {
+  padding: 5px;
+}
+
+.divHide {
+  display: none;
+}
+
+.divRedBold {
+  color: red;
+  font-weight: 500;
+}
+
+.divCenter {
+  align-items: center;
+  text-align: center;
+}
+
+.newline {
+  white-space: pre-line;
+}
+
+.attendeeRow {
+  border-bottom: 0.1em grey solid;
+  padding: 10px;
+}
+
+.attendeeDate {
+  border-top: 0.2em grey solid;
+  border-bottom: 0.2em grey solid;
+  padding: 8px;
+  color: darkslategray;
+  font-size: medium;
+  font-weight: bold;
+}
+
+.courseCard {
+  height: 250px;
+  max-height: 250px;
+}
+
+.courseCardPhoto {
+  max-height: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden
+}
+
+.courseCardPhoto img {
+  flex-shrink: 0;
+  min-width: 100%;
+  min-height: 100%
+}
+
+.hpProdDesc {
+  border: 1px solid lightgray;
+  padding: 20px;
+  background-color: white;
+
+}
+
+.featureDesc {
+  border: 1px solid lightgray;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 6px 6px 5px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 6px 6px 5px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 6px 6px 5px rgba(0, 0, 0, 0.4);
+  -o-box-shadow: 6px 6px 5px rgba(0, 0, 0, 0.4);
+}
+
+
+.btnFont {
+  color: white;
+  padding: 0.5rem 1rem;
+  font-size: 1.55rem;
+  border-radius: 0.3rem;
+}
+
+.read-more-link {
+  color: darkblue;
+  text-decoration: underline;
+  font-size: 1.0rem;
+  cursor: pointer;
+  margin-top: 10px;
+  text-align: right;
+}
+
+.tagStyle {
+  text-decoration: none;
+  background-color: #f0f1f2;
+  font-size: 0.915rem;
+  padding: 3px 7px;
+  margin-right: 3px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.cardprice {
+  text-align: right;
+  text-decoration-style: wavy;
+}
+
+.currencyInput {
+  height: 57px;
+  border: 1px solid lightgray;
+  border-radius: 0.3rem;
+  padding: 8px;
+  width: 80px;
+}
+
+.currencyProfileInput {
+  display: block;
+  width: 100%;
+  height: 20px;
+  padding: 0.175rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+
+.timeZoneSelect__value-container {
+  height: 54px;
+}
+
+.timeslotLink {
+  font-size: 14px;
+  text-decoration: none;
+  color: black;
+}
+
+
+.timeslotLink:hover {
+  text-decoration: none;
+  font-weight: 800;
+  color: black;
+}
+
+.timeslotLinkEnrolled {
+  font-size: 14px;
+  text-decoration: none;
+  color: white;
+}
+
+.timeslotLinkEnrolled:hover {
+  text-decoration: none;
+  font-weight: 800;
+  color: white;
+}
+
+.timeslot {
+  background-color: #e1f1fd;
+  margin: 2px;
+  text-align: center;
+  line-height: 40px;
+  max-width: 90px;
+  min-width: 90px;
+  min-height: 40px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.timeslot-parent {
+  margin: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
+}
+
+.timeslot-next {
+  margin: 8px;
+  background-color: #9abbf3;
+  text-align: center;
+  line-height: 28px;
+  font-size: 0.85rem;
+  font-weight: 400;
+  text-decoration: none;
+  color: black;
+  border: 2px solid black;
+}
+
+.timeslot-disabled {
+  background-color: lightgrey;
+  margin: 2px;
+  text-align: center;
+  line-height: 40px;
+  min-width: 90px;
+  min-height: 40px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.timeslot-active {
+  background-color: #9abbf3;
+  margin: 4px;
+  text-align: center;
+  line-height: 40px;
+  max-width: 90px;
+  min-width: 90px;
+  height: 40px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: white;
+  border: 2px solid black;
+  color: black;
+
+}
+
+.timeslot-enrolled {
+  background-color: green;
+  margin: 4px;
+  text-align: center;
+  line-height: 40px;
+  max-width: 90px;
+  min-width: 90px;
+  height: 40px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: white;
+  border: 2px solid black;
+  color: white;
+
+}
+
+
+.timeslotHeader {
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.timeslotBox {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width: 100%;
+  max-height: 550px;
+  padding: 3px;
+  margin: 0px;
+  font-size: 14px;
+
+}
+
+.timeslotBoxShort {
+  width: 100%;
+  max-height: 300px;
+  padding: 0px;
+  margin: 0px;
+  font-size: 14px;
+}
+
+.timeslotBoxes {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width: 100%;
+  max-height: 200px;
+  padding-left: 8px;
+  margin: 0px;
+  font-size: 14px;
+}
+
+.timeslotBoxesWithCal {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width: 100%;
+  max-height: 300px;
+  padding-left: 8px;
+  margin: 0px;
+  font-size: 14px;
+}
+
+.timeslotBox-lg-active {
+  background-color: #e1f1fd;
+  margin: 0px;
+  text-align: center;
+  line-height: 30px;
+  width: 100%;
+  min-height: 45px;
+  font-weight: 500;
+  text-decoration: white;
+  border: 2px solid black;
+  color: black;
+
+}
+
+.timeslotBox-lg {
+  background-color: #e1f1fd;
+  margin: 0px;
+  text-align: center;
+  line-height: 30px;
+  width: 100%;
+  min-height: 45px;
+  font-weight: 500;
+  text-decoration: white;
+  color: black;
+
+}
+
+.timeslotBox-lg-disabled {
+  background-color: lightgray;
+  margin: 0px;
+  text-align: center;
+  line-height: 30px;
+  width: 100%;
+  min-height: 45px;
+  font-weight: 500;
+  text-decoration: white;
+  color: black;
+
+}
+
+.scheduleSetName {
+  font-size: 23px;
+  font-weight: 600;
+  padding: 5px;
+}
+
+.sharelink {
+  font-size: 16px;
+  background-color: rgb(237, 235, 235);
+  border: 1px solid gray;
+  padding: 8px;
+  height: 40px;
+  width: 300px;
+  vertical-align: 'center';
+}
+
+.appicon {
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.app-page-wrapper {
+  margin-top: 60px;
+}
+
+.appconnected {
+  font-size: 0.9rem;
+  color: green;
+  font-weight: 800;
+}
+
+.currentPlan {
+  font-size: 1.1rem;
+  color: green;
+  padding: 30px;
+  font-weight: 800;
+  height: 80px;
+}
+
+.sessionCard:hover {
+  background-color: #f9f9f9;
+}
+
+.sessionCard {
+  background-color: white;
+  border-bottom: 0.05rem solid gray;
+  border-top: 0.05rem solid gray;
+}
+
+.react-calendar {
+  width: 100%;
+  max-width: 100%;
+  background: white;
+  border: 1px solid #a0a096;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.125em;
+}
+
+
+.react-calendar--doubleView {
+  width: 700px;
+}
+
+.react-calendar--doubleView .react-calendar__viewContainer {
+  display: flex;
+  margin: -0.5em;
+}
+
+.react-calendar--doubleView .react-calendar__viewContainer>* {
+  width: 50%;
+  margin: 0.5em;
+}
+
+.react-calendar,
+.react-calendar *,
+.react-calendar *:before,
+.react-calendar *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.react-calendar button {
+  margin: 0;
+  border: 0;
+  outline: none;
+}
+
+.react-calendar button:enabled:hover {
+  cursor: pointer;
+}
+
+.react-calendar__navigation {
+  height: 44px;
+  margin-bottom: 1em;
+}
+
+.react-calendar__navigation button {
+  min-width: 44px;
+  background: none;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background-color: #e6e6e6;
+}
+
+.react-calendar__navigation button[disabled] {
+  background-color: #f0f0f0;
+}
+
+.react-calendar__month-view__weekdays {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.75em;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  padding: 0.5em;
+}
+
+.react-calendar__month-view__weekNumbers {
+  font-weight: bold;
+}
+
+.react-calendar__month-view__weekNumbers .react-calendar__tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75em;
+  padding: calc(0.75em / 0.75) calc(0.5em / 0.75);
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: #000000;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth {
+  color: #757575;
+}
+
+.react-calendar__year-view .react-calendar__tile,
+.react-calendar__decade-view .react-calendar__tile,
+.react-calendar__century-view .react-calendar__tile {
+  padding: 2em 0.5em;
+}
+
+.react-calendar__tile {
+  max-width: 100%;
+  text-align: center;
+  padding: 1.0em 0.5em;
+  background-color: #a9d4ff;
+}
+
+.react-calendar__tile:disabled {
+  background-color: white;
+  color: #000000
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: #e6e6e6;
+  background-color: #76baff;
+}
+
+.react-calendar__tile--now {
+  background: #53a2f0;
+  color: #ffffff
+}
+
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+  background: #76baff;
+}
+
+.react-calendar__tile--hasActive {
+  background: #76baff;
+}
+
+.react-calendar__tile--hasActive:enabled:hover,
+.react-calendar__tile--hasActive:enabled:focus {
+  background: #a9d4ff;
+}
+
+.react-calendar__tile--active {
+  background: #006edc;
+  color: white;
+  font-weight: bold;
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background: #1087ff;
+}
+
+.react-calendar--selectRange .react-calendar__tile--hover {
+  background-color: #e6e6e6;
+}
+
+.slack-button {
+  align-items: center;
+  color: #fff;
+  background-color: #4A154B;
+  border: 0;
+  border-radius: 56px;
+  display: inline-flex;
+  font-family: Lato, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  height: 56px;
+  justify-content: center;
+  text-decoration: none;
+  width: 276px
+}
+
+.slack-button:hover {
+  align-items: center;
+  color: lightgreen;
+  background-color: #4A154B;
+  border: 0;
+  border-radius: 56px;
+  display: inline-flex;
+  font-family: Lato, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  height: 56px;
+  justify-content: center;
+  text-decoration: none;
+  width: 276px
+}
+
+.slack-svg {
+  height: 24px;
+  width: 24px;
+  margin-right: 12px
+}
+
+.is-active {
+  background-color: rgba(#000000, 0.1);
+  color: #616161;
+}
+
+.socialLink {
+  padding: 20px;
+}

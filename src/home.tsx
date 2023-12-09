@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Layout from "./layout/Layout";
+import PageTitle from "./layout/PageTitle";
 
 // Define the type for the component props (if needed)
 interface HomePageProps {}
@@ -16,12 +18,18 @@ const Home: React.FC<HomePageProps> = () => {
 
     // Return the JSX structure of the component
     return (
-        <div style={{ textAlign: "center", marginTop: "50px" }}>
-            <h1>Welcome to My Homepage</h1>
-            <p>This is a simple React TypeScript homepage.</p>
-            <p>Counter: {counter}</p>
-            <button onClick={handleButtonClick}>Click me</button>
-        </div>
+        <Layout footer={2} headerBtn={true}>
+            <PageTitle
+                pageTitle="MVFBLA Coding and Programming"
+                description="ooga booga."
+            />
+            <div style={{ textAlign: "center", marginTop: "50px" }}>
+                <h1>Welcome to My Homepage</h1>
+                <p>This is a simple React TypeScript homepage.</p>
+                <p>Counter: {counter}</p>
+                <button onClick={handleButtonClick}>Click me</button>
+            </div>
+        </Layout>
     );
 };
 
