@@ -1,0 +1,25 @@
+.classroom {
+  padding: 0;
+  font-family: Avenir, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: black;
+  color: white;
+  margin: 0;
+  overflow-y: clip;
+  /* I put this in because when chat does a auto scroll it introduces weird effect and scrolls all elements up!!!*/
+  height: 100vh;
+  font-size: 12px;
+}
+
+.classroom-container {
+  box-sizing: border-box;
+  height: 100%;
+  padding: 15px;
+}
+
+.classroom-room-container {
+  height: 100%;
+}

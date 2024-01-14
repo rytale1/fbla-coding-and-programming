@@ -1,0 +1,21 @@
+/*@import "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap";
+@import "https://fonts.googleapis.com/css?family=Muli:400,600,700,800,900&display=swap";*/
+@import "https://use.fontawesome.com/releases/v5.11.0/css/all.css";
+@import "./bootstrap.min.css";
+/*@import "../css/flaticon.css";*/
+@import "./menu.css";
+@import "./dropdown-effects/fade-down.css";
+/*@import "../css/magnific-popup.css";
+@import "../css/flexslider.css";
+@import "../css/owl.carousel.min.css";
+@import "../css/owl.theme.default.min.css";
+@import "../css/animate.css";
+*/
+@import "./styles.scss";
+@import "./style.css";
+@import "./app.css";
+@import "./responsive.css";
+/*
+.owl-carousel {
+  display: block !important;
+}*/
