@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // Define the type for the component props (if needed)
 interface HomePageProps {}
@@ -6,21 +8,25 @@ interface HomePageProps {}
 // Create the functional component
 const Home: React.FC<HomePageProps> = () => {
     // Define state variables using the useState hook
-    const [counter, setCounter] = useState<number>(0);
+    const navigate = useNavigate()
 
-    // Define a function to handle button click
-    const handleButtonClick = () => {
-        // Update the counter state when the button is clicked
-        setCounter(counter + 1);
-    };
+    const routeSignup = () => { 
+        let path = `/signup`; 
+        navigate(path);
+    }
+
+    const routeLogin = () => {
+        let path = `/login`
+        navigate(path);
+    }
 
     // Return the JSX structure of the component
     return (
         <div style={{ textAlign: "center", marginTop: "50px" }}>
-            <h1>Welcome to My Homepage</h1>
-            <p>This is a simple React TypeScript homepage.</p>
-            <p>Counter: {counter}</p>
-            <button onClick={handleButtonClick}>Click me</button>
+            <h1>Welcome to PLACEHOLDER</h1>
+            <p>Please Login to Your Account</p>
+            <button onClick={routeSignup}>Sign Up</button>
+            <button onClick={routeLogin}>Login</button>
         </div>
     );
 };
