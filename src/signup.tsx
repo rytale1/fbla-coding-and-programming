@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './signup.css'; 
+import { collection, addDoc } from "firebase/firestore"; 
+import {createUser} from './db';
 
 interface SignUpProps {
   onSubmit: (username: string, password: string) => void;
@@ -19,9 +21,9 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSubmit(username, password);
+    createUser(username, password)
   };
-
+  
   return (
     <div>
       <h2>Sign Up</h2>
