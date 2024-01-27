@@ -6,6 +6,7 @@ import { auth } from "./firebase";
 import Layout from "./layout/Layout";
 import PageTitle from "./layout/PageTitle";
 import "./css/globals.css";
+import { Button } from "@mui/material";
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -44,7 +45,11 @@ const Home: React.FC<HomePageProps> = () => {
                 pageTitle="CareerBase - Where careers are found"
                 description="CareerBase is a database created to help high schoolers find careers and job opportunities"
             />
-            <section id="hero-3" className="bg-scroll division">
+            <section
+                id="hero-3"
+                className="bg-scroll division"
+                style={{ width: "600px" }}
+            >
                 <div className="container">
                     <div className="row d-flex align-items-center">
                         <div className="col-sm-12">
@@ -67,6 +72,26 @@ const Home: React.FC<HomePageProps> = () => {
                                     muted={true}
                                     loop={true}
                                  />*/}
+                            </div>
+                        </div>
+                        <div className="col-md-12 col-lg-12">
+                            <div className="mb-40 text-center">
+                                <Button
+                                    size="large"
+                                    variant="contained"
+                                    sx={{
+                                        margin: 3,
+                                        textAlign: "center",
+                                        fontSize: "1.0rem",
+                                        fontWeight: 600,
+                                        width: 250,
+                                        height: 60,
+                                        backgroundColor: "primary.main",
+                                        textTransform: "none",
+                                    }}
+                                >
+                                    Try Free
+                                </Button>
                             </div>
                         </div>
                     </div>

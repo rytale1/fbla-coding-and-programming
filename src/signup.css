@@ -4,39 +4,38 @@ div {
     max-width: 300px;
     margin: auto;
     padding: 20px;
-  }
-  
-  h2 {
+}
+
+h2 {
     text-align: center;
     color: #333;
-  }
-  
-  form {
+}
+
+form {
     display: flex;
     flex-direction: column;
-  }
-  
-  label {
+}
+
+label {
     margin-bottom: 5px;
-  }
-  
-  input {
+}
+
+input {
     padding: 8px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 3px;
-  }
-  
-  button {
+}
+
+button {
     background-color: #4caf50;
     color: white;
     padding: 10px;
     border: none;
     border-radius: 3px;
     cursor: pointer;
-  }
-  
-  button:hover {
+}
+
+button:hover {
     background-color: #45a049;
-  }
-  
+}
