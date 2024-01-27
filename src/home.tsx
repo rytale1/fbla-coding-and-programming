@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import "./css/globals.css";
 
 // Define the type for the component props (if needed)
 interface HomePageProps {}
