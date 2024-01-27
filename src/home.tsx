@@ -8,25 +8,26 @@ interface HomePageProps {}
 // Create the functional component
 const Home: React.FC<HomePageProps> = () => {
     // Define state variables using the useState hook
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-    const routeSignup = () => { 
-        let path = `/signup`; 
+    const routeSignup = () => {
+        let path = `/signup`;
         navigate(path);
-    }
+    };
 
     const routeLogin = () => {
-        let path = `/login`
+        let path = `/login`;
         navigate(path);
-    }
+    };
 
     // Return the JSX structure of the component
     return (
         <div style={{ textAlign: "center", marginTop: "50px" }}>
-            <h1>Welcome to PLACEHOLDER</h1>
+            <h1>This is our home page!</h1>
+            {/*<h1>Welcome to PLACEHOLDER</h1>
             <p>Please Login to Your Account</p>
             <button onClick={routeSignup}>Sign Up</button>
-            <button onClick={routeLogin}>Login</button>
+    <button onClick={routeLogin}>Login</button>*/}
         </div>
     );
 };
