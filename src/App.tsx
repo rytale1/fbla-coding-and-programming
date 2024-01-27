@@ -6,7 +6,6 @@ import "./css/globals.css";
 import Home from "./home";
 import SignUp from "./signup";
 import Login from "./login";
-import { authenticateUser, createUser } from "./firebase";
 
 export function App() {
     return (
