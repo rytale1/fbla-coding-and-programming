@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './login.css'; 
+import './css/globals.css';
 
 interface LoginProps {
   onSubmit: (email: string, password: string) => void;
@@ -23,7 +23,7 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
   };
 
   return (
-    <div className="login-container">
+    <div className="wsmenu">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div>
