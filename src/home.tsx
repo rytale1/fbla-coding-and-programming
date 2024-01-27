@@ -1,6 +1,20 @@
 import React, { useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase"
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/auth.user
+    const uid = user.uid;
+    console.log("logged in", uid)
+    // ...
+  } else {
+    console.log("signed out")
+  }
+});
 
 // Define the type for the component props (if needed)
 interface HomePageProps {}

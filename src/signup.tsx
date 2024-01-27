@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import './signup.css'; 
 import { collection, addDoc } from "firebase/firestore"; 
-import {createUser} from './db';
+import {createUser} from './firebase';
 
 interface SignUpProps {
-  onSubmit: (username: string, password: string) => void;
+  onSubmit: (email: string, password: string) => void;
 }
 
 const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
-  const [username, setUsername] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
   };
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +21,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    createUser(username, password)
+    createUser(email, password)
   };
   
   return (
@@ -29,12 +29,12 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
       <h2>Sign Up</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="email">Email:</label>
           <input
             type="text"
-            id="username"
-            value={username}
-            onChange={handleUsernameChange}
+            id="email"
+            value={email}
+            onChange={handleEmailChange}
             required
           />
         </div>
