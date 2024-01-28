@@ -9,37 +9,35 @@ import Login from "./login";
 
 export function App() {
     return (
-        <div className="wsmenucontainer">
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route
-                    path="/signup"
-                    element={
-                        <SignUp
-                            onSubmit={function (
-                                username: string,
-                                password: string
-                            ): void {
-                                throw new Error("Function not implemented.");
-                            }}
-                        />
-                    }
-                />
-                <Route
-                    path="/login"
-                    element={
-                        <Login
-                            onSubmit={function (
-                                username: string,
-                                password: string
-                            ): void {
-                                throw new Error("Function not implemented.");
-                            }}
-                        />
-                    }
-                />
-            </Routes>
-        </div>
+        <Routes>
+            <Route path="/" element={<Home />} />
+            <Route
+                path="/signup"
+                element={
+                    <SignUp
+                        onSubmit={function (
+                            username: string,
+                            password: string
+                        ): void {
+                            throw new Error("Function not implemented.");
+                        }}
+                    />
+                }
+            />
+            <Route
+                path="/login"
+                element={
+                    <Login
+                        onSubmit={function (
+                            username: string,
+                            password: string
+                        ): void {
+                            throw new Error("Function not implemented.");
+                        }}
+                    />
+                }
+            />
+        </Routes>
     );
 }
 export default App;

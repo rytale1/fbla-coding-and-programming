@@ -41,30 +41,29 @@ const Home: React.FC<HomePageProps> = () => {
     // Return the JSX structure of the component
     return (
         <Layout footer={2} headerBtn={true}>
-            <PageTitle
-                pageTitle="CareerBase - Where careers are found"
-                description="CareerBase is a database created to help high schoolers find careers and job opportunities"
-            />
-            <section
-                id="hero-3"
-                className="bg-scroll division"
-                style={{ width: "600px" }}
-            >
-                <div className="container">
-                    <div className="row d-flex align-items-center">
-                        <div className="col-sm-12">
-                            <div className="hero-txt mb-40 text-center">
-                                <h1>Career Database for High Schoolers</h1>
-                                <h2>
-                                    Career opportunities for
-                                    <br /> high schoolers, powered by CareerBase
-                                </h2>
-                                <p style={{ marginBottom: "30px" }}>
-                                    Empower your search for opportunities with
-                                    CareerBase, a comprehensive database for
-                                    high school job opportunities.
-                                </p>
-                                {/*<video
+            <div>
+                <PageTitle
+                    pageTitle="CareerBase - Where careers are found"
+                    description="CareerBase is a database created to help high schoolers find careers and job opportunities"
+                />
+                <section id="hero-3" className="bg-scroll division">
+                    <div className="container">
+                        <div className="row d-flex align-items-center">
+                            <div className="col-sm-12">
+                                <div className="hero-txt mb-40 text-center">
+                                    <h1>Career Database for High Schoolers</h1>
+                                    <h2>
+                                        Career opportunities for
+                                        <br /> high schoolers, powered by
+                                        CareerBase
+                                    </h2>
+                                    <p style={{ marginBottom: "30px" }}>
+                                        Empower your search for opportunities
+                                        with CareerBase, a comprehensive
+                                        database for high school job
+                                        opportunities.
+                                    </p>
+                                    {/*<video
                                     src=""
                                     width="640"
                                     playsInline={true}
@@ -72,31 +71,32 @@ const Home: React.FC<HomePageProps> = () => {
                                     muted={true}
                                     loop={true}
                                  />*/}
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-md-12 col-lg-12">
-                            <div className="mb-40 text-center">
-                                <Button
-                                    size="large"
-                                    variant="contained"
-                                    sx={{
-                                        margin: 3,
-                                        textAlign: "center",
-                                        fontSize: "1.0rem",
-                                        fontWeight: 600,
-                                        width: 250,
-                                        height: 60,
-                                        backgroundColor: "primary.main",
-                                        textTransform: "none",
-                                    }}
-                                >
-                                    Try Free
-                                </Button>
+                            <div className="col-md-12 col-lg-12">
+                                <div className="mb-40 text-center">
+                                    <Button
+                                        size="large"
+                                        variant="contained"
+                                        sx={{
+                                            margin: 3,
+                                            textAlign: "center",
+                                            fontSize: "1.0rem",
+                                            fontWeight: 600,
+                                            width: 250,
+                                            height: 60,
+                                            backgroundColor: "primary.main",
+                                            textTransform: "none",
+                                        }}
+                                    >
+                                        Try Free
+                                    </Button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </div>
         </Layout>
     );
 };

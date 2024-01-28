@@ -27,7 +27,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
     };
 
     return (
-        <div>
+        <div style={{ width: "300px" }}>
             <h2>Sign Up</h2>
             <form onSubmit={handleSubmit}>
                 <div>

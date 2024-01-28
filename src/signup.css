@@ -1,7 +1,9 @@
 /* SignUp.css */
 
-div {
-    max-width: 300px;
+.signupBox {
+    text-align: "center";
+    width: "90%";
+    max-width: "300px";
     margin: auto;
     padding: 20px;
 }
