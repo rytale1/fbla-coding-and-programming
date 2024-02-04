@@ -5,6 +5,7 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { Col, Row } from "react-bootstrap";
 import Layout from "./layout/Layout";
+import { Button } from "@mui/material";
 
 interface LoginProps {
     onSubmit: (email: string, password: string) => void;
@@ -39,41 +40,45 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
             >
                 <Paper
                     elevation={8}
-                    style={{ width: "400px", padding: "20px" }}
+                    style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: "300px", padding: "20px" }}
                 >
                     <h2 style={{ marginBottom: "20px" }}>Login</h2>
                     <form onSubmit={handleSubmit}>
                         <Row style={{ padding: "10px" }}>
-                            <Col>
-                                <label htmlFor="email">Email:</label>
-                            </Col>
-                            <Col>
-                                <input
-                                    type="text"
-                                    id="email"
-                                    value={email}
-                                    onChange={handleEmailChange}
-                                    required
-                                />
-                            </Col>
+                            <input
+                                type="text"
+                                id="email"
+                                value={email}
+                                onChange={handleEmailChange}
+                                placeholder="Email"
+                                required
+                            />
                         </Row>
                         <Row style={{ padding: "10px" }}>
-                            <Col>
-                                <label htmlFor="password">Password:</label>
-                            </Col>
-                            <Col>
-                                <input
-                                    type="password"
-                                    id="password"
-                                    value={password}
-                                    onChange={handlePasswordChange}
-                                    required
-                                />
-                            </Col>
+                            <input
+                                type="password"
+                                id="password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={handlePasswordChange}
+                                required
+                            />
                         </Row>
-                        <button style={{ marginTop: "10px" }} type="submit">
+                        <Button size="large"
+                            variant="contained"
+                            type="submit"
+                            sx={{
+                                marginTop: "10px",
+                                textAlign: "center",
+                                fontSize: "1.0rem",
+                                fontWeight: 600,
+                                width: "100%",
+                                height: 60,
+                                backgroundColor: "primary.main",
+                                textTransform: "none",
+                            }}>
                             Login
-                        </button>
+                        </Button>
                     </form>
                 </Paper>
             </Box>

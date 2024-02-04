@@ -15,21 +15,24 @@ const app = initializeApp(firebaseConfig);
 //const db = getFirestore(app);
 export const auth = getAuth(app);
 
-export async function createUser(email: string, pass: string) {
+export async function createUser(email: string, pass: string): Promise<boolean> {
   try {
-    const newUser = await createUserWithEmailAndPassword(auth, email, pass)
-    console.log("User Created: ", newUser.user);
+    const newUser = await createUserWithEmailAndPassword(auth, email, pass);
+    return true;
   } catch (e) {
     console.error("Error creating user", e);
+    return false;
   }
 }
 
-export async function authenticateUser(email: string, pass: string) {
+export async function authenticateUser(email: string, pass: string) : Promise<boolean> {
   try {
     const newUser = await signInWithEmailAndPassword(auth, email, pass)
     console.log("Authenticated User ", newUser.user);
+    return true;
   } catch (e) {
     console.error("Error authenticating user", e);
+    return false;
   }
 }
 

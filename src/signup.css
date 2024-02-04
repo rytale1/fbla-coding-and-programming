@@ -3,7 +3,7 @@
 .signupBox {
     text-align: "center";
     width: "90%";
-    max-width: "300px";
+    max-width: "400px";
     margin: auto;
     padding: 20px;
 }
@@ -16,6 +16,8 @@ h2 {
 form {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 label {
@@ -24,12 +26,12 @@ label {
 
 input {
     padding: 8px;
-    margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 3px;
+    width: 100%;
 }
 
-button {
+/* button {
     background-color: #4caf50;
     color: white;
     padding: 10px;
@@ -40,4 +42,4 @@ button {
 
 button:hover {
     background-color: #45a049;
-}
+} */

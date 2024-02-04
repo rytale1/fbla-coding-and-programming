@@ -27,7 +27,7 @@ const Header = ({
     const [, setCurrentLocation] = useState(location);
 
     const signUp = () => {
-        navigate("/login?type=signup");
+        navigate("/signup");
     };
 
     useEffect(() => {
