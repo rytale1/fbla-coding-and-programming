@@ -1,6 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword , signInWithPopup, 
+  GoogleAuthProvider, signOut} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB-v-uOf04-To60EGhs1cqSW4pzLuuGCFY",
@@ -14,6 +16,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 //const db = getFirestore(app);
 export const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
 
 export async function createUser(email: string, pass: string): Promise<boolean> {
   try {
@@ -35,5 +38,27 @@ export async function authenticateUser(email: string, pass: string) : Promise<bo
     return false;
   }
 }
+
+export async function authenticateWithGoogle() : Promise<boolean> {
+  try {
+    const newUser = await signInWithPopup(auth, googleProvider);
+    console.log("Authenticated User ", newUser.user);
+    return true;
+  } catch (e) {
+    console.error("Error authenticating user", e);
+    return false;
+  }
+}
+
+export async function logout() {
+  try {
+    await signOut(auth);
+    console.log("Signed out");
+  } catch (e) {
+    console.error("Error signing out", e);
+  }
+}
+
+
 
 

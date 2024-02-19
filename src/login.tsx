@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import { Col, Row } from "react-bootstrap";
 import Layout from "./layout/Layout";
 import { Button } from "@mui/material";
+import { auth, authenticateWithGoogle, logout } from "./firebase";
 
 interface LoginProps {
     onSubmit: (email: string, password: string) => void;
@@ -14,6 +15,7 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ onSubmit }) => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [loginState, setLoginState] = useState<boolean>(false);
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
@@ -30,6 +32,8 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
         onSubmit(email, password);
     };
 
+    console.log("current user: ", auth?.currentUser);
+
     return (
         <Layout footer={2} headerBtn={true}>
             <Box
@@ -40,7 +44,11 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
             >
                 <Paper
                     elevation={8}
-                    style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: "300px", padding: "20px" }}
+                    style={{ display: "flex", 
+                    flexDirection: "column", 
+                    justifyContent: "center", 
+                    alignItems: "center", 
+                    width: "300px", padding: "20px" }}
                 >
                     <h2 style={{ marginBottom: "20px" }}>Login</h2>
                     <form onSubmit={handleSubmit}>
@@ -78,6 +86,36 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
                                 textTransform: "none",
                             }}>
                             Login
+                        </Button>
+                        <Button size="large"
+                            variant="contained"
+                            onClick={() => authenticateWithGoogle()}
+                            sx={{
+                                marginTop: "10px",
+                                textAlign: "center",
+                                fontSize: "1.0rem",
+                                fontWeight: 600,
+                                width: "100%",
+                                height: 60,
+                                backgroundColor: "primary.main",
+                                textTransform: "none",
+                            }}>
+                            Sign in with Google
+                        </Button>
+                        <Button size="large"
+                            variant="contained"
+                            onClick = {() => logout()}
+                            sx={{
+                                marginTop: "10px",
+                                textAlign: "center",
+                                fontSize: "1.0rem",
+                                fontWeight: 600,
+                                width: "100%",
+                                height: 60,
+                                backgroundColor: "primary.main",
+                                textTransform: "none",
+                            }}>
+                            Log out
                         </Button>
                     </form>
                 </Paper>
