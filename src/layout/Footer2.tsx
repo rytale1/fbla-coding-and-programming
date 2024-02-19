@@ -42,7 +42,7 @@ const Footer2 = ({ footer }: { footer?: number | undefined }) => {
             <Row style={{ padding: "10px" }}>
                 <Col sm="12" md="7" style={{ padding: "10px" }}>
                     <img
-                        src="/images/logo192.png"
+                        src="/images/logo.png"
                         height={17}
                         width={80}
                         style={{ margin: "-5px 5px 0px 15px" }}

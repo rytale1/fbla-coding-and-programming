@@ -53,7 +53,7 @@ const Header = ({
                     <Link to={"/"} className="logo-black">
                         <span className="smllogo smllogo-black">
                             <img
-                                src="/images/logo192.png"
+                                src="/images/logo.png"
                                 width={200}
                                 height={44}
                                 alt="mobile-logo"
@@ -62,7 +62,7 @@ const Header = ({
                     </Link>
                     <span className="smllogo smllogo-white">
                         <img
-                            src="/images/logo192.png"
+                            src="/images/logo.png"
                             width={200}
                             height={44}
                             alt="mobile-logo"
@@ -77,9 +77,9 @@ const Header = ({
                         <div className="desktoplogo">
                             <Link to={"/"} className="logo-black">
                                 <img
-                                    width={200}
-                                    height={44}
-                                    src="/images/logo192.png"
+                                    width={300}
+                                    height={50}
+                                    src="/images/logo.png"
                                     alt="header-logo"
                                 />
                             </Link>
@@ -87,9 +87,9 @@ const Header = ({
                         <div className="desktoplogo">
                             <a href={"/"} className="logo-white">
                                 <img
-                                    src="/images/logo192.png"
-                                    width={200}
-                                    height={44}
+                                    src="/images/logo.png"
+                                    width={300}
+                                    height={50}
                                     alt="header-logo"
                                 />
                             </a>
