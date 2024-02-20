@@ -6,7 +6,13 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { Col, Row } from "react-bootstrap";
 import Layout from "./layout/Layout";
-import { Button } from "@mui/material";
+import {
+    Button,
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+} from "@mui/material";
 import { redirect } from "react-router-dom";
 
 interface SignUpProps {
@@ -14,11 +20,16 @@ interface SignUpProps {
 }
 
 const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
+    const [accountType, setAccountType] = useState<string>("Account Type");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [passwordError, setPasswordError] = useState(false);
     const [signUpError, setSignupError] = useState(false);
+
+    const handleAccountTypeChange = (event: SelectChangeEvent) => {
+        setAccountType(event.target.value as string);
+    };
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
@@ -46,10 +57,8 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
             return;
         }
         const success = await createUser(email, password);
-        if (success)
-            redirect("/");
-        else 
-            setSignupError(true)
+        if (success) redirect("/");
+        else setSignupError(true);
     };
 
     return (
@@ -62,10 +71,30 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
             >
                 <Paper
                     elevation={8}
-                    style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: "300px", padding: "20px" }}
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: "300px",
+                        padding: "20px",
+                    }}
                 >
                     <h2 style={{ marginBottom: "20px" }}>Sign Up</h2>
                     <form onSubmit={handleSubmit}>
+                        <Row style={{ padding: "10px" }}>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={accountType}
+                                onChange={handleAccountTypeChange}
+                                style={{ width: "210px" }}
+                            >
+                                <MenuItem value={"Student"}>Student</MenuItem>
+                                <MenuItem value={"Staff"}>Staff</MenuItem>
+                                <MenuItem value={"Business"}>Business</MenuItem>
+                            </Select>
+                        </Row>
                         <Row style={{ padding: "10px" }}>
                             <input
                                 type="text"
@@ -96,17 +125,18 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                                 required
                             />
                         </Row>
-                        { passwordError && 
+                        {passwordError && (
                             <Row style={{ color: "red", padding: "10px" }}>
                                 Passwords do not match.
                             </Row>
-                        }
-                        { signUpError && 
+                        )}
+                        {signUpError && (
                             <Row style={{ color: "red", padding: "10px" }}>
                                 Error registering user.
                             </Row>
-                        }
-                        <Button size="large"
+                        )}
+                        <Button
+                            size="large"
                             variant="contained"
                             type="submit"
                             sx={{
@@ -118,7 +148,8 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                                 height: 60,
                                 backgroundColor: "primary.main",
                                 textTransform: "none",
-                            }}>
+                            }}
+                        >
                             Sign Up
                         </Button>
                     </form>
