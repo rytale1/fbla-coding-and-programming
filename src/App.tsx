@@ -6,28 +6,19 @@ import "./css/globals.css";
 import Home from "./home";
 import SignUp from "./signup";
 import Login from "./login";
+import Dashboard from "./dashboard";
 import { authenticateUser, createUser } from "./firebase";
 
 export function App() {
     return (
         <Routes>
             <Route path="/" element={<Home />} />
-            <Route
-                path="/signup"
-                element={
-                    <SignUp
-                        onSubmit={createUser}
-                    />
-                }
-            />
+            <Route path="/signup" element={<SignUp onSubmit={createUser} />} />
             <Route
                 path="/login"
-                element={
-                    <Login
-                        onSubmit={authenticateUser}
-                    />
-                }
+                element={<Login onSubmit={authenticateUser} />}
             />
+            <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
     );
 }
