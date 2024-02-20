@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./signup.css";
 import { collection, addDoc } from "firebase/firestore";
-import { createUser } from "./firebase";
+import { createUser, createUserAndStoreAccountType } from "./firebase";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { Col, Row } from "react-bootstrap";
@@ -51,12 +51,17 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
     };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        alert("here1");
         event.preventDefault();
         if (password !== confirmPassword) {
             setPasswordError(true);
             return;
         }
-        const success = await createUser(email, password);
+        const success = await createUserAndStoreAccountType(
+            email,
+            password,
+            accountType
+        );
         if (success) redirect("/");
         else setSignupError(true);
     };
@@ -133,6 +138,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                         {signUpError && (
                             <Row style={{ color: "red", padding: "10px" }}>
                                 Error registering user.
+                                <br /> Try logging in
                             </Row>
                         )}
                         <Button

@@ -1,5 +1,13 @@
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, getFirestore } from "firebase/firestore";
+import {
+    addDoc,
+    collection,
+    doc,
+    getFirestore,
+    setDoc,
+} from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+
 import {
     getAuth,
     createUserWithEmailAndPassword,
@@ -19,9 +27,34 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-//const db = getFirestore(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+export { db };
+export { storage };
 export const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
+
+export async function createUserAndStoreAccountType(
+    email: string,
+    pass: string,
+    accountType: string
+): Promise<boolean> {
+    try {
+        alert("here");
+        const newUser = await createUserWithEmailAndPassword(auth, email, pass);
+        const userRef = collection(db, "users");
+        await addDoc(userRef, {
+            uid: newUser.user.uid,
+            accountType: accountType,
+        });
+        return true;
+    } catch (e) {
+        alert(
+            "Error creating user and storing account type" + JSON.stringify(e)
+        );
+        return false;
+    }
+}
 
 export async function createUser(
     email: string,
