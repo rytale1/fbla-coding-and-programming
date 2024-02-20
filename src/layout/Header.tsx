@@ -115,7 +115,7 @@ const Header = ({
                                         <i className="wsmenu-arrow" />
                                     </span>
                                     <a href="#">
-                                        hello
+                                        Help
                                         <span className="wsarrow" />
                                     </a>
                                     <ul
@@ -124,7 +124,7 @@ const Header = ({
                                         )}`}
                                     >
                                         <li>
-                                            <Link to="/">khjlh</Link>
+                                            <Link to="/">FAQ</Link>
                                         </li>
                                     </ul>
                                 </li>
@@ -145,7 +145,7 @@ const Header = ({
                                         )}`}
                                     >
                                         <li>
-                                            <Link to={"/"}>bobby</Link>
+                                            <Link to={"/"}>Select Languages</Link>
                                         </li>
                                     </ul>
                                 </li>
