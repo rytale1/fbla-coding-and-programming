@@ -62,7 +62,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
             password,
             accountType
         );
-        if (success) redirect("/");
+        if (success) redirect("/dashboard");
         else setSignupError(true);
     };
 
