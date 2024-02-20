@@ -4,6 +4,9 @@ import {
     getAuth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
+    signInWithPopup,
+    GoogleAuthProvider,
+    signOut,
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -18,6 +21,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 //const db = getFirestore(app);
 export const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
 
 export async function createUser(
     email: string,
@@ -43,5 +47,25 @@ export async function authenticateUser(
     } catch (e) {
         console.error("Error authenticating user", e);
         return false;
+    }
+}
+
+export async function authenticateWithGoogle(): Promise<boolean> {
+    try {
+        const newUser = await signInWithPopup(auth, googleProvider);
+        console.log("Authenticated User ", newUser.user);
+        return true;
+    } catch (e) {
+        console.error("Error authenticating user", e);
+        return false;
+    }
+}
+
+export async function logout() {
+    try {
+        await signOut(auth);
+        console.log("Signed out");
+    } catch (e) {
+        console.error("Error signing out", e);
     }
 }

@@ -107,6 +107,7 @@ const Home: React.FC<HomePageProps> = () => {
                                             backgroundColor: "primary.main",
                                             textTransform: "none",
                                         }}
+                                        onClick = {routeSignup}
                                     >
                                         Try Free
                                     </Button>
