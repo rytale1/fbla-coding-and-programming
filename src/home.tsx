@@ -66,7 +66,7 @@ const Home: React.FC<HomePageProps> = () => {
                             >
                                 <div className="hero-txt mb-40 text-center">
                                     <h1
-                                    style={{ color : "white"}}>Career Database for High Schoolers</h1>
+                                    style={{ color : "white", marginTop: "125px"}}>Career Database for High Schoolers</h1>
                                     <h2
                                     style={{ color: "white"}}>
                                         Career opportunities for
@@ -133,9 +133,6 @@ const Home: React.FC<HomePageProps> = () => {
                                     <p className="job-location">
                                         San Francisco, CA
                                     </p>
-                                    <a href="#" className="btn btn-primary">
-                                        Apply
-                                    </a>
                                 </div>
                             </Col>
                             <Col>
@@ -145,9 +142,6 @@ const Home: React.FC<HomePageProps> = () => {
                                     </h3>
                                     <p className="job-company">Design Inc.</p>
                                     <p className="job-location">New York, NY</p>
-                                    <a href="#" className="btn btn-primary">
-                                        Apply
-                                    </a>
                                 </div>
                             </Col>
                             <Col>
@@ -155,9 +149,6 @@ const Home: React.FC<HomePageProps> = () => {
                                     <h3 className="job-title">Data Analyst</h3>
                                     <p className="job-company">Data Masters</p>
                                     <p className="job-location">Austin, TX</p>
-                                    <a href="#" className="btn btn-primary">
-                                        Apply
-                                    </a>
                                 </div>
                             </Col>
                         </Row>

@@ -89,11 +89,11 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                     <form onSubmit={handleSubmit}>
                         <Row style={{ padding: "10px" }}>
                             <Select
-                                labelId="demo-simple-select-label"
+                                label="Account"
                                 id="demo-simple-select"
                                 value={accountType}
                                 onChange={handleAccountTypeChange}
-                                style={{ width: "210px" }}
+                                style={{ width: "241.54px" }}
                             >
                                 <MenuItem value={"Student"}>Student</MenuItem>
                                 <MenuItem value={"Staff"}>Staff</MenuItem>
