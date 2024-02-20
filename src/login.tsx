@@ -7,6 +7,7 @@ import { Col, Row } from "react-bootstrap";
 import Layout from "./layout/Layout";
 import { Button } from "@mui/material";
 import { auth, authenticateWithGoogle, logout } from "./firebase";
+import { redirect } from "react-router-dom";
 
 interface LoginProps {
     onSubmit: (email: string, password: string) => void;
@@ -30,6 +31,7 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         onSubmit(email, password);
+        redirect("/dashboard");
     };
 
     console.log("current user: ", auth?.currentUser);
@@ -44,11 +46,14 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
             >
                 <Paper
                     elevation={8}
-                    style={{ display: "flex", 
-                    flexDirection: "column", 
-                    justifyContent: "center", 
-                    alignItems: "center", 
-                    width: "300px", padding: "20px" }}
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: "300px",
+                        padding: "20px",
+                    }}
                 >
                     <h2 style={{ marginBottom: "20px" }}>Login</h2>
                     <form onSubmit={handleSubmit}>
@@ -72,7 +77,8 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
                                 required
                             />
                         </Row>
-                        <Button size="large"
+                        <Button
+                            size="large"
                             variant="contained"
                             type="submit"
                             sx={{
@@ -84,10 +90,12 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
                                 height: 60,
                                 backgroundColor: "primary.main",
                                 textTransform: "none",
-                            }}>
+                            }}
+                        >
                             Login
                         </Button>
-                        <Button size="large"
+                        <Button
+                            size="large"
                             variant="contained"
                             onClick={() => authenticateWithGoogle()}
                             sx={{
@@ -99,12 +107,14 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
                                 height: 60,
                                 backgroundColor: "primary.main",
                                 textTransform: "none",
-                            }}>
+                            }}
+                        >
                             Sign in with Google
                         </Button>
-                        <Button size="large"
+                        <Button
+                            size="large"
                             variant="contained"
-                            onClick = {() => logout()}
+                            onClick={() => logout()}
                             sx={{
                                 marginTop: "10px",
                                 textAlign: "center",
@@ -114,7 +124,8 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
                                 height: 60,
                                 backgroundColor: "primary.main",
                                 textTransform: "none",
-                            }}>
+                            }}
+                        >
                             Log out
                         </Button>
                     </form>

@@ -1,5 +1,12 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { collection, addDoc, doc, setDoc } from "firebase/firestore";
+import {
+    collection,
+    addDoc,
+    doc,
+    setDoc,
+    getDocs,
+    onSnapshot,
+} from "firebase/firestore";
 import { Col, Row } from "react-bootstrap";
 import Layout from "./layout/Layout";
 import {
@@ -54,13 +61,47 @@ const Dashboard: React.FC<DashboardProps> = () => {
     });
     const [uid, setUid] = useState("");
     const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [partners, setPartners] = useState<Entry[]>([]);
+
+    /*useEffect(() => {
+        const fetchPartners = async () => {
+            console.log(partners);
+            alert("hi");
+            const partnersCollection = collection(db, "Partners"); // Assuming "partners" is your collection name
+            const snapshot = await getDocs(partnersCollection);
+            const partnersData = snapshot.docs.map(
+                (doc) => doc.data() as Entry
+            );
+            setPartners(partnersData);
+            alert("here");
+        };
+
+        const unsubscribe = onSnapshot(
+            collection(db, "partners"),
+            (snapshot) => {
+                const partnersData = snapshot.docs.map(
+                    (doc) => doc.data() as Entry
+                );
+                setPartners(partnersData);
+            }
+        );
+
+        fetchPartners(); // Fetch partners when component mounts
+        return () => unsubscribe(); // Unsubscribe from snapshot listener when component unmounts
+    }, []);*/
 
     const handleOpenDialog = () => {
         setOpenDialog(true);
+        setCurrentPage(0);
     };
 
     const handleCloseDialog = () => {
         setOpenDialog(false);
+    };
+
+    const handleNext = () => {
+        setCurrentPage(1); // Switch to contact info page
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,6 +122,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
         } catch (e: any) {
             alert("Error adding document: " + e.message);
         }
+        setOpenDialog(false);
         setLoading(false);
     };
 
@@ -90,87 +132,188 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 <Button variant="outlined" onClick={handleOpenDialog}>
                     Add Partner
                 </Button>
-                <Dialog open={openDialog} onClose={handleCloseDialog}>
+                <Dialog
+                    open={openDialog}
+                    onClose={handleCloseDialog}
+                    style={{ width: "800px", border: "10px solid black" }}
+                >
                     <DialogTitle>Add Partner</DialogTitle>
-                    <DialogContent>
-                        {/* Input fields */}
-                        <TextField
-                            name="name"
-                            label="Name"
-                            value={formData.name}
-                            onChange={handleInputChange}
-                            fullWidth
-                        />
-                        <TextField
-                            name="organizationType"
-                            label="Organization Type"
-                            value={formData.organizationType}
-                            onChange={handleInputChange}
-                            fullWidth
-                        />
-                        <TextField
-                            name="website"
-                            label="Website"
-                            value={formData.website}
-                            onChange={handleInputChange}
-                            fullWidth
-                        />
-                        <TextField
-                            name="address"
-                            label="Address"
-                            value={formData.address}
-                            onChange={handleInputChange}
-                            fullWidth
-                        />
-                        <TextField
-                            name="description"
-                            label="Description"
-                            value={formData.description}
-                            onChange={handleInputChange}
-                            fullWidth
-                        />
-                        <TextField
-                            name="partnershipType"
-                            label="Partnership Type"
-                            value={formData.partnershipType}
-                            onChange={handleInputChange}
-                            fullWidth
-                        />
-                        <TextField
-                            select
-                            name="resourcesAvailable"
-                            label="Resources Available"
-                            value={formData.resourcesAvailable}
-                            onChange={handleInputChange}
-                            fullWidth
-                        >
-                            <MenuItem value="Mentoring">Mentoring</MenuItem>
-                            <MenuItem value="Internships">Internships</MenuItem>
-                            <MenuItem value="Workshops">Workshops</MenuItem>
-                            {/* Add more options as needed */}
-                        </TextField>
-                        <TextField
-                            select
-                            name="targetAudience"
-                            label="Target Audience"
-                            value={formData.targetAudience}
-                            onChange={handleInputChange}
-                            fullWidth
-                        >
-                            <MenuItem value="High school students">
-                                High school students
-                            </MenuItem>
-                            <MenuItem value="College graduates">
-                                College graduates
-                            </MenuItem>
-                            {/* Add more options as needed */}
-                        </TextField>
+                    <DialogContent style={{ width: "800px" }}>
+                        {currentPage === 0 && (
+                            <form noValidate autoComplete="off">
+                                <TextField
+                                    name="name"
+                                    label="Name"
+                                    value={formData.name}
+                                    onChange={handleInputChange}
+                                    fullWidth
+                                />
+                                <TextField
+                                    name="website"
+                                    label="Website"
+                                    value={formData.website}
+                                    onChange={handleInputChange}
+                                    fullWidth
+                                />
+                                <TextField
+                                    name="address"
+                                    label="Address"
+                                    value={formData.address}
+                                    onChange={handleInputChange}
+                                    fullWidth
+                                />
+                                <TextField
+                                    name="description"
+                                    label="Description"
+                                    value={formData.description}
+                                    onChange={handleInputChange}
+                                    fullWidth
+                                    multiline
+                                    rows={4}
+                                />
+                                <TextField
+                                    select
+                                    name="organizationType"
+                                    label="Organization Type"
+                                    value={formData.organizationType}
+                                    onChange={handleInputChange}
+                                    fullWidth
+                                >
+                                    <MenuItem value="Education Institution">
+                                        Education Institution
+                                    </MenuItem>
+                                    <MenuItem value="Industry Partner">
+                                        Industry Partner
+                                    </MenuItem>
+                                    <MenuItem value="Non-profit Organization">
+                                        Non-profit Organization
+                                    </MenuItem>
+                                    <MenuItem value="Government Agency">
+                                        Government Agency
+                                    </MenuItem>
+                                    {/* Add more options as needed */}
+                                </TextField>
+                                <TextField
+                                    select
+                                    name="partnershipType"
+                                    label="Partnership Type"
+                                    value={formData.partnershipType}
+                                    onChange={handleInputChange}
+                                    fullWidth
+                                >
+                                    <MenuItem value="Internship Program">
+                                        Internship Program
+                                    </MenuItem>
+                                    <MenuItem value="Apprenticeship Program">
+                                        Apprenticeship Program
+                                    </MenuItem>
+                                    <MenuItem value="Work-Based Learning">
+                                        Work-Based Learning
+                                    </MenuItem>
+                                    <MenuItem value="Curriculum Development">
+                                        Curriculum Development
+                                    </MenuItem>
+                                    {/* Add more options as needed */}
+                                </TextField>
+                                <TextField
+                                    select
+                                    name="resourcesAvailable"
+                                    label="Resources Available"
+                                    value={formData.resourcesAvailable}
+                                    onChange={handleInputChange}
+                                    fullWidth
+                                >
+                                    <MenuItem value="Mentoring">
+                                        Mentoring
+                                    </MenuItem>
+                                    <MenuItem value="Internships">
+                                        Internships
+                                    </MenuItem>
+                                    <MenuItem value="Workshops">
+                                        Workshops
+                                    </MenuItem>
+                                    {/* Add more options as needed */}
+                                </TextField>
+                                <TextField
+                                    select
+                                    name="targetAudience"
+                                    label="Target Audience"
+                                    value={formData.targetAudience}
+                                    onChange={handleInputChange}
+                                    fullWidth
+                                >
+                                    <MenuItem value="High school students">
+                                        High school students
+                                    </MenuItem>
+                                    <MenuItem value="College graduates">
+                                        College graduates
+                                    </MenuItem>
+                                    {/* Add more options as needed */}
+                                </TextField>
+                            </form>
+                        )}
+                        {currentPage === 1 && (
+                            <form noValidate autoComplete="off">
+                                <TextField
+                                    name="contactName"
+                                    label="Contact Name"
+                                    value={formData.contactInfo.name}
+                                    onChange={handleInputChange}
+                                    fullWidth
+                                />
+                                <TextField
+                                    name="contactEmail"
+                                    label="Contact Email"
+                                    value={formData.contactInfo.email}
+                                    onChange={handleInputChange}
+                                    fullWidth
+                                />
+                                <TextField
+                                    name="contactPhone"
+                                    label="Contact Phone"
+                                    value={formData.contactInfo.phone}
+                                    onChange={handleInputChange}
+                                    fullWidth
+                                />
+                            </form>
+                        )}
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleCloseDialog}>Cancel</Button>
-                        <Button onClick={handleSubmit}>Submit</Button>
+                        {currentPage === 0 && (
+                            <Button onClick={handleCloseDialog}>Cancel</Button>
+                        )}
+                        {currentPage === 0 && (
+                            <Button onClick={handleNext}>Next</Button>
+                        )}
+                        {currentPage === 1 && (
+                            <Button onClick={() => setCurrentPage(0)}>
+                                Back
+                            </Button>
+                        )}
+                        {currentPage === 1 && (
+                            <Button onClick={handleSubmit} color="primary">
+                                Submit
+                            </Button>
+                        )}
                     </DialogActions>
                 </Dialog>
+            </div>
+            <div>
+                <h1>All Partners</h1>
+                <ul>
+                    {partners.map((partner, index) => (
+                        <li key={index}>
+                            <strong>{partner.name}</strong>
+                            <br />
+                            Organization Type: {partner.organizationType}
+                            <br />
+                            Resources Available:{" "}
+                            {partner.resourcesAvailable.join(", ")}
+                            <br />
+                            {/* Render other partner details as needed */}
+                        </li>
+                    ))}
+                </ul>
             </div>
         </Layout>
     );
