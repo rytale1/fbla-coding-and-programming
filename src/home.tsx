@@ -53,11 +53,10 @@ const Home: React.FC<HomePageProps> = () => {
                     <div
                         className="container"
                         style={{
-                            backgroundImage: "/images/mainbackground.png",
+                            backgroundImage: `url("/images/background.jpg")`,
                             backgroundSize: "cover", // Optional: Adjust background size as needed
                             backgroundPosition: "center", // Optional: Adjust background position as needed
-                            height: "600px",
-                            border: "10px solid black",
+                            height: "800px",
                         }}
                     >
                         <div className="row d-flex align-items-center">
@@ -66,15 +65,18 @@ const Home: React.FC<HomePageProps> = () => {
                                 style={{ marginTop: "100px" }}
                             >
                                 <div className="hero-txt mb-40 text-center">
-                                    <h1>Career Database for High Schoolers</h1>
-                                    <h2>
+                                    <h1
+                                    style={{ color : "white"}}>Career Database for High Schoolers</h1>
+                                    <h2
+                                    style={{ color: "white"}}>
                                         Career opportunities for
-                                        <br /> high schoolers, powered by
+                                        high schoolers, powered by
                                         CareerBase
                                     </h2>
                                     <p
                                         style={{
                                             marginBottom: "30px",
+                                            color: "white",
                                         }}
                                     >
                                         Empower your search for opportunities

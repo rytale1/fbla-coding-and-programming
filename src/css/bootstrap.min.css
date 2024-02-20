@@ -724,11 +724,11 @@ progress {
     .container-md,
     .container-sm,
     .container-xl {
-        max-width: 1140px;
+        max-width: 1300px;
     }
 }
 
-@media (min-width: 1400px) {
+@media (min-width: 1280px) {
 
     .container,
     .container-lg,
@@ -736,7 +736,7 @@ progress {
     .container-sm,
     .container-xl,
     .container-xxl {
-        max-width: 1320px;
+        max-width: 1500px;
     }
 }
 
