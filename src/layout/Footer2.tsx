@@ -14,26 +14,26 @@ const Footer2 = ({ footer }: { footer?: number | undefined }) => {
             <Row style={{ padding: "30px" }}>
                 <Col lg="3" sm="6">
                     <div style={{ marginTop: "10px" }}>
-                        <b>bing bong</b>
+                        <b>Talus Leong</b>
                         <br />
                     </div>
                     <div style={{ marginTop: "8px" }}>
-                        <a href="/">ching chong</a>
+                        <a href="/">Ryan Xia</a>
                     </div>
                     <div style={{ marginTop: "8px" }}>
-                        <a href="/">ding dong</a>
+                        <a href="/">Elizabeth Qin</a>
                     </div>
                 </Col>
                 <Col lg="3" sm="6">
                     <div style={{ marginTop: "10px" }}>
-                        <b>abc</b>
+                        <b>1</b>
                         <br />
                     </div>
                     <div style={{ marginTop: "8px" }}>
-                        <a href="/">def</a>
+                        <a href="/">2</a>
                     </div>
                     <div style={{ marginTop: "8px" }}>
-                        <a href="/">ghi</a>
+                        <a href="/">3</a>
                     </div>
                 </Col>
                 <Col lg="3" sm="6"></Col>
