@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, redirect } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
@@ -31,6 +31,11 @@ const Home: React.FC<HomePageProps> = () => {
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState("");
 
+    const routeDashboard = () => {
+        let path = "/dashboard";
+        navigate(path);
+    };
+
     const routeSignup = () => {
         let path = `/signup`;
         navigate(path);
@@ -43,15 +48,15 @@ const Home: React.FC<HomePageProps> = () => {
 
     const scrollTo = (id: string) => {
         const element = document.getElementById(id);
-        if(element) {
-            element.scrollIntoView({behavior: "smooth"});
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
         }
-    }
+    };
 
     // Return the JSX structure of the component
     return (
         <Layout footer={2} headerBtn={true}>
-            <div style = {{scrollBehavior : "smooth"}}>
+            <div style={{ scrollBehavior: "smooth" }}>
                 <PageTitle
                     pageTitle="CareerBase - Where careers are found"
                     description="CareerBase is a database created to help high schoolers find careers and job opportunities"
@@ -64,19 +69,25 @@ const Home: React.FC<HomePageProps> = () => {
                             backgroundSize: "cover", // Optional: Adjust background size as needed
                             backgroundPosition: "center", // Optional: Adjust background position as needed
                             height: "800px",
-                        }}>
+                        }}
+                    >
                         <div className="row d-flex align-items-center">
                             <div
                                 className="col-sm-12"
-                                style={{ marginTop: "100px" }}>
+                                style={{ marginTop: "100px" }}
+                            >
                                 <div className="hero-txt mb-40 text-center">
                                     <h1
-                                    style={{ color : "white", marginTop: "125px"}}>Career Database for High Schoolers</h1>
-                                    <h2
-                                    style={{ color: "white"}}>
-                                        Career opportunities for
-                                        high schoolers, powered by
-                                        CareerBase
+                                        style={{
+                                            color: "white",
+                                            marginTop: "125px",
+                                        }}
+                                    >
+                                        Career Database for High Schoolers
+                                    </h1>
+                                    <h2 style={{ color: "white" }}>
+                                        Career opportunities for high schoolers,
+                                        powered by CareerBase
                                     </h2>
                                     <p
                                         style={{
@@ -112,9 +123,9 @@ const Home: React.FC<HomePageProps> = () => {
                                             width: 250,
                                             height: 60,
                                             backgroundColor: "primary.main",
-                                            textTransform: "none"
+                                            textTransform: "none",
                                         }}
-                                        onClick = {() => scrollTo("about")}
+                                        onClick={() => scrollTo("about")}
                                     >
                                         About CareerBase
                                     </Button>
@@ -131,7 +142,7 @@ const Home: React.FC<HomePageProps> = () => {
                                             backgroundColor: "primary.main",
                                             textTransform: "none",
                                         }}
-                                        onClick = {() => scrollTo("instructions")}
+                                        onClick={routeDashboard}
                                     >
                                         Get Started
                                     </Button>
@@ -141,60 +152,88 @@ const Home: React.FC<HomePageProps> = () => {
                     </div>
                 </section>
                 {/* About Section */}
-                <section className="section bg-light"  id = "about">
+                <section className="section bg-light" id="about">
                     <div className="container">
-                        <h2 className="section-title" style = {{
-                            display: "flex",
-                            justifyContent: "center",
-                            marginLeft: "700px",
-                            }}>About</h2>
+                        <h2
+                            className="section-title"
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                marginLeft: "700px",
+                            }}
+                        >
+                            About
+                        </h2>
                     </div>
-                    <div className="container" style={{
-                        display: "flex",
-                        padding: "40px",
-                    }}>
-                        <p style={{
-                            width : "75%"
-                        }}>
-                            <img src="images/placeholder.png" width="450"
-                            style= {{
-                                float: "left",
-                                marginRight: "30px"
-                            }}/>
-                            Thank you for your interest in CareerBase! 
-                            CareerBase is an open-source webapp designed to empower 
-                            the Career and Technical Education Departments across high 
-                            schools by providing a dynamic database to store crucial
-                            information regarding local/community business partners 
-                            for the school. Administrator accounts can store information 
-                            varying from business name, links to website, type, location, or age etc. 
-                            Students can then log on to student accounts to view and search 
-                            but not edit the information.
+                    <div
+                        className="container"
+                        style={{
+                            display: "flex",
+                            padding: "40px",
+                        }}
+                    >
+                        <p
+                            style={{
+                                width: "75%",
+                            }}
+                        >
+                            <img
+                                src="images/placeholder.png"
+                                width="450"
+                                style={{
+                                    float: "left",
+                                    marginRight: "30px",
+                                }}
+                            />
+                            Thank you for your interest in CareerBase!
+                            CareerBase is an open-source webapp designed to
+                            empower the Career and Technical Education
+                            Departments across high schools by providing a
+                            dynamic database to store crucial information
+                            regarding local/community business partners for the
+                            school. Administrator accounts can store information
+                            varying from business name, links to website, type,
+                            location, or age etc. Students can then log on to
+                            student accounts to view and search but not edit the
+                            information.
                         </p>
                     </div>
                 </section>
                 {/* Instructions Section */}
-                <section className="section bg-light"  id = "instructions">
+                <section className="section bg-light" id="instructions">
                     <div className="container">
-                        <h2 className="section-title" style = {{
-                            display: "flex",
-                            justifyContent: "center",
-                            marginLeft: "700px",
-                            paddingTop: "50px"
-                            }}>Getting Started</h2>
+                        <h2
+                            className="section-title"
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                marginLeft: "700px",
+                                paddingTop: "50px",
+                            }}
+                        >
+                            Getting Started
+                        </h2>
                     </div>
-                    <div className="container" style={{
-                        display: "flex",
-                        padding: "40px",
-                    }}>
-                        <p style={{
-                            width : "75%"
-                        }}>
-                            <img src="images/placeholder.png" width="450"
-                            style= {{
-                                float: "left",
-                                marginRight: "30px"
-                            }}/>
+                    <div
+                        className="container"
+                        style={{
+                            display: "flex",
+                            padding: "40px",
+                        }}
+                    >
+                        <p
+                            style={{
+                                width: "75%",
+                            }}
+                        >
+                            <img
+                                src="images/placeholder.png"
+                                width="450"
+                                style={{
+                                    float: "left",
+                                    marginRight: "30px",
+                                }}
+                            />
                             Placeholder Text
                         </p>
                     </div>
