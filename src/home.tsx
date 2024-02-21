@@ -142,7 +142,7 @@ const Home: React.FC<HomePageProps> = () => {
                                             backgroundColor: "primary.main",
                                             textTransform: "none",
                                         }}
-                                        onClick={routeDashboard}
+                                        onClick={routeLogin}
                                     >
                                         Get Started
                                     </Button>
