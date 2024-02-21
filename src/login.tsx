@@ -6,8 +6,10 @@ import Box from "@mui/material/Box";
 import { Col, Row } from "react-bootstrap";
 import Layout from "./layout/Layout";
 import { Button } from "@mui/material";
-import { auth, authenticateWithGoogle, logout } from "./firebase";
+import { auth, authenticateWithGoogle, logout, authenticateUser } from "./firebase";
 import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 interface LoginProps {
     onSubmit: (email: string, password: string) => void;
@@ -17,10 +19,19 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [loginState, setLoginState] = useState<boolean>(false);
+    const navigate = useNavigate();
 
-    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(event.target.value);
+    const routeDashboard = async () => {
+        let path = `/dashboard`;
+        const auth = await authenticateUser(email, password);
+        if (auth) {
+            navigate(path);
+        }
     };
+
+    function handleEmailChange(event: React.ChangeEvent<HTMLInputElement>) {
+        setEmail(event.target.value);
+    }
 
     const handlePasswordChange = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -81,6 +92,7 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
                             size="large"
                             variant="contained"
                             type="submit"
+                            onClick={() => routeDashboard()}
                             sx={{
                                 marginTop: "10px",
                                 textAlign: "center",
