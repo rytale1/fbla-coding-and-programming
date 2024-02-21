@@ -141,7 +141,12 @@ const Home: React.FC<HomePageProps> = () => {
                     </div>
                 </section>
                 {/* About Section */}
-                <section className="section bg-light"  id = "about">
+               
+                <section className="section bg-light" id = "about">
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
                     <div className="container">
                         <h2 className="section-title" style = {{
                             display: "flex",
@@ -175,6 +180,10 @@ const Home: React.FC<HomePageProps> = () => {
                 </section>
                 {/* Instructions Section */}
                 <section className="section bg-light"  id = "instructions">
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
                     <div className="container">
                         <h2 className="section-title" style = {{
                             display: "flex",
@@ -195,7 +204,8 @@ const Home: React.FC<HomePageProps> = () => {
                                 float: "left",
                                 marginRight: "30px"
                             }}/>
-                            Placeholder Text
+                            Want to learn how to use CareerBase? Well, let's sign up first by clicking
+                            the "Sign Up" button! 
                         </p>
                     </div>
                 </section>
