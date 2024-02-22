@@ -153,6 +153,10 @@ const Home: React.FC<HomePageProps> = () => {
                 </section>
                 {/* About Section */}
                 <section className="section bg-light"  id = "about">
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
                     <div className="container">
                         <h2
                             className="section-title"
