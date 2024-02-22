@@ -7,15 +7,17 @@ import {
     getDocs,
     onSnapshot,
 } from "firebase/firestore";
-import { Col, Row } from "react-bootstrap";
+import { Col, Fade, Modal, Row } from "react-bootstrap";
 import Layout from "./layout/Layout";
 import {
+    Backdrop,
     Button,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
     InputLabel,
+    Menu,
     MenuItem,
     Paper,
     Select,
@@ -29,7 +31,7 @@ import { auth, db, logout } from "./firebase";
 interface DashboardProps {}
 interface Entry {
     businessname: string; // Name of the partner
-    organizationType: string; // Type of organization (e.g., Corporation, Non-profit, Government Agency)
+    organizationType: string; // Type of organization (e.g., Education Institution, Industry Partner, Non-profit Organization, Government Agency)
     resourcesAvailable: string[]; // Array of available resources (e.g., Mentoring, Internships, Workshops)
     contactInfo: {
         name: string; // Contact person's name
@@ -39,13 +41,15 @@ interface Entry {
     website: string; // Partner's website URL
     address: string; // Partner's physical address
     description: string; // Description of the partner organization
-    partnershipType: string; // Type of partnership (e.g., Formal, Informal, Strategic)
-    targetAudience: string[]; // Array of target audience (e.g., High school students, College graduates)
+    partnershipType: string; // Type of partnership (e.g., Internship, Apprenticeship, Work-based Learning, Curriculum Development)
+    targetAudience: string[]; // Array of target audience (e.g., Freshmen, Sophomores, Juniors, Seniors)
 }
 
 const Dashboard: React.FC<DashboardProps> = () => {
     const navigate = useNavigate();
     const [openDialog, setOpenDialog] = useState(false);
+    const [selectedPartner, setSelectedPartner] = useState<Entry | null>();
+    const [openModal, setOpenModal] = useState(false);
     const [formData, setFormData] = useState<Entry>({
         businessname: "",
         organizationType: "",
@@ -141,19 +145,42 @@ const Dashboard: React.FC<DashboardProps> = () => {
         }
         setOpenDialog(false);
         setLoading(false);
+        setFormData({
+            businessname: "",
+            organizationType: "",
+            resourcesAvailable: [],
+            contactInfo: {
+                name: "",
+                email: "",
+                phone: "",
+            },
+            website: "",
+            address: "",
+            description: "",
+            partnershipType: "",
+            targetAudience: [],
+        });
         fetchPartners();
     };
 
-    const logoutAndSendHome = () => {
-        alert("Signed Out Successfully!")
-        logout();
-        let path = `/`;
-        navigate(path);
-    }
+    const handleRowClick = (partner: Entry) => {
+        if (selectedPartner === null) setSelectedPartner(partner);
+        else {
+            setSelectedPartner(null);
+        }
+    };
+
+    const handleCloseModal = () => {
+        setSelectedPartner(null);
+    };
 
     return (
         <Layout footer={2} headerBtn={true}>
-            <Dialog open={openDialog} onClose={handleCloseDialog}>
+            <Dialog
+                open={openDialog}
+                onClose={handleCloseDialog}
+                style={{ width: "1500px" }}
+            >
                 <DialogTitle>Add Partner</DialogTitle>
                 <DialogContent style={{ width: "800px" }}>
                     {currentPage === 0 && (
@@ -163,28 +190,28 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 label="Name"
                                 value={formData.businessname}
                                 onChange={handleInputChange}
-                                fullWidth
+                                style={{ width: "550px", padding: "5px" }}
                             />
                             <TextField
                                 name="website"
                                 label="Website"
                                 value={formData.website}
                                 onChange={handleInputChange}
-                                fullWidth
+                                style={{ width: "550px", padding: "5px" }}
                             />
                             <TextField
                                 name="address"
                                 label="Address"
                                 value={formData.address}
                                 onChange={handleInputChange}
-                                fullWidth
+                                style={{ width: "550px", padding: "5px" }}
                             />
                             <TextField
                                 name="description"
                                 label="Description"
                                 value={formData.description}
                                 onChange={handleInputChange}
-                                fullWidth
+                                style={{ width: "550px", padding: "5px" }}
                                 multiline
                                 rows={4}
                             />
@@ -194,7 +221,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 label="Organization Type"
                                 value={formData.organizationType}
                                 onChange={handleInputChange}
-                                fullWidth
+                                style={{ width: "550px", padding: "5px" }}
                             >
                                 <MenuItem value="Education Institution">
                                     Education Institution
@@ -216,13 +243,13 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 label="Partnership Type"
                                 value={formData.partnershipType}
                                 onChange={handleInputChange}
-                                fullWidth
+                                style={{ width: "550px", padding: "5px" }}
                             >
                                 <MenuItem value="Internship Program">
                                     Internship Program
                                 </MenuItem>
-                                <MenuItem value="Apprenticeship Program">
-                                    Apprenticeship Program
+                                <MenuItem value="Apprenticeship">
+                                    Apprenticeship
                                 </MenuItem>
                                 <MenuItem value="Work-Based Learning">
                                     Work-Based Learning
@@ -238,7 +265,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 label="Resources Available"
                                 value={formData.resourcesAvailable}
                                 onChange={handleInputChange}
-                                fullWidth
+                                style={{ width: "550px", padding: "5px" }}
                             >
                                 <MenuItem value="Mentoring">Mentoring</MenuItem>
                                 <MenuItem value="Internships">
@@ -253,14 +280,14 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 label="Target Audience"
                                 value={formData.targetAudience}
                                 onChange={handleInputChange}
-                                fullWidth
+                                style={{ width: "550px", padding: "5px" }}
                             >
-                                <MenuItem value="High school students">
-                                    High school students
+                                <MenuItem value="Freshman">Freshmen</MenuItem>
+                                <MenuItem value="Sophomore">
+                                    Sophomores
                                 </MenuItem>
-                                <MenuItem value="College graduates">
-                                    College graduates
-                                </MenuItem>
+                                <MenuItem value="Junior">Juniors</MenuItem>
+                                <MenuItem value="Senior">Seniors</MenuItem>
                                 {/* Add more options as needed */}
                             </TextField>
                         </form>
@@ -272,21 +299,21 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 label="Contact Name"
                                 value={formData.contactInfo.name}
                                 onChange={handleInputChange}
-                                fullWidth
+                                style={{ width: "550px", padding: "5px" }}
                             />
                             <TextField
                                 name="email"
                                 label="Contact Email"
                                 value={formData.contactInfo.email}
                                 onChange={handleInputChange}
-                                fullWidth
+                                style={{ width: "550px", padding: "5px" }}
                             />
                             <TextField
                                 name="phone"
                                 label="Contact Phone"
                                 value={formData.contactInfo.phone}
                                 onChange={handleInputChange}
-                                fullWidth
+                                style={{ width: "550px", padding: "5px" }}
                             />
                         </form>
                     )}
@@ -317,69 +344,307 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 </Button>
             </div>
             <div style={{ padding: "5px", margin: "10px" }}>
-                <Paper elevation={10}>
-                    <br />
-                    <h2>Partners</h2>
-                    <div style={{ padding: "30px" }}>
-                        <Row
-                            style={{
-                                textDecoration: "bold",
-                                border: "1px solid black",
-                            }}
-                        >
-                            <Col>
-                                <b>Name</b>
-                            </Col>
-                            <Col>
-                                <b>Organization</b>
-                            </Col>
-                            <Col>
-                                <b>Type</b>
-                            </Col>
-                            <Col>
-                                <b>Resources</b>
-                            </Col>
-                            <Col>
-                                <b>Target Audience</b>
-                            </Col>
-                            <Col>
-                                <b>Contact</b>
-                            </Col>
-                            <Col>
-                                <b>Website</b>
-                            </Col>
-                        </Row>
-                        {partners.map((partner, index) => (
-                            <Row
-                                key={index}
-                                style={{
-                                    border: "1px solid gray",
-                                }}
-                            >
-                                <Col>
-                                    <strong>{partner.businessname}</strong>
+                <Paper
+                    elevation={10}
+                    style={{
+                        padding: "20px",
+                        background: "#f5f5f5",
+                        borderRadius: "10px",
+                        marginBottom: "20px",
+                    }}
+                >
+                    <div style={{ marginBottom: "20px" }}>
+                        <h2 style={{ color: "#333", marginBottom: "10px" }}>
+                            Partners
+                        </h2>
+                        <div>
+                            <Row style={{ height: "30px" }}>
+                                <Col
+                                    md="2"
+                                    style={{
+                                        fontWeight: "bold",
+                                        borderBottom: "1px solid #ccc",
+                                    }}
+                                >
+                                    Name
                                 </Col>
-                                <Col>{partner.organizationType}</Col>
-                                <Col>{partner.partnershipType}</Col>
-                                <Col>{partner.resourcesAvailable}</Col>
-                                <Col>{partner.targetAudience}</Col>
-                                <Col>
-                                    {partner.contactInfo.name}
-                                    <br />
-                                    {partner.contactInfo.email}
-                                    <br />
-                                    {partner.contactInfo.phone}
+                                <Col
+                                    md="2"
+                                    style={{
+                                        fontWeight: "bold",
+                                        borderBottom: "1px solid #ccc",
+                                    }}
+                                >
+                                    Organization Type
                                 </Col>
-                                <Col>
-                                    <a
-                                        style={{ textDecoration: "underline" }}
-                                        href={partner.website}
-                                    >
-                                        {partner.website}
-                                    </a>
+                                <Col
+                                    md="2"
+                                    style={{
+                                        fontWeight: "bold",
+                                        borderBottom: "1px solid #ccc",
+                                    }}
+                                >
+                                    Partnership Type
+                                </Col>
+                                <Col
+                                    md="2"
+                                    style={{
+                                        fontWeight: "bold",
+                                        borderBottom: "1px solid #ccc",
+                                    }}
+                                >
+                                    Resources Available
+                                </Col>
+                                <Col
+                                    md="2"
+                                    style={{
+                                        fontWeight: "bold",
+                                        borderBottom: "1px solid #ccc",
+                                    }}
+                                >
+                                    Target Audience
+                                </Col>
+                                <Col
+                                    md="2"
+                                    style={{
+                                        fontWeight: "bold",
+                                        borderBottom: "1px solid #ccc",
+                                    }}
+                                >
+                                    Contact
                                 </Col>
                             </Row>
-                        ))}
+                            {partners.map((partner, index) => (
+                                <div>
+                                    <Row
+                                        key={index}
+                                        onClick={() => handleRowClick(partner)}
+                                        style={{
+                                            cursor: "pointer",
+                                            borderBottom: "1px solid #ddd",
+                                            transition: "background-color 0.3s",
+                                            height: "30px",
+                                        }}
+                                    >
+                                        <Col md="2">{partner.businessname}</Col>
+                                        <Col md="2">
+                                            {partner.organizationType}
+                                        </Col>
+                                        <Col md="2">
+                                            {partner.partnershipType}
+                                        </Col>
+                                        <Col md="2">
+                                            {partner.resourcesAvailable}
+                                        </Col>
+                                        <Col md="2">
+                                            {partner.targetAudience}
+                                        </Col>
+                                        <Col md="2">
+                                            {partner.contactInfo.name}
+                                        </Col>
+                                    </Row>
+                                    <div>
+                                        {selectedPartner &&
+                                            selectedPartner.businessname ===
+                                                partner.businessname && (
+                                                <div
+                                                    style={{
+                                                        background: "#fff",
+                                                        padding: "20px",
+                                                        borderRadius: "10px",
+                                                        boxShadow:
+                                                            "0px 4px 10px rgba(0, 0, 0, 0.1)",
+                                                    }}
+                                                >
+                                                    <h2
+                                                        style={{
+                                                            color: "#333",
+                                                            marginBottom:
+                                                                "20px",
+                                                        }}
+                                                    >
+                                                        {
+                                                            selectedPartner.businessname
+                                                        }
+                                                    </h2>
+                                                    <div
+                                                        style={{
+                                                            display: "flex",
+                                                            alignItems:
+                                                                "center",
+                                                            marginBottom:
+                                                                "10px",
+                                                        }}
+                                                    >
+                                                        <p
+                                                            style={{
+                                                                flex: "1",
+                                                                marginRight:
+                                                                    "20px",
+                                                            }}
+                                                        >
+                                                            <strong>
+                                                                Organization
+                                                                Type:
+                                                            </strong>{" "}
+                                                            {
+                                                                selectedPartner.organizationType
+                                                            }
+                                                        </p>
+                                                        <p
+                                                            style={{
+                                                                flex: "1",
+                                                                marginRight:
+                                                                    "20px",
+                                                            }}
+                                                        >
+                                                            <strong>
+                                                                Partnership
+                                                                Type:
+                                                            </strong>{" "}
+                                                            {
+                                                                selectedPartner.partnershipType
+                                                            }
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        style={{
+                                                            display: "flex",
+                                                            alignItems:
+                                                                "center",
+                                                            marginBottom:
+                                                                "10px",
+                                                        }}
+                                                    >
+                                                        <p
+                                                            style={{
+                                                                flex: "1",
+                                                                marginRight:
+                                                                    "20px",
+                                                            }}
+                                                        >
+                                                            <strong>
+                                                                Resources
+                                                                Available:
+                                                            </strong>{" "}
+                                                            {
+                                                                selectedPartner.resourcesAvailable
+                                                            }
+                                                        </p>
+                                                        <p
+                                                            style={{
+                                                                flex: "1",
+                                                                marginRight:
+                                                                    "20px",
+                                                            }}
+                                                        >
+                                                            <strong>
+                                                                Target Audience:
+                                                            </strong>{" "}
+                                                            {
+                                                                selectedPartner.targetAudience
+                                                            }
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        style={{
+                                                            display: "flex",
+                                                            alignItems:
+                                                                "center",
+                                                            marginBottom:
+                                                                "10px",
+                                                        }}
+                                                    >
+                                                        <p
+                                                            style={{
+                                                                flex: "1",
+                                                                marginRight:
+                                                                    "20px",
+                                                            }}
+                                                        >
+                                                            <strong>
+                                                                Contact:
+                                                            </strong>{" "}
+                                                            {`${selectedPartner.contactInfo.name} (${selectedPartner.contactInfo.email})`}
+                                                        </p>
+                                                        <p
+                                                            style={{
+                                                                flex: "1",
+                                                                marginRight:
+                                                                    "20px",
+                                                            }}
+                                                        >
+                                                            <strong>
+                                                                Website:
+                                                            </strong>{" "}
+                                                            <a
+                                                                href={
+                                                                    selectedPartner.website
+                                                                }
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                            >
+                                                                {
+                                                                    selectedPartner.website
+                                                                }
+                                                            </a>
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        style={{
+                                                            display: "flex",
+                                                            alignItems:
+                                                                "center",
+                                                            marginBottom:
+                                                                "10px",
+                                                        }}
+                                                    >
+                                                        <p
+                                                            style={{
+                                                                flex: "1",
+                                                                marginRight:
+                                                                    "20px",
+                                                            }}
+                                                        >
+                                                            <strong>
+                                                                Address:
+                                                            </strong>{" "}
+                                                            {
+                                                                selectedPartner.address
+                                                            }
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        style={{
+                                                            marginBottom:
+                                                                "10px",
+                                                        }}
+                                                    >
+                                                        <strong>
+                                                            Description:
+                                                        </strong>{" "}
+                                                        {
+                                                            selectedPartner.description
+                                                        }
+                                                    </div>
+                                                    <Button
+                                                        variant="contained"
+                                                        color="primary"
+                                                        onClick={
+                                                            handleCloseModal
+                                                        }
+                                                        style={{
+                                                            marginTop: "10px",
+                                                        }}
+                                                    >
+                                                        Close
+                                                    </Button>
+                                                </div>
+                                            )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </Paper>
             </div>
