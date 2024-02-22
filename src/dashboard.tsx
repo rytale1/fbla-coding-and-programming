@@ -6,6 +6,7 @@ import {
     setDoc,
     getDocs,
     onSnapshot,
+    deleteDoc,
 } from "firebase/firestore";
 import { Col, Fade, Modal, Row } from "react-bootstrap";
 import Layout from "./layout/Layout";
@@ -16,6 +17,7 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
+    IconButton,
     InputLabel,
     Menu,
     MenuItem,
@@ -27,9 +29,12 @@ import {
 import { redirect } from "react-router-dom";
 import { User, onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "./firebase";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 interface DashboardProps {}
 interface Entry {
+    id: string;
     businessname: string; // Name of the partner
     organizationType: string; // Type of organization (e.g., Education Institution, Industry Partner, Non-profit Organization, Government Agency)
     resourcesAvailable: string[]; // Array of available resources (e.g., Mentoring, Internships, Workshops)
@@ -46,10 +51,13 @@ interface Entry {
 }
 
 const Dashboard: React.FC<DashboardProps> = () => {
+    const [ascendingSort, setAscendingSort] = useState(true);
+    const [sortField, setSortField] = useState("businessname");
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedPartner, setSelectedPartner] = useState<Entry | null>();
     const [openModal, setOpenModal] = useState(false);
     const [formData, setFormData] = useState<Entry>({
+        id: "",
         businessname: "",
         organizationType: "",
         resourcesAvailable: [],
@@ -78,7 +86,11 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 //      console.log(JSON.stringify(doc.data()));
             });
         }
-        const partnersData = snapshot.docs.map((doc) => doc.data() as Entry);
+        const partnersData: Entry[] = snapshot.docs.map((doc) => {
+            const data = doc.data() as Entry;
+            return { ...data, id: doc.id }; // Include the id field from doc
+        });
+        //        const partnersData = snapshot.docs.map((doc) => doc.data() as Entry);
         console.log(
             "Partners Data :" +
                 partnersData.length +
@@ -86,6 +98,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 JSON.stringify(partnersData)
         );
         setPartners(partnersData);
+        return partnersData;
     };
 
     useEffect(() => {
@@ -102,6 +115,36 @@ const Dashboard: React.FC<DashboardProps> = () => {
         fetchPartners(); // Fetch partners when component mounts
         return () => unsubscribe(); // Unsubscribe from snapshot listener when component unmounts
     }, []);
+
+    const handleSort = (
+        entries: Entry[],
+        field: keyof Entry,
+        ascending: boolean = true
+    ): Entry[] => {
+        const sortedEntries = [...entries];
+        setSortField(field);
+        setAscendingSort(!ascending);
+        sortedEntries.sort((a, b) => {
+            let aValue = a[field];
+            let bValue = b[field];
+
+            // If the field is an array, concatenate the elements into a string for comparison
+            if (Array.isArray(aValue)) aValue = aValue.join(", ");
+            if (Array.isArray(bValue)) bValue = bValue.join(", ");
+
+            if (typeof aValue === "string" && typeof bValue === "string") {
+                // Case-insensitive string comparison
+                aValue = aValue.toLowerCase();
+                bValue = bValue.toLowerCase();
+            }
+
+            if (aValue < bValue) return ascending ? -1 : 1;
+            if (aValue > bValue) return ascending ? 1 : -1;
+            return 0;
+        });
+        setPartners(sortedEntries);
+        return sortedEntries;
+    };
 
     const handleOpenDialog = () => {
         setOpenDialog(true);
@@ -145,6 +188,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
         setOpenDialog(false);
         setLoading(false);
         setFormData({
+            id: "",
             businessname: "",
             organizationType: "",
             resourcesAvailable: [],
@@ -162,6 +206,26 @@ const Dashboard: React.FC<DashboardProps> = () => {
         fetchPartners();
     };
 
+    const handleDelete = async (partner: Entry) => {
+        const confirmation = window.confirm(
+            "Are you sure you want to delete " + partner.id + "?"
+        );
+        if (confirmation) {
+            const partnerDocRef = doc(db, "Partners", partner.id); // Assuming "Partners" is your collection name
+            try {
+                await deleteDoc(partnerDocRef);
+                console.log("Document successfully deleted!");
+            } catch (error) {
+                console.error("Error deleting document: ", error);
+            }
+            fetchPartners();
+        }
+    };
+
+    const handleEdit = (partner: Entry) => {
+        alert("Edit " + partner.id);
+    };
+
     const handleRowClick = (partner: Entry) => {
         if (selectedPartner === null) setSelectedPartner(partner);
         else {
@@ -171,6 +235,45 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
     const handleCloseModal = () => {
         setSelectedPartner(null);
+    };
+    const [filteredPartners, setFilteredPartners] = useState<Entry[]>(partners);
+    const [organizationTypeFilter, setOrganizationTypeFilter] =
+        useState<string>("");
+    const [resourcesAvailableFilter, setResourcesAvailableFilter] =
+        useState<string>("");
+
+    const handleOrganizationTypeChange = (
+        event: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+        const selectedOrganizationType = event.target.value;
+        setOrganizationTypeFilter(selectedOrganizationType);
+        filterPartners(selectedOrganizationType, resourcesAvailableFilter);
+    };
+
+    const handleResourcesAvailableChange = (
+        event: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+        const selectedResourcesAvailable = event.target.value;
+        setResourcesAvailableFilter(selectedResourcesAvailable);
+        filterPartners(organizationTypeFilter, selectedResourcesAvailable);
+    };
+
+    const filterPartners = async (
+        organizationType: string,
+        resourcesAvailable: string
+    ) => {
+        let filteredPartners = await fetchPartners();
+        if (organizationType) {
+            filteredPartners = filteredPartners.filter(
+                (partner) => partner.organizationType === organizationType
+            );
+        }
+        if (resourcesAvailable) {
+            filteredPartners = filteredPartners.filter((partner) =>
+                partner.resourcesAvailable.includes(resourcesAvailable)
+            );
+        }
+        setPartners(filteredPartners);
     };
 
     return (
@@ -335,9 +438,55 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 </DialogActions>
             </Dialog>
             <div style={{ marginTop: "100px", padding: "10px" }}>
-                <Button variant="outlined" onClick={handleOpenDialog}>
-                    Add Partner
-                </Button>
+                <Row>
+                    <Col>
+                        <Button variant="outlined" onClick={handleOpenDialog}>
+                            Add Partner
+                        </Button>
+                    </Col>
+                    <Col>
+                        <div>
+                            <label htmlFor="organizationType">
+                                Organization Type:
+                            </label>
+                            <select
+                                id="organizationType"
+                                onChange={handleOrganizationTypeChange}
+                            >
+                                <option value="">All</option>
+                                <option value="Education Institution">
+                                    Education Institution
+                                </option>
+                                <option value="Industry Partner">
+                                    Industry Partner
+                                </option>
+                                <option value="Non-profit Organization">
+                                    Non-profit Organization
+                                </option>
+                                <option value="Government Agency">
+                                    Government Agency
+                                </option>
+                            </select>
+                        </div>
+                    </Col>
+                    <Col>
+                        <div>
+                            <label htmlFor="resourcesAvailable">
+                                Resources Available:
+                            </label>
+                            <select
+                                id="resourcesAvailable"
+                                onChange={handleResourcesAvailableChange}
+                            >
+                                <option value="">All</option>
+                                <option value="Mentoring">Mentoring</option>
+                                <option value="Internships">Internships</option>
+                                <option value="Workshops">Workshops</option>
+                                {/* Add more options as needed */}
+                            </select>
+                        </div>
+                    </Col>
+                </Row>
             </div>
             <div style={{ padding: "5px", margin: "10px" }}>
                 <Paper
@@ -354,7 +503,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                             Partners
                         </h2>
                         <div>
-                            <Row style={{ height: "30px" }}>
+                            <Row style={{ minHeight: "30px" }}>
                                 <Col
                                     md="2"
                                     style={{
@@ -362,7 +511,19 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                         borderBottom: "1px solid #ccc",
                                     }}
                                 >
-                                    Name
+                                    <a
+                                        href="#"
+                                        style={{ textDecoration: "underline" }}
+                                        onClick={() => {
+                                            handleSort(
+                                                partners,
+                                                "businessname",
+                                                ascendingSort
+                                            );
+                                        }}
+                                    >
+                                        Name
+                                    </a>
                                 </Col>
                                 <Col
                                     md="2"
@@ -371,7 +532,19 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                         borderBottom: "1px solid #ccc",
                                     }}
                                 >
-                                    Organization Type
+                                    <a
+                                        href="#"
+                                        style={{ textDecoration: "underline" }}
+                                        onClick={() => {
+                                            handleSort(
+                                                partners,
+                                                "organizationType",
+                                                ascendingSort
+                                            );
+                                        }}
+                                    >
+                                        Organization Type
+                                    </a>
                                 </Col>
                                 <Col
                                     md="2"
@@ -380,7 +553,19 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                         borderBottom: "1px solid #ccc",
                                     }}
                                 >
-                                    Partnership Type
+                                    <a
+                                        href="#"
+                                        style={{ textDecoration: "underline" }}
+                                        onClick={() => {
+                                            handleSort(
+                                                partners,
+                                                "partnershipType",
+                                                ascendingSort
+                                            );
+                                        }}
+                                    >
+                                        Partnership Type
+                                    </a>
                                 </Col>
                                 <Col
                                     md="2"
@@ -389,16 +574,40 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                         borderBottom: "1px solid #ccc",
                                     }}
                                 >
-                                    Resources Available
+                                    <a
+                                        href="#"
+                                        style={{ textDecoration: "underline" }}
+                                        onClick={() => {
+                                            handleSort(
+                                                partners,
+                                                "resourcesAvailable",
+                                                ascendingSort
+                                            );
+                                        }}
+                                    >
+                                        Resources Available
+                                    </a>
                                 </Col>
                                 <Col
-                                    md="2"
+                                    md="1"
                                     style={{
                                         fontWeight: "bold",
                                         borderBottom: "1px solid #ccc",
                                     }}
                                 >
-                                    Target Audience
+                                    <a
+                                        href="#"
+                                        style={{ textDecoration: "underline" }}
+                                        onClick={() => {
+                                            handleSort(
+                                                partners,
+                                                "targetAudience",
+                                                ascendingSort
+                                            );
+                                        }}
+                                    >
+                                        Audience
+                                    </a>
                                 </Col>
                                 <Col
                                     md="2"
@@ -409,6 +618,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 >
                                     Contact
                                 </Col>
+                                <Col md="1"></Col>
                             </Row>
                             {partners.map((partner, index) => (
                                 <div>
@@ -419,7 +629,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                             cursor: "pointer",
                                             borderBottom: "1px solid #ddd",
                                             transition: "background-color 0.3s",
-                                            height: "30px",
                                         }}
                                     >
                                         <Col md="2">{partner.businessname}</Col>
@@ -432,11 +641,30 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                         <Col md="2">
                                             {partner.resourcesAvailable}
                                         </Col>
-                                        <Col md="2">
+                                        <Col md="1">
                                             {partner.targetAudience}
                                         </Col>
                                         <Col md="2">
                                             {partner.contactInfo.name}
+                                        </Col>
+                                        <Col md="1">
+                                            {" "}
+                                            <IconButton
+                                                aria-label="delete"
+                                                onClick={() =>
+                                                    handleDelete(partner)
+                                                }
+                                            >
+                                                <DeleteIcon />
+                                            </IconButton>
+                                            <IconButton
+                                                aria-label="edit"
+                                                onClick={() =>
+                                                    handleEdit(partner)
+                                                }
+                                            >
+                                                <EditIcon />
+                                            </IconButton>
                                         </Col>
                                     </Row>
                                     <div>
