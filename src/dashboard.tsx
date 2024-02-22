@@ -22,9 +22,9 @@ import {
     SelectChangeEvent,
     TextField,
 } from "@mui/material";
-import { redirect } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { User, onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "./firebase";
+import { auth, db, logout } from "./firebase";
 
 interface DashboardProps {}
 interface Entry {
@@ -44,6 +44,7 @@ interface Entry {
 }
 
 const Dashboard: React.FC<DashboardProps> = () => {
+    const navigate = useNavigate();
     const [openDialog, setOpenDialog] = useState(false);
     const [formData, setFormData] = useState<Entry>({
         businessname: "",
@@ -142,6 +143,13 @@ const Dashboard: React.FC<DashboardProps> = () => {
         setLoading(false);
         fetchPartners();
     };
+
+    const logoutAndSendHome = () => {
+        alert("Signed Out Successfully!")
+        logout();
+        let path = `/`;
+        navigate(path);
+    }
 
     return (
         <Layout footer={2} headerBtn={true}>
@@ -301,8 +309,11 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 </DialogActions>
             </Dialog>
             <div style={{ marginTop: "100px", padding: "10px" }}>
-                <Button variant="outlined" onClick={handleOpenDialog}>
+                <Button variant="outlined" onClick={handleOpenDialog} style={{marginRight: "20px"}}>
                     Add Partner
+                </Button>
+                <Button variant="outlined" onClick={logoutAndSendHome}>
+                    Sign Out
                 </Button>
             </div>
             <div style={{ padding: "5px", margin: "10px" }}>

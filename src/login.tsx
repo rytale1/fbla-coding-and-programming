@@ -45,6 +45,20 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
         redirect("/dashboard");
     };
 
+    const googleLogin = async () => {
+        try {
+            const googleAuth = await authenticateWithGoogle();
+            if(googleAuth) {
+                let path = `/dashboard`;
+                navigate(path);
+            } else {
+                alert("Google Sign In Unsuccessful")
+            }
+        } catch (error) {
+            alert("Google Sign In Unsuccessful")
+        }
+    }
+
     console.log("current user: ", auth?.currentUser);
 
     return (
@@ -66,7 +80,7 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
                         padding: "20px",
                     }}
                 >
-                    <h2 style={{ marginBottom: "20px" }}>Login</h2>
+                    <h2 style={{ marginBottom: "20px" }}>Sign In</h2>
                     <form onSubmit={handleSubmit}>
                         <Row style={{ padding: "10px" }}>
                             <input
@@ -104,12 +118,12 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
                                 textTransform: "none",
                             }}
                         >
-                            Login
+                            Sign In
                         </Button>
                         <Button
                             size="large"
                             variant="contained"
-                            onClick={() => authenticateWithGoogle()}
+                            onClick={() => googleLogin()}
                             sx={{
                                 marginTop: "10px",
                                 textAlign: "center",
@@ -122,23 +136,6 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
                             }}
                         >
                             Sign in with Google
-                        </Button>
-                        <Button
-                            size="large"
-                            variant="contained"
-                            onClick={() => logout()}
-                            sx={{
-                                marginTop: "10px",
-                                textAlign: "center",
-                                fontSize: "1.0rem",
-                                fontWeight: 600,
-                                width: "100%",
-                                height: 60,
-                                backgroundColor: "primary.main",
-                                textTransform: "none",
-                            }}
-                        >
-                            Log out
                         </Button>
                     </form>
                 </Paper>

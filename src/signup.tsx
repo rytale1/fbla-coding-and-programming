@@ -96,8 +96,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                                 style={{ width: "241.54px" }}
                             >
                                 <MenuItem value={"Student"}>Student</MenuItem>
-                                <MenuItem value={"Staff"}>Staff</MenuItem>
-                                <MenuItem value={"Business"}>Business</MenuItem>
+                                <MenuItem value={"Staff"}>Administrator</MenuItem>
                             </Select>
                         </Row>
                         <Row style={{ padding: "10px" }}>

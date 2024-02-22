@@ -150,7 +150,7 @@ const Header = ({
                                     </ul>
                                 </li>
                                 <li className="nl-simple">
-                                    <Link to="/login?type=login">Login</Link>
+                                    <Link to="/login?type=login">Sign In</Link>
                                 </li>
                                 <li>
                                     <div
