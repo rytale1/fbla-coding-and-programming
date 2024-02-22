@@ -7,6 +7,7 @@ import {
     getDocs,
     onSnapshot,
     deleteDoc,
+    getDoc,
 } from "firebase/firestore";
 import { Col, Fade, Modal, Row } from "react-bootstrap";
 import Layout from "./layout/Layout";
@@ -52,6 +53,7 @@ interface Entry {
 
 const Dashboard: React.FC<DashboardProps> = () => {
     const [ascendingSort, setAscendingSort] = useState(true);
+    const [editMode, setEditMode] = useState(false);
     const [sortField, setSortField] = useState("businessname");
     const navigate = useNavigate();
     const [openDialog, setOpenDialog] = useState(false);
@@ -179,13 +181,20 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+        setLoading(true);
+
         try {
-            setLoading(true);
-            const setRef = collection(db, "Partners");
-            await addDoc(setRef, formData);
+            if (editMode) {
+                const partnerDocRef = doc(db, "Partners", formData.id); // Assuming formData contains the document ID
+                await setDoc(partnerDocRef, formData); // Set the document data
+            } else {
+                const setRef = collection(db, "Partners");
+                await addDoc(setRef, formData);
+            }
         } catch (e: any) {
             alert("Error adding document: " + e.message);
         }
+        setEditMode(false); // Reset edit mode after submission
         setOpenDialog(false);
         setLoading(false);
         setFormData({
@@ -209,7 +218,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
     const handleDelete = async (partner: Entry) => {
         const confirmation = window.confirm(
-            "Are you sure you want to delete " + partner.id + "?"
+            "Are you sure you want to delete " + partner.businessname + "?"
         );
         if (confirmation) {
             const partnerDocRef = doc(db, "Partners", partner.id); // Assuming "Partners" is your collection name
@@ -223,8 +232,23 @@ const Dashboard: React.FC<DashboardProps> = () => {
         }
     };
 
-    const handleEdit = (partner: Entry) => {
-        alert("Edit " + partner.id);
+    const handleEdit = async (partner: Entry) => {
+        setEditMode(true);
+        const partnerDocRef = doc(db, "Partners", partner.id); // Create a reference to the specific document
+        const partnerSnapshot = await getDoc(partnerDocRef); // Retrieve the document data
+
+        if (partnerSnapshot.exists()) {
+            // Document exists, access its data using .data()
+            let partnerData = partnerSnapshot.data() as Entry;
+            partnerData = { ...partnerData, id: partner.id };
+            setFormData(partnerData);
+            setOpenDialog(true);
+            console.log("Partner data:", partnerData);
+            return partnerData;
+        } else {
+            console.log("No such document!");
+            return null;
+        }
     };
 
     const handleRowClick = (partner: Entry) => {
@@ -237,7 +261,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
     const handleCloseModal = () => {
         setSelectedPartner(null);
     };
-    const [filteredPartners, setFilteredPartners] = useState<Entry[]>(partners);
     const [organizationTypeFilter, setOrganizationTypeFilter] =
         useState<string>("");
     const [resourcesAvailableFilter, setResourcesAvailableFilter] =
