@@ -316,28 +316,32 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 label="Name"
                                 value={formData.businessname}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "5px" }}
+                                style={{
+                                    width: "550px",
+                                    marginTop: "5px",
+                                    padding: "15px",
+                                }}
                             />
                             <TextField
                                 name="website"
                                 label="Website"
                                 value={formData.website}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "5px" }}
+                                style={{ width: "550px", padding: "15px" }}
                             />
                             <TextField
                                 name="address"
                                 label="Address"
                                 value={formData.address}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "5px" }}
+                                style={{ width: "550px", padding: "15px" }}
                             />
                             <TextField
                                 name="description"
                                 label="Description"
                                 value={formData.description}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "5px" }}
+                                style={{ width: "550px", padding: "15px" }}
                                 multiline
                                 rows={4}
                             />
@@ -347,7 +351,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 label="Organization Type"
                                 value={formData.organizationType}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "5px" }}
+                                style={{ width: "550px", padding: "15px" }}
                             >
                                 <MenuItem value="Education Institution">
                                     Education Institution
@@ -369,7 +373,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 label="Partnership Type"
                                 value={formData.partnershipType}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "5px" }}
+                                style={{ width: "550px", padding: "15px" }}
                             >
                                 <MenuItem value="Internship Program">
                                     Internship Program
@@ -391,7 +395,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 label="Resources Available"
                                 value={formData.resourcesAvailable}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "5px" }}
+                                style={{ width: "550px", padding: "15px" }}
                             >
                                 <MenuItem value="Mentoring">Mentoring</MenuItem>
                                 <MenuItem value="Internships">
@@ -406,7 +410,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 label="Target Audience"
                                 value={formData.targetAudience}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "5px" }}
+                                style={{ width: "550px", padding: "15px" }}
                             >
                                 <MenuItem value="Freshman">Freshmen</MenuItem>
                                 <MenuItem value="Sophomore">
@@ -425,21 +429,25 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 label="Contact Name"
                                 value={formData.contactInfo.name}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "5px" }}
+                                style={{
+                                    width: "550px",
+                                    padding: "15px",
+                                    marginTop: "5px",
+                                }}
                             />
                             <TextField
                                 name="email"
                                 label="Contact Email"
                                 value={formData.contactInfo.email}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "5px" }}
+                                style={{ width: "550px", padding: "15px" }}
                             />
                             <TextField
                                 name="phone"
                                 label="Contact Phone"
                                 value={formData.contactInfo.phone}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "5px" }}
+                                style={{ width: "550px", padding: "15px" }}
                             />
                         </form>
                     )}
