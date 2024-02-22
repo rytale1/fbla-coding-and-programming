@@ -174,6 +174,13 @@ const Dashboard: React.FC<DashboardProps> = () => {
         setSelectedPartner(null);
     };
 
+    function logoutAndSendHome(): void {
+        logout();
+        alert("Signed Out Successfully!");
+        let path = '/';
+        navigate(path);
+    }
+
     return (
         <Layout footer={2} headerBtn={true}>
             <Dialog
