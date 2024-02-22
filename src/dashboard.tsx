@@ -277,13 +277,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
         setPartners(filteredPartners);
     };
 
-    function logoutAndSendHome(): void {
-        logout();
-        alert("Signed Out Successfully!");
-        let path = "/";
-        navigate(path);
-    }
-
     return (
         <Layout footer={2} headerBtn={true}>
             <Dialog
@@ -448,18 +441,14 @@ const Dashboard: React.FC<DashboardProps> = () => {
             <div style={{ marginTop: "100px", padding: "10px" }}>
                 <Row>
                     <Col>
-                        <Button variant="outlined" onClick={handleOpenDialog}>
-                            Add Partner
-                        </Button>
-                    </Col>
-                    <Col>
                         <div>
                             <label htmlFor="organizationType">
-                                Organization Type:
+                                <b>Organization</b>
                             </label>
                             <select
                                 id="organizationType"
                                 onChange={handleOrganizationTypeChange}
+                                style={{ marginLeft: "5px" }}
                             >
                                 <option value="">All</option>
                                 <option value="Education Institution">
@@ -477,14 +466,15 @@ const Dashboard: React.FC<DashboardProps> = () => {
                             </select>
                         </div>
                     </Col>
-                    <Col>
+                    <Col style={{ textAlign: "left" }}>
                         <div>
                             <label htmlFor="resourcesAvailable">
-                                Resources Available:
+                                <b>Resources</b>
                             </label>
                             <select
                                 id="resourcesAvailable"
                                 onChange={handleResourcesAvailableChange}
+                                style={{ marginLeft: "5px" }}
                             >
                                 <option value="">All</option>
                                 <option value="Mentoring">Mentoring</option>
@@ -493,6 +483,11 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 {/* Add more options as needed */}
                             </select>
                         </div>
+                    </Col>
+                    <Col style={{ textAlign: "right" }}>
+                        <Button variant="outlined" onClick={handleOpenDialog}>
+                            Add Partner
+                        </Button>
                     </Col>
                 </Row>
             </div>

@@ -1,6 +1,8 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import React, { MouseEventHandler, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
+import { User, getAuth, onAuthStateChanged } from "firebase/auth";
+import { logout } from "../firebase";
 
 const Header = ({
     headerBtn,
@@ -10,6 +12,8 @@ const Header = ({
     hideHeader?: boolean;
 }) => {
     const [openSubMen, setOpenSubMen] = useState<string | null>(null);
+
+    // Check if user is signed in or out
     const onClick = () => {
         const body = document.querySelector("body");
         body?.classList.toggle("wsactive");
@@ -25,14 +29,34 @@ const Header = ({
 
     const location = useLocation();
     const [, setCurrentLocation] = useState(location);
-
+    const [authUser, setAuthUser] = useState<User | null>(null);
     const signUp = () => {
         navigate("/signup");
     };
+    let auth = null;
 
     useEffect(() => {
+        auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in.
+                setAuthUser(user);
+                console.log("User is logged in:", user);
+            } else {
+                // No user is signed in.
+                setAuthUser(null);
+                console.log("No user is logged in.");
+            }
+        });
+
         setCurrentLocation(location);
-    }, [location]);
+    }, [location, auth]);
+
+    const logoutAndSendHome = () => {
+        logout();
+        alert("Signed Out Successfully!");
+        window.location.href = "/";
+    };
 
     return hideHeader ? (
         <div></div>
@@ -145,12 +169,22 @@ const Header = ({
                                         )}`}
                                     >
                                         <li>
-                                            <Link to={"/"}>Select Languages</Link>
+                                            <Link to={"/dashboard"}>
+                                                Dashboard
+                                            </Link>
                                         </li>
                                     </ul>
                                 </li>
                                 <li className="nl-simple">
-                                    <Link to="/login?type=login">Sign In</Link>
+                                    {authUser === null ? (
+                                        <Link to="/login?type=login">
+                                            Sign In
+                                        </Link>
+                                    ) : (
+                                        <a href="#" onClick={logoutAndSendHome}>
+                                            Sign Out
+                                        </a>
+                                    )}
                                 </li>
                                 <li>
                                     <div
@@ -159,23 +193,26 @@ const Header = ({
                                             alignSelf: "center",
                                         }}
                                     >
-                                        <Button
-                                            size="small"
-                                            variant="contained"
-                                            onClick={signUp}
-                                            sx={{
-                                                marginTop: "15px",
-                                                marginLeft: "15px",
-                                                textAlign: "center",
-                                                width: 120,
-                                                height: 40,
-                                                fontSize: "18px",
-                                                backgroundColor: "primary.main",
-                                                textTransform: "none",
-                                            }}
-                                        >
-                                            Sign Up
-                                        </Button>
+                                        {authUser === null && (
+                                            <Button
+                                                size="small"
+                                                variant="contained"
+                                                onClick={signUp}
+                                                sx={{
+                                                    marginTop: "15px",
+                                                    marginLeft: "15px",
+                                                    textAlign: "center",
+                                                    width: 120,
+                                                    height: 40,
+                                                    fontSize: "18px",
+                                                    backgroundColor:
+                                                        "primary.main",
+                                                    textTransform: "none",
+                                                }}
+                                            >
+                                                Sign Up
+                                            </Button>
+                                        )}
                                     </div>
                                 </li>
                                 {/* DROPDOWN MENU 
