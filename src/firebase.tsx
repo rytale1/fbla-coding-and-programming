@@ -85,10 +85,25 @@ export async function authenticateUser(
     }
 }
 
-export async function authenticateWithGoogle(): Promise<boolean> {
+export async function signUpWithGoogle(accountType: string): Promise<boolean> {
     try {
         const newUser = await signInWithPopup(auth, googleProvider);
         console.log("Authenticated User ", newUser.user);
+        const userRef = collection(db, "users");
+        await addDoc(userRef, {
+            uid: newUser.user.uid,
+            accountType: accountType,
+        });
+        return true;
+    } catch (e) {
+        console.error("Error authenticating user", e);
+        return false;
+    }
+}
+
+export async function authenticateWithGoogle(): Promise<boolean> {
+    try {
+        const newUser = await signInWithPopup(auth, googleProvider);
         return true;
     } catch (e) {
         console.error("Error authenticating user", e);

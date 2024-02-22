@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./signup.css";
 import { collection, addDoc } from "firebase/firestore";
-import { authenticateWithGoogle, createUser, createUserAndStoreAccountType } from "./firebase";
+import { authenticateWithGoogle, createUser, createUserAndStoreAccountType, signUpWithGoogle } from "./firebase";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { Col, Row } from "react-bootstrap";
@@ -69,7 +69,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
 
     const googleLogin = async () => {
         try {
-            const googleAuth = await authenticateWithGoogle();
+            const googleAuth = await signUpWithGoogle(accountType);
             if(googleAuth) {
                 let path = `/dashboard`;
                 navigate(path);
