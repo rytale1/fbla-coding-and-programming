@@ -152,7 +152,11 @@ const Home: React.FC<HomePageProps> = () => {
                     </div>
                 </section>
                 {/* About Section */}
-                <section className="section bg-light" id="about">
+                <section className="section bg-light"  id = "about">
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
                     <div className="container">
                         <h2
                             className="section-title"
@@ -200,7 +204,7 @@ const Home: React.FC<HomePageProps> = () => {
                     </div>
                 </section>
                 {/* Instructions Section */}
-                <section className="section bg-light" id="instructions">
+                <section className="section bg-light"  id = "instructions">
                     <div className="container">
                         <h2
                             className="section-title"
@@ -214,26 +218,18 @@ const Home: React.FC<HomePageProps> = () => {
                             Getting Started
                         </h2>
                     </div>
-                    <div
-                        className="container"
-                        style={{
-                            display: "flex",
-                            padding: "40px",
-                        }}
-                    >
-                        <p
-                            style={{
-                                width: "75%",
-                            }}
-                        >
-                            <img
-                                src="images/placeholder.png"
-                                width="450"
-                                style={{
-                                    float: "left",
-                                    marginRight: "30px",
-                                }}
-                            />
+                    <div className="container" style={{
+                        display: "flex",
+                        padding: "40px",
+                    }}>
+                        <p style={{
+                            width : "75%"
+                        }}>
+                            <img src="images/placeholder.png" width="450"
+                            style= {{
+                                float: "left",
+                                marginRight: "30px"
+                            }}/>
                             Placeholder Text
                         </p>
                     </div>
