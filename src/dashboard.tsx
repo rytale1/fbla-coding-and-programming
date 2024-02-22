@@ -26,9 +26,9 @@ import {
     SelectChangeEvent,
     TextField,
 } from "@mui/material";
-import { redirect } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { User, onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "./firebase";
+import { auth, db, logout } from "./firebase";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
@@ -53,6 +53,7 @@ interface Entry {
 const Dashboard: React.FC<DashboardProps> = () => {
     const [ascendingSort, setAscendingSort] = useState(true);
     const [sortField, setSortField] = useState("businessname");
+    const navigate = useNavigate();
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedPartner, setSelectedPartner] = useState<Entry | null>();
     const [openModal, setOpenModal] = useState(false);
@@ -275,6 +276,13 @@ const Dashboard: React.FC<DashboardProps> = () => {
         }
         setPartners(filteredPartners);
     };
+
+    function logoutAndSendHome(): void {
+        logout();
+        alert("Signed Out Successfully!");
+        let path = "/";
+        navigate(path);
+    }
 
     return (
         <Layout footer={2} headerBtn={true}>

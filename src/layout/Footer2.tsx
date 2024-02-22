@@ -26,14 +26,14 @@ const Footer2 = ({ footer }: { footer?: number | undefined }) => {
                 </Col>
                 <Col lg="3" sm="6">
                     <div style={{ marginTop: "10px" }}>
-                        <b>1</b>
+                        <b>Lead Developer</b>
                         <br />
                     </div>
                     <div style={{ marginTop: "8px" }}>
-                        <a href="/">2</a>
+                        <a href="/">Developer and Graphical Designer</a>
                     </div>
                     <div style={{ marginTop: "8px" }}>
-                        <a href="/">3</a>
+                        <a href="/">Developer</a>
                     </div>
                 </Col>
                 <Col lg="3" sm="6"></Col>
