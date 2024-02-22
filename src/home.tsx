@@ -129,6 +129,23 @@ const Home: React.FC<HomePageProps> = () => {
                                     >
                                         About CareerBase
                                     </Button>
+                                    <Button
+                                        size="large"
+                                        variant="contained"
+                                        sx={{
+                                            margin: 3,
+                                            textAlign: "center",
+                                            fontSize: "1.0rem",
+                                            fontWeight: 600,
+                                            width: 250,
+                                            height: 60,
+                                            backgroundColor: "primary.main",
+                                            textTransform: "none",
+                                        }}
+                                        onClick={() => scrollTo("instructions")}
+                                    >
+                                        Get Started
+                                    </Button>
                                 </div>
                             </div>
                         </div>
@@ -183,6 +200,57 @@ const Home: React.FC<HomePageProps> = () => {
                             location, or age etc. Students can then log on to
                             student accounts to view and search but not edit the
                             information.
+                        </p>
+                    </div>
+                </section>
+                {/* Getting Started Section */}
+                <section className="section bg-light"  id = "instructions">
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div className="container">
+                        <h2
+                            className="section-title"
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                marginLeft: "700px",
+                            }}
+                        >
+                            Instructions
+                        </h2>
+                    </div>
+                    <div
+                        className="container"
+                        style={{
+                            display: "flex",
+                            padding: "40px",
+                            justifyContent: "vertical"
+                        }}
+                    >
+                        <p
+                            style={{
+                                width: "75%",
+                            }}>
+                            <img
+                                src="images/thumbnail2.png"
+                                width="450"
+                                style={{
+                                    float: "left",
+                                    marginRight: "30px",
+                                }}
+                            />
+                            Are you a registered user? If so please sign in. Else please head 
+                            over to the sign up page by clicking the button on the top right.
+                            <br/>
+                            <br/>
+                            <h5>
+                                Signing up
+                            </h5>
+                            All we need is your email and a password! You can also choose to sign up with Google.
+                            You can also sign up as either a school administrator or student. If you
+                            sign up as a student, you will have no edit permissions to the database.
                         </p>
                     </div>
                 </section>

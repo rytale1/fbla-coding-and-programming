@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./signup.css";
 import { collection, addDoc } from "firebase/firestore";
-import { createUser, createUserAndStoreAccountType } from "./firebase";
+import { authenticateWithGoogle, createUser, createUserAndStoreAccountType } from "./firebase";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { Col, Row } from "react-bootstrap";
@@ -13,7 +13,7 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
-import { redirect } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 
 interface SignUpProps {
     onSubmit: (email: string, password: string) => void;
@@ -26,6 +26,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [passwordError, setPasswordError] = useState(false);
     const [signUpError, setSignupError] = useState(false);
+    const navigate = useNavigate();
 
     const handleAccountTypeChange = (event: SelectChangeEvent) => {
         setAccountType(event.target.value as string);
@@ -66,9 +67,29 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
         else setSignupError(true);
     };
 
+    const googleLogin = async () => {
+        try {
+            const googleAuth = await authenticateWithGoogle();
+            if(googleAuth) {
+                let path = `/dashboard`;
+                navigate(path);
+            } else {
+                alert("Google Sign In Unsuccessful")
+            }
+        } catch (error) {
+            alert("Google Sign In Unsuccessful")
+        }
+    }
+
     return (
         <Layout footer={2} headerBtn={true}>
-            <Box
+            <div className = "container" style ={{
+                backgroundImage: `url("/images/blurredbackground.jpg")`,
+                backgroundSize: "cover", // Optional: Adjust background size as needed
+                backgroundPosition: "center", // Optional: Adjust background position as needed
+                height: "800px",
+            }}>
+                <Box
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
@@ -83,6 +104,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                         alignItems: "center",
                         width: "300px",
                         padding: "20px",
+                        marginTop: "100px"
                     }}
                 >
                     <h2 style={{ marginBottom: "20px" }}>Sign Up</h2>
@@ -157,9 +179,27 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                         >
                             Sign Up
                         </Button>
+                        <Button
+                            size="large"
+                            variant="contained"
+                            onClick={() => googleLogin()}
+                            sx={{
+                                marginTop: "10px",
+                                textAlign: "center",
+                                fontSize: "1.0rem",
+                                fontWeight: 600,
+                                width: "100%",
+                                height: 60,
+                                backgroundColor: "primary.main",
+                                textTransform: "none",
+                            }}
+                        >
+                            Sign up with Google
+                        </Button>
                     </form>
                 </Paper>
             </Box>
+            </div>
         </Layout>
     );
 };

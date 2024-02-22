@@ -33,18 +33,6 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
         setEmail(event.target.value);
     }
 
-    const handlePasswordChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setPassword(event.target.value);
-    };
-
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        onSubmit(email, password);
-        redirect("/dashboard");
-    };
-
     const googleLogin = async () => {
         try {
             const googleAuth = await authenticateWithGoogle();
@@ -59,10 +47,28 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
         }
     }
 
+    const handlePasswordChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setPassword(event.target.value);
+    };
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        onSubmit(email, password);
+        redirect("/dashboard");
+    };
+
     console.log("current user: ", auth?.currentUser);
 
     return (
         <Layout footer={2} headerBtn={true}>
+            <div className = "container" style ={{
+                backgroundImage: `url("/images/blurredbackground.jpg")`,
+                backgroundSize: "cover", // Optional: Adjust background size as needed
+                backgroundPosition: "center", // Optional: Adjust background position as needed
+                height: "800px",
+            }}>
             <Box
                 display="flex"
                 justifyContent="center"
@@ -140,6 +146,7 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
                     </form>
                 </Paper>
             </Box>
+            </div>
         </Layout>
     );
 };
