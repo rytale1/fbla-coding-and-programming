@@ -8,6 +8,8 @@ import {
     onSnapshot,
     deleteDoc,
     getDoc,
+    where,
+    query,
 } from "firebase/firestore";
 import { Col, Fade, Modal, Row } from "react-bootstrap";
 import Layout from "./layout/Layout";
@@ -80,6 +82,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [partners, setPartners] = useState<Entry[]>([]);
     const [refresh, setRefresh] = useState(true);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const fetchPartners = async () => {
         const partnersCollection = collection(db, "Partners"); // Assuming "partners" is your collection name
@@ -114,7 +117,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 //setPartners(partnersData);
             }
         );
-
         fetchPartners(); // Fetch partners when component mounts
         return () => unsubscribe(); // Unsubscribe from snapshot listener when component unmounts
     }, []);
@@ -192,7 +194,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 await addDoc(setRef, formData);
             }
         } catch (e: any) {
-            alert("Error adding document: " + e.message);
+            console.log("Error adding document" + e.message)
         }
         setEditMode(false); // Reset edit mode after submission
         setOpenDialog(false);
@@ -265,13 +267,15 @@ const Dashboard: React.FC<DashboardProps> = () => {
         useState<string>("");
     const [resourcesAvailableFilter, setResourcesAvailableFilter] =
         useState<string>("");
+    const [businessNameFilter, setBusinessNameFilter] =
+    useState<string>("");
 
     const handleOrganizationTypeChange = (
         event: React.ChangeEvent<HTMLSelectElement>
     ) => {
         const selectedOrganizationType = event.target.value;
         setOrganizationTypeFilter(selectedOrganizationType);
-        filterPartners(selectedOrganizationType, resourcesAvailableFilter);
+        filterPartners(selectedOrganizationType, resourcesAvailableFilter, businessNameFilter);
     };
 
     const handleResourcesAvailableChange = (
@@ -279,12 +283,22 @@ const Dashboard: React.FC<DashboardProps> = () => {
     ) => {
         const selectedResourcesAvailable = event.target.value;
         setResourcesAvailableFilter(selectedResourcesAvailable);
-        filterPartners(organizationTypeFilter, selectedResourcesAvailable);
+        filterPartners(organizationTypeFilter, selectedResourcesAvailable, businessNameFilter);
+    };
+
+    const handleBusinessNameChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        console.log("here", event)
+        const businessName = event.target.value;
+        setBusinessNameFilter(businessName);
+        filterPartners(organizationTypeFilter, resourcesAvailableFilter, businessName);
     };
 
     const filterPartners = async (
         organizationType: string,
-        resourcesAvailable: string
+        resourcesAvailable: string,
+        businessName: string
     ) => {
         let filteredPartners = await fetchPartners();
         if (organizationType) {
@@ -297,20 +311,45 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 partner.resourcesAvailable.includes(resourcesAvailable)
             );
         }
+        if (businessName) {
+            filteredPartners = filteredPartners.filter((partner) =>
+                partner.businessname.toLowerCase().includes(businessName.toLowerCase())
+            );
+        }
         setPartners(filteredPartners);
     };
 
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            const uid = user.uid;
+            const q = query(collection(db, "users"), where("uid", "==", uid));
+            const qSnapshot = await getDocs(q);
+            qSnapshot.forEach(((doc) => {
+                if(doc.data().accountType === "Staff") {
+                    setIsAdmin(true);
+                } else {
+                    setIsAdmin(false);
+                }
+            }));
+        } 
+    });
+
     return (
         <Layout footer={2} headerBtn={true}>
+            {isAdmin && 
             <Dialog
                 open={openDialog}
                 onClose={handleCloseDialog}
                 style={{ width: "1500px" }}
             >
                 <DialogTitle>Add Partner</DialogTitle>
-                <DialogContent style={{ width: "800px" }}>
+                <DialogContent style={{ }}>
                     {currentPage === 0 && (
-                        <form noValidate autoComplete="off">
+                        <form noValidate autoComplete="off" style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "20px"
+                        }}>
                             <TextField
                                 name="businessname"
                                 label="Name"
@@ -319,7 +358,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 style={{
                                     width: "550px",
                                     marginTop: "5px",
-                                    padding: "15px",
                                 }}
                             />
                             <TextField
@@ -327,21 +365,21 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 label="Website"
                                 value={formData.website}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "15px" }}
+                                style={{ width: "550px",}}
                             />
                             <TextField
                                 name="address"
                                 label="Address"
                                 value={formData.address}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "15px" }}
+                                style={{ width: "550px",}}
                             />
                             <TextField
                                 name="description"
                                 label="Description"
                                 value={formData.description}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "15px" }}
+                                style={{ width: "550px",}}
                                 multiline
                                 rows={4}
                             />
@@ -351,7 +389,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 label="Organization Type"
                                 value={formData.organizationType}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "15px" }}
+                                style={{ width: "550px",}}
                             >
                                 <MenuItem value="Education Institution">
                                     Education Institution
@@ -373,7 +411,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 label="Partnership Type"
                                 value={formData.partnershipType}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "15px" }}
+                                style={{ width: "550px",}}
                             >
                                 <MenuItem value="Internship Program">
                                     Internship Program
@@ -395,7 +433,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 label="Resources Available"
                                 value={formData.resourcesAvailable}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "15px" }}
+                                style={{ width: "550px",}}
                             >
                                 <MenuItem value="Mentoring">Mentoring</MenuItem>
                                 <MenuItem value="Internships">
@@ -410,7 +448,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 label="Target Audience"
                                 value={formData.targetAudience}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "15px" }}
+                                style={{ width: "550px",}}
                             >
                                 <MenuItem value="Freshman">Freshmen</MenuItem>
                                 <MenuItem value="Sophomore">
@@ -424,7 +462,11 @@ const Dashboard: React.FC<DashboardProps> = () => {
                         </form>
                     )}
                     {currentPage === 1 && (
-                        <form noValidate autoComplete="off">
+                        <form noValidate autoComplete="off" style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "20px"
+                        }}>
                             <TextField
                                 name="name"
                                 label="Contact Name"
@@ -432,7 +474,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 onChange={handleInputChange}
                                 style={{
                                     width: "550px",
-                                    padding: "15px",
                                     marginTop: "5px",
                                 }}
                             />
@@ -441,14 +482,14 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 label="Contact Email"
                                 value={formData.contactInfo.email}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "15px" }}
+                                style={{ width: "550px", }}
                             />
                             <TextField
                                 name="phone"
                                 label="Contact Phone"
                                 value={formData.contactInfo.phone}
                                 onChange={handleInputChange}
-                                style={{ width: "550px", padding: "15px" }}
+                                style={{ width: "550px", }}
                             />
                         </form>
                     )}
@@ -469,13 +510,13 @@ const Dashboard: React.FC<DashboardProps> = () => {
                         </Button>
                     )}
                 </DialogActions>
-            </Dialog>
+            </Dialog>}
             <div style={{ marginTop: "100px", padding: "10px" }}>
                 <Row>
                     <Col>
                         <div>
                             <label htmlFor="organizationType">
-                                <b>Organization</b>
+                                <b>Org</b>
                             </label>
                             <select
                                 id="organizationType"
@@ -506,7 +547,11 @@ const Dashboard: React.FC<DashboardProps> = () => {
                             <select
                                 id="resourcesAvailable"
                                 onChange={handleResourcesAvailableChange}
-                                style={{ marginLeft: "5px" }}
+                                style=
+                                {{ 
+                                    marginLeft: "5px",
+                                    
+                                }}
                             >
                                 <option value="">All</option>
                                 <option value="Mentoring">Mentoring</option>
@@ -516,10 +561,30 @@ const Dashboard: React.FC<DashboardProps> = () => {
                             </select>
                         </div>
                     </Col>
+                    <Col>
+                        <div>
+                            <label htmlFor="businessName">
+                                <b>Name</b>
+                            </label>
+                            <input
+                                id="businessName"
+                                onChange={handleBusinessNameChange}
+                                style={{ 
+                                    marginLeft: "5px",
+                                    width: "150px",
+                                    height: "30px",
+                                    borderRadius: "0",
+                                    borderColor: "#000000"
+                                }}
+                            />
+                        </div>
+                    </Col>
                     <Col style={{ textAlign: "right" }}>
-                        <Button variant="outlined" onClick={handleOpenDialog}>
+                        {isAdmin && 
+                            <Button variant="outlined" onClick={handleOpenDialog}>
                             Add Partner
-                        </Button>
+                            </Button>
+                        }
                     </Col>
                 </Row>
             </div>
@@ -664,6 +729,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                             cursor: "pointer",
                                             borderBottom: "1px solid #ddd",
                                             transition: "background-color 0.3s",
+                                            padding: "10px 0 0 0"
                                         }}
                                     >
                                         <Col md="2">{partner.businessname}</Col>

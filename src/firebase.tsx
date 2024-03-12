@@ -42,7 +42,6 @@ export async function createUserAndStoreAccountType(
     accountType: string
 ): Promise<boolean> {
     try {
-        alert("here");
         const newUser = await createUserWithEmailAndPassword(auth, email, pass);
         const userRef = collection(db, "users");
         await addDoc(userRef, {

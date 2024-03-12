@@ -1,14 +1,10 @@
 import React, { useState } from "react";
-import { Routes, Route, useLocation, redirect } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import Layout from "./layout/Layout";
 import PageTitle from "./layout/PageTitle";
-import SearchBar from "./Searchbar";
 import "./css/globals.css";
 import { Button } from "@mui/material";
-import { Col, Row } from "react-bootstrap";
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -22,30 +18,9 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// Define the type for the component props (if needed)
 interface HomePageProps {}
 
-// Create the functional component
 const Home: React.FC<HomePageProps> = () => {
-    // Define state variables using the useState hook
-    const navigate = useNavigate();
-    const [searchTerm, setSearchTerm] = useState("");
-
-    const routeDashboard = () => {
-        let path = "/dashboard";
-        navigate(path);
-    };
-
-    const routeSignup = () => {
-        let path = `/signup`;
-        navigate(path);
-    };
-
-    const routeLogin = () => {
-        let path = `/login`;
-        navigate(path);
-    };
-
     const scrollTo = (id: string) => {
         const element = document.getElementById(id);
         if (element) {
@@ -53,7 +28,6 @@ const Home: React.FC<HomePageProps> = () => {
         }
     };
 
-    // Return the JSX structure of the component
     return (
         <Layout footer={2} headerBtn={true}>
             <div style={{ scrollBehavior: "smooth" }}>
@@ -66,8 +40,8 @@ const Home: React.FC<HomePageProps> = () => {
                         className="container"
                         style={{
                             backgroundImage: `url("/images/background.jpg")`,
-                            backgroundSize: "cover", // Optional: Adjust background size as needed
-                            backgroundPosition: "center", // Optional: Adjust background position as needed
+                            backgroundSize: "cover", // Adjust background size as needed
+                            backgroundPosition: "center", // Adjust background position as needed
                             height: "800px",
                         }}
                     >
@@ -100,14 +74,6 @@ const Home: React.FC<HomePageProps> = () => {
                                         database for high school job
                                         opportunities.
                                     </p>
-                                    {/*<video
-                                    src=""
-                                    width="640"
-                                    playsInline={true}
-                                    autoPlay={true}
-                                    muted={true}
-                                    loop={true}
-                                 />*/}
                                 </div>
                             </div>
                             <div className="col-md-12 col-lg-12">
@@ -188,6 +154,7 @@ const Home: React.FC<HomePageProps> = () => {
                                     float: "left",
                                     marginRight: "30px",
                                 }}
+                                alt="example dashboard"
                             />
                             Thank you for your interest in CareerBase!
                             CareerBase is an open-source webapp designed to
@@ -240,16 +207,17 @@ const Home: React.FC<HomePageProps> = () => {
                                     float: "left",
                                     marginRight: "30px",
                                 }}
+                                alt="example signup"
                             />
-                            Are you a registered user? If so please sign in. Else please head 
-                            over to the sign up page by clicking the button on the top right.
+                            Are you a registered user? Sign in by clicking the sign in button on the 
+                            top right. If not, then please sign up.
                             <br/>
                             <br/>
                             <h5>
                                 Signing up
                             </h5>
                             All we need is your email and a password! You can also choose to sign up with Google.
-                            You can also sign up as either a school administrator or student. If you
+                            You can sign up as either a school administrator or student. If you
                             sign up as a student, you will have no edit permissions to the database.
                         </p>
                     </div>
@@ -259,5 +227,4 @@ const Home: React.FC<HomePageProps> = () => {
     );
 };
 
-// Export the component for use in other files
 export default Home;

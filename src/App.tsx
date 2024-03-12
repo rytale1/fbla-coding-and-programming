@@ -1,6 +1,4 @@
-import { Routes, Route, useLocation } from "react-router-dom";
-import React from "react";
-import { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import "./css/bootstrap.min.css";
 import "./css/globals.css";
 import Home from "./home";

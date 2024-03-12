@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import React, { MouseEventHandler, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import { User, getAuth, onAuthStateChanged } from "firebase/auth";
 import { logout } from "../firebase";
@@ -54,7 +54,6 @@ const Header = ({
 
     const logoutAndSendHome = () => {
         logout();
-        alert("Signed Out Successfully!");
         window.location.href = "/";
     };
 

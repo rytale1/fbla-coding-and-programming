@@ -14,18 +14,21 @@ import {
     SelectChangeEvent,
 } from "@mui/material";
 import { redirect, useNavigate } from "react-router-dom";
+import { validateEmail } from "./utils";
 
 interface SignUpProps {
     onSubmit: (email: string, password: string) => void;
 }
 
 const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
-    const [accountType, setAccountType] = useState<string>("Account Type");
+    const [accountType, setAccountType] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [passwordError, setPasswordError] = useState(false);
     const [signUpError, setSignupError] = useState(false);
+    const [emailError, setEmailError] = useState(false);
+    const [accountTypeError, setAccountTypeError] = useState(false);
     const navigate = useNavigate();
 
     const handleAccountTypeChange = (event: SelectChangeEvent) => {
@@ -34,6 +37,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
+        setEmailError(!validateEmail(event.target.value));
     };
 
     const handlePasswordChange = (
@@ -52,10 +56,13 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
     };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        alert("here1");
         event.preventDefault();
         if (password !== confirmPassword) {
             setPasswordError(true);
+            return;
+        }
+        if (!accountType) {
+            setAccountTypeError(true);
             return;
         }
         const success = await createUserAndStoreAccountType(
@@ -63,11 +70,15 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
             password,
             accountType
         );
-        if (success) redirect("/dashboard");
+        if (success) navigate("/dashboard");
         else setSignupError(true);
     };
 
     const googleLogin = async () => {
+        if (!accountType) {
+            setAccountTypeError(true);
+            return;
+        }
         try {
             const googleAuth = await signUpWithGoogle(accountType);
             if(googleAuth) {
@@ -75,9 +86,11 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                 navigate(path);
             } else {
                 alert("Google Sign In Unsuccessful")
+                setSignupError(true);
             }
         } catch (error) {
             alert("Google Sign In Unsuccessful")
+            setSignupError(true);
         }
     }
 
@@ -110,12 +123,13 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                     <h2 style={{ marginBottom: "20px" }}>Sign Up</h2>
                     <form onSubmit={handleSubmit}>
                         <Row style={{ padding: "10px" }}>
+                        <InputLabel id="AccountTypeLabel">Account Type</InputLabel>
                             <Select
-                                label="Account"
-                                id="demo-simple-select"
+                                labelId="AccountTypeLabel"
                                 value={accountType}
                                 onChange={handleAccountTypeChange}
                                 style={{ width: "241.54px" }}
+                                placeholder="Account Type"
                             >
                                 <MenuItem value={"Student"}>Student</MenuItem>
                                 <MenuItem value={"Staff"}>Administrator</MenuItem>
@@ -131,6 +145,11 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                                 required
                             />
                         </Row>
+                        {emailError && (
+                            <Row style={{ color: "red", padding: "10px" }}>
+                                Email is invalid.
+                            </Row>
+                        )}
                         <Row style={{ padding: "10px" }}>
                             <input
                                 type="password"
@@ -154,6 +173,11 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                         {passwordError && (
                             <Row style={{ color: "red", padding: "10px" }}>
                                 Passwords do not match.
+                            </Row>
+                        )}
+                        {accountTypeError && (
+                            <Row style={{ color: "red", padding: "10px" }}>
+                                Please select an Account Type.
                             </Row>
                         )}
                         {signUpError && (
