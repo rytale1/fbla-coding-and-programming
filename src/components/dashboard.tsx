@@ -12,7 +12,7 @@ import {
     query,
 } from "firebase/firestore";
 import { Col, Fade, Modal, Row } from "react-bootstrap";
-import Layout from "./layout/Layout";
+import Layout from "../layout/Layout";
 import {
     Backdrop,
     Button,
@@ -31,7 +31,7 @@ import {
 } from "@mui/material";
 import { redirect, useNavigate } from "react-router-dom";
 import { User, onAuthStateChanged } from "firebase/auth";
-import { auth, db, logout } from "./firebase";
+import { auth, db, logout } from "../auth";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 

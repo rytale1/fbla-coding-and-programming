@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import "./css/globals.css";
-import "./signup.css";
+import "../css/globals.css";
+import "../css/signup.css";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { Row } from "react-bootstrap";
-import Layout from "./layout/Layout";
+import Layout from "../layout/Layout";
 import { Button } from "@mui/material";
-import { authenticateWithGoogle, authenticateUser } from "./firebase";
+import { authenticateWithGoogle, authenticateUser } from "../auth";
 import { redirect } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 

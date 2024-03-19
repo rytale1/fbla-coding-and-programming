@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import "./signup.css";
-import { collection, addDoc } from "firebase/firestore";
-import { authenticateWithGoogle, createUser, createUserAndStoreAccountType, signUpWithGoogle } from "./firebase";
+import "../css/signup.css";
+import { signUpWithGoogle } from "../auth";
+import { createUserAndStoreAccountType } from "../db";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import { Col, Row } from "react-bootstrap";
-import Layout from "./layout/Layout";
+import { Row } from "react-bootstrap";
+import Layout from "../layout/Layout";
 import {
     Button,
     InputLabel,
@@ -13,8 +13,8 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
-import { redirect, useNavigate } from "react-router-dom";
-import { validateEmail } from "./utils";
+import { useNavigate } from "react-router-dom";
+import { validateEmail } from "../utils";
 
 interface SignUpProps {
     onSubmit: (email: string, password: string) => void;

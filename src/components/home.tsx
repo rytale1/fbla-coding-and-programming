@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase";
-import Layout from "./layout/Layout";
-import PageTitle from "./layout/PageTitle";
-import "./css/globals.css";
+import { auth } from "../auth";
+import Layout from "../layout/Layout";
+import PageTitle from "../layout/PageTitle";
+import "../css/globals.css";
 import { Button } from "@mui/material";
 
 onAuthStateChanged(auth, (user) => {

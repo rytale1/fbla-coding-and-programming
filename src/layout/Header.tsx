@@ -1,8 +1,8 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "@mui/material/Button";
 import { User, getAuth, onAuthStateChanged } from "firebase/auth";
-import { logout } from "../firebase";
+import { logout } from "../auth";
 
 const Header = ({
     headerBtn,
@@ -33,11 +33,10 @@ const Header = ({
     const signUp = () => {
         navigate("/signup");
     };
-    let auth = null;
+    const auth = useRef(getAuth())
 
     useEffect(() => {
-        auth = getAuth();
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth.current, (user) => {
             if (user) {
                 // User is signed in.
                 setAuthUser(user);
