@@ -1,14 +1,13 @@
-import { Routes, Route, useLocation } from "react-router-dom";
-import React from "react";
-import { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import "./css/bootstrap.min.css";
 import "./css/globals.css";
-import Home from "./home";
-import SignUp from "./signup";
-import Login from "./login";
-import Dashboard from "./dashboard";
-import PageNotFound from "./pagenotfound";
-import { authenticateUser, createUser } from "./firebase";
+import Home from "./components/home";
+import SignUp from "./components/signup";
+import Login from "./components/login";
+import Dashboard from "./components/dashboard";
+import PageNotFound from "./components/pagenotfound";
+import { createUser } from "./db";
+import { authenticateUser } from "./auth"
 
 export function App() {
     return (

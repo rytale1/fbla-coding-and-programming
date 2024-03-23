@@ -36,6 +36,7 @@ export { storage };
 export const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
+<<<<<<< HEAD:src/firebase.tsx
 export async function createUserAndStoreAccountType(
     email: string,
     pass: string,
@@ -70,6 +71,8 @@ export async function createUser(
     }
 }
 
+=======
+>>>>>>> 824303cfe0ac817b76cef1d02eefa3aad49901bd:src/auth.tsx
 export async function authenticateUser(
     email: string,
     pass: string

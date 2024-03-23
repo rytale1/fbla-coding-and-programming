@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import "./css/globals.css";
-import "./signup.css";
+import "../css/globals.css";
+import "../css/signup.css";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import { Col, Row } from "react-bootstrap";
-import Layout from "./layout/Layout";
+import { Row } from "react-bootstrap";
+import Layout from "../layout/Layout";
 import { Button } from "@mui/material";
-import { auth, authenticateWithGoogle, logout, authenticateUser } from "./firebase";
+import { authenticateWithGoogle, authenticateUser } from "../auth";
 import { redirect } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -18,7 +18,6 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ onSubmit }) => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [loginState, setLoginState] = useState<boolean>(false);
     const navigate = useNavigate();
 
     const routeDashboard = async () => {
@@ -59,14 +58,12 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
         redirect("/dashboard");
     };
 
-    console.log("current user: ", auth?.currentUser);
-
     return (
         <Layout footer={2} headerBtn={true}>
             <div className = "container" style ={{
                 backgroundImage: `url("/images/blurredbackground.jpg")`,
-                backgroundSize: "cover", // Optional: Adjust background size as needed
-                backgroundPosition: "center", // Optional: Adjust background position as needed
+                backgroundSize: "cover", 
+                backgroundPosition: "center", 
                 height: "800px",
             }}>
             <Box

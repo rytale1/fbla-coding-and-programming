@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import Footer2 from "./Footer2";
-import Footer3 from "./Footer3";
+import Footer from "./Footer";
 import Header from "./Header";
 import React from "react";
 import createTheme from "@mui/material/styles/createTheme";
@@ -80,12 +79,10 @@ const Layout = ({
             >
                 <Header headerBtn={headerBtn} hideHeader={hideHeader} />
                 {children}
-                {footer === 3 ? (
-                    <Footer3 />
-                ) : footer === 4 ? (
-                    <Footer2 footer={4} />
+                {footer === 4 ? (
+                    <Footer footer={4} />
                 ) : (
-                    <Footer2 footer={footer} />
+                    <Footer footer={footer} />
                 )}
             </div>
         </ThemeProvider>
