@@ -14,6 +14,7 @@ onAuthStateChanged(auth, (user) => {
         console.log("signed out");
     }
 });
+//Ooga booga
 
 interface HomePageProps {}
 
