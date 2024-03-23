@@ -18,6 +18,7 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ onSubmit }) => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [authError, setAuthError] = useState<boolean>(false);
     const navigate = useNavigate();
 
     const routeDashboard = async () => {
@@ -32,6 +33,7 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
         setEmail(event.target.value);
     }
 
+    /* Initiate authentication with google through Firebase. */
     const googleLogin = async () => {
         try {
             const googleAuth = await authenticateWithGoogle();
@@ -52,10 +54,17 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
         setPassword(event.target.value);
     };
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    /* Routes to dashboard once login is successful. */
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        onSubmit(email, password);
-        redirect("/dashboard");
+        const success = await authenticateUser(email, password);
+        if(success) {
+            onSubmit(email, password);
+            redirect("/dashboard");
+        } else {
+            setAuthError(true);
+            return;
+        }
     };
 
     return (
@@ -123,6 +132,12 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
                         >
                             Sign In
                         </Button>
+                        {authError && (
+                            <Row style={{ color: "red", padding: "10px" }}>
+                                Failed to sign in. Please check if your email or password has been entered
+                                correctly.
+                            </Row>
+                        )}
                         <Button
                             size="large"
                             variant="contained"

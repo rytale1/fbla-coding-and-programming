@@ -2,22 +2,17 @@ import { initializeApp } from "firebase/app";
 import {
     addDoc,
     collection,
-    doc,
-    getFirestore,
-    setDoc,
+    getFirestore
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 import {
     getAuth,
-    createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signInWithPopup,
     GoogleAuthProvider,
     signOut,
 } from "firebase/auth";
-
-import { useNavigate } from "react-router-dom";
 
 const firebaseConfig = {
     apiKey: "AIzaSyB-v-uOf04-To60EGhs1cqSW4pzLuuGCFY",
