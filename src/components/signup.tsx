@@ -81,49 +81,42 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
         }
         try {
             const googleAuth = await signUpWithGoogle(accountType);
-            if(googleAuth) {
+            if (googleAuth) {
                 let path = `/dashboard`;
                 navigate(path);
             } else {
-                alert("Google Sign In Unsuccessful")
+                alert("Google Sign In Unsuccessful");
                 setSignupError(true);
             }
         } catch (error) {
-            alert("Google Sign In Unsuccessful")
+            alert("Google Sign In Unsuccessful");
             setSignupError(true);
         }
-    }
+    };
 
     return (
         <Layout footer={2} headerBtn={true}>
-            <div className = "container" style ={{
-                backgroundImage: `url("/images/blurredbackground.jpg")`,
-                backgroundSize: "cover", // Optional: Adjust background size as needed
-                backgroundPosition: "center", // Optional: Adjust background position as needed
-                height: "800px",
-            }}>
-                <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                minHeight="100vh"
+            <div
+                className="container"
+                style={{
+                    backgroundImage: `url("/images/blurredbackground.jpg")`,
+                    backgroundSize: "cover", // Optional: Adjust background size as needed
+                    backgroundPosition: "center", // Optional: Adjust background position as needed
+                    height: "800px",
+                }}
             >
-                <Paper
-                    elevation={8}
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        width: "300px",
-                        padding: "20px",
-                        marginTop: "100px"
-                    }}
+                <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    minHeight="100vh"
                 >
                     <h2 style={{ marginBottom: "20px" }}>Sign Up</h2>
                     <form onSubmit={handleSubmit}>
                         <Row style={{ padding: "10px" }}>
-                        <InputLabel id="AccountTypeLabel">Account Type</InputLabel>
+                            <InputLabel id="AccountTypeLabel">
+                                Account Type
+                            </InputLabel>
                             <Select
                                 labelId="AccountTypeLabel"
                                 value={accountType}
@@ -132,7 +125,9 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                                 placeholder="Account Type"
                             >
                                 <MenuItem value={"Student"}>Student</MenuItem>
-                                <MenuItem value={"Staff"}>Administrator</MenuItem>
+                                <MenuItem value={"Staff"}>
+                                    Administrator
+                                </MenuItem>
                             </Select>
                         </Row>
                         <Row style={{ padding: "10px" }}>
@@ -221,8 +216,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                             Sign up with Google
                         </Button>
                     </form>
-                </Paper>
-            </Box>
+                </Box>
             </div>
         </Layout>
     );
