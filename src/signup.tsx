@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import "./signup.css";
 import { collection, addDoc } from "firebase/firestore";
-import { authenticateWithGoogle, createUser, createUserAndStoreAccountType, signUpWithGoogle } from "./firebase";
+import {
+    authenticateWithGoogle,
+    createUser,
+    createUserAndStoreAccountType,
+    signUpWithGoogle,
+} from "./firebase";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { Col, Row } from "react-bootstrap";
@@ -52,7 +57,6 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
     };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        alert("here1");
         event.preventDefault();
         if (password !== confirmPassword) {
             setPasswordError(true);
@@ -63,142 +67,151 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
             password,
             accountType
         );
-        if (success) redirect("/dashboard");
-        else setSignupError(true);
+        if (success) {
+            let path = `/dashboard`;
+            navigate(path);
+        } else setSignupError(true);
     };
 
     const googleLogin = async () => {
         try {
             const googleAuth = await signUpWithGoogle(accountType);
-            if(googleAuth) {
+            if (googleAuth) {
                 let path = `/dashboard`;
                 navigate(path);
             } else {
-                alert("Google Sign In Unsuccessful")
+                alert("Google Sign In Unsuccessful");
             }
         } catch (error) {
-            alert("Google Sign In Unsuccessful")
+            alert("Google Sign In Unsuccessful");
         }
-    }
+    };
 
     return (
         <Layout footer={2} headerBtn={true}>
-            <div className = "container" style ={{
-                backgroundImage: `url("/images/blurredbackground.jpg")`,
-                backgroundSize: "cover", // Optional: Adjust background size as needed
-                backgroundPosition: "center", // Optional: Adjust background position as needed
-                height: "800px",
-            }}>
-                <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                minHeight="100vh"
+            <div
+                className="container"
+                style={{
+                    backgroundImage: `url("/images/blurredbackground.jpg")`,
+                    backgroundSize: "cover", // Optional: Adjust background size as needed
+                    backgroundPosition: "center", // Optional: Adjust background position as needed
+                    height: "800px",
+                }}
             >
-                <Paper
-                    elevation={8}
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        width: "300px",
-                        padding: "20px",
-                        marginTop: "100px"
-                    }}
+                <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    minHeight="100vh"
                 >
-                    <h2 style={{ marginBottom: "20px" }}>Sign Up</h2>
-                    <form onSubmit={handleSubmit}>
-                        <Row style={{ padding: "10px" }}>
-                            <Select
-                                label="Account"
-                                id="demo-simple-select"
-                                value={accountType}
-                                onChange={handleAccountTypeChange}
-                                style={{ width: "241.54px" }}
+                    <Paper
+                        elevation={8}
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            width: "300px",
+                            padding: "20px",
+                            marginTop: "100px",
+                        }}
+                    >
+                        <h2 style={{ marginBottom: "20px" }}>Sign Up</h2>
+                        <form onSubmit={handleSubmit}>
+                            <Row style={{ padding: "10px" }}>
+                                <Select
+                                    label="Account"
+                                    id="demo-simple-select"
+                                    value={accountType}
+                                    onChange={handleAccountTypeChange}
+                                    style={{ width: "241.54px" }}
+                                >
+                                    <MenuItem value={"Student"}>
+                                        Student
+                                    </MenuItem>
+                                    <MenuItem value={"Staff"}>
+                                        Administrator
+                                    </MenuItem>
+                                </Select>
+                            </Row>
+                            <Row style={{ padding: "10px" }}>
+                                <input
+                                    type="text"
+                                    id="email"
+                                    value={email}
+                                    onChange={handleEmailChange}
+                                    placeholder="Email"
+                                    required
+                                />
+                            </Row>
+                            <Row style={{ padding: "10px" }}>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={handlePasswordChange}
+                                    required
+                                />
+                            </Row>
+                            <Row style={{ padding: "10px" }}>
+                                <input
+                                    type="password"
+                                    id="confirmPassword"
+                                    placeholder="Confirm Password"
+                                    value={confirmPassword}
+                                    onChange={handleConfirmPasswordChange}
+                                    required
+                                />
+                            </Row>
+                            {passwordError && (
+                                <Row style={{ color: "red", padding: "10px" }}>
+                                    Passwords do not match.
+                                </Row>
+                            )}
+                            {signUpError && (
+                                <Row style={{ color: "red", padding: "10px" }}>
+                                    Error registering user.
+                                    <br /> Try logging in
+                                </Row>
+                            )}
+                            <Button
+                                size="large"
+                                variant="contained"
+                                type="submit"
+                                sx={{
+                                    marginTop: "10px",
+                                    textAlign: "center",
+                                    fontSize: "1.0rem",
+                                    fontWeight: 600,
+                                    width: "100%",
+                                    height: 60,
+                                    backgroundColor: "primary.main",
+                                    textTransform: "none",
+                                }}
                             >
-                                <MenuItem value={"Student"}>Student</MenuItem>
-                                <MenuItem value={"Staff"}>Administrator</MenuItem>
-                            </Select>
-                        </Row>
-                        <Row style={{ padding: "10px" }}>
-                            <input
-                                type="text"
-                                id="email"
-                                value={email}
-                                onChange={handleEmailChange}
-                                placeholder="Email"
-                                required
-                            />
-                        </Row>
-                        <Row style={{ padding: "10px" }}>
-                            <input
-                                type="password"
-                                id="password"
-                                placeholder="Password"
-                                value={password}
-                                onChange={handlePasswordChange}
-                                required
-                            />
-                        </Row>
-                        <Row style={{ padding: "10px" }}>
-                            <input
-                                type="password"
-                                id="confirmPassword"
-                                placeholder="Confirm Password"
-                                value={confirmPassword}
-                                onChange={handleConfirmPasswordChange}
-                                required
-                            />
-                        </Row>
-                        {passwordError && (
-                            <Row style={{ color: "red", padding: "10px" }}>
-                                Passwords do not match.
-                            </Row>
-                        )}
-                        {signUpError && (
-                            <Row style={{ color: "red", padding: "10px" }}>
-                                Error registering user.
-                                <br /> Try logging in
-                            </Row>
-                        )}
-                        <Button
-                            size="large"
-                            variant="contained"
-                            type="submit"
-                            sx={{
-                                marginTop: "10px",
-                                textAlign: "center",
-                                fontSize: "1.0rem",
-                                fontWeight: 600,
-                                width: "100%",
-                                height: 60,
-                                backgroundColor: "primary.main",
-                                textTransform: "none",
-                            }}
-                        >
-                            Sign Up
-                        </Button>
-                        <Button
-                            size="large"
-                            variant="contained"
-                            onClick={() => googleLogin()}
-                            sx={{
-                                marginTop: "10px",
-                                textAlign: "center",
-                                fontSize: "1.0rem",
-                                fontWeight: 600,
-                                width: "100%",
-                                height: 60,
-                                backgroundColor: "primary.main",
-                                textTransform: "none",
-                            }}
-                        >
-                            Sign up with Google
-                        </Button>
-                    </form>
-                </Paper>
-            </Box>
+                                Sign Up
+                            </Button>
+                            <Button
+                                size="large"
+                                variant="contained"
+                                onClick={() => googleLogin()}
+                                sx={{
+                                    marginTop: "10px",
+                                    textAlign: "center",
+                                    fontSize: "1.0rem",
+                                    fontWeight: 600,
+                                    width: "100%",
+                                    height: 60,
+                                    backgroundColor: "primary.main",
+                                    textTransform: "none",
+                                }}
+                            >
+                                Sign up with Google
+                            </Button>
+                        </form>
+                    </Paper>
+                </Box>
             </div>
         </Layout>
     );

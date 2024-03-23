@@ -142,7 +142,7 @@ const Home: React.FC<HomePageProps> = () => {
                                             backgroundColor: "primary.main",
                                             textTransform: "none",
                                         }}
-                                        onClick={() => scrollTo("instructions")}
+                                        onClick={routeLogin}
                                     >
                                         Get Started
                                     </Button>
@@ -152,11 +152,11 @@ const Home: React.FC<HomePageProps> = () => {
                     </div>
                 </section>
                 {/* About Section */}
-                <section className="section bg-light"  id = "about">
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
+                <section className="section bg-light" id="about">
+                    <br />
+                    <br />
+                    <br />
+                    <br />
                     <div className="container">
                         <h2
                             className="section-title"
@@ -204,11 +204,11 @@ const Home: React.FC<HomePageProps> = () => {
                     </div>
                 </section>
                 {/* Getting Started Section */}
-                <section className="section bg-light"  id = "instructions">
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
+                <section className="section bg-light" id="instructions">
+                    <br />
+                    <br />
+                    <br />
+                    <br />
                     <div className="container">
                         <h2
                             className="section-title"
@@ -226,13 +226,14 @@ const Home: React.FC<HomePageProps> = () => {
                         style={{
                             display: "flex",
                             padding: "40px",
-                            justifyContent: "vertical"
+                            justifyContent: "vertical",
                         }}
                     >
                         <p
                             style={{
                                 width: "75%",
-                            }}>
+                            }}
+                        >
                             <img
                                 src="images/thumbnail2.png"
                                 width="450"
@@ -241,16 +242,17 @@ const Home: React.FC<HomePageProps> = () => {
                                     marginRight: "30px",
                                 }}
                             />
-                            Are you a registered user? If so please sign in. Else please head 
-                            over to the sign up page by clicking the button on the top right.
-                            <br/>
-                            <br/>
-                            <h5>
-                                Signing up
-                            </h5>
-                            All we need is your email and a password! You can also choose to sign up with Google.
-                            You can also sign up as either a school administrator or student. If you
-                            sign up as a student, you will have no edit permissions to the database.
+                            Are you a registered user? If so please sign in.
+                            Else please head over to the sign up page by
+                            clicking the button on the top right.
+                            <br />
+                            <br />
+                            <h5>Signing up</h5>
+                            All we need is your email and a password! You can
+                            also choose to sign up with Google. You can also
+                            sign up as either a school administrator or student.
+                            If you sign up as a student, you will have no edit
+                            permissions to the database.
                         </p>
                     </div>
                 </section>

@@ -54,7 +54,6 @@ const Header = ({
 
     const logoutAndSendHome = () => {
         logout();
-        alert("Signed Out Successfully!");
         window.location.href = "/";
     };
 
