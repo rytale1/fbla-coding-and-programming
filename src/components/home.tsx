@@ -108,7 +108,7 @@ const Home: React.FC<HomePageProps> = () => {
                                             backgroundColor: "primary.main",
                                             textTransform: "none",
                                         }}
-                                        onClick={routeLogin}
+                                        onClick={() => scrollTo("instructions")}
                                     >
                                         Get Started
                                     </Button>
@@ -210,30 +210,17 @@ const Home: React.FC<HomePageProps> = () => {
                                 }}
                                 alt="example signup"
                             />
-<<<<<<< HEAD:src/home.tsx
-                            Are you a registered user? If so please sign in.
-                            Else please head over to the sign up page by
-                            clicking the button on the top right.
+                            Are you a registered user? Sign in by clicking the
+                            sign in button on the top right. If not, then please
+                            sign up.
                             <br />
                             <br />
                             <h5>Signing up</h5>
                             All we need is your email and a password! You can
-                            also choose to sign up with Google. You can also
-                            sign up as either a school administrator or student.
-                            If you sign up as a student, you will have no edit
+                            also choose to sign up with Google. You can sign up
+                            as either a school administrator or student. If you
+                            sign up as a student, you will have no edit
                             permissions to the database.
-=======
-                            Are you a registered user? Sign in by clicking the sign in button on the 
-                            top right. If not, then please sign up.
-                            <br/>
-                            <br/>
-                            <h5>
-                                Signing up
-                            </h5>
-                            All we need is your email and a password! You can also choose to sign up with Google.
-                            You can sign up as either a school administrator or student. If you
-                            sign up as a student, you will have no edit permissions to the database.
->>>>>>> 824303cfe0ac817b76cef1d02eefa3aad49901bd:src/components/home.tsx
                         </p>
                     </div>
                 </section>

@@ -36,43 +36,6 @@ export { storage };
 export const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
-<<<<<<< HEAD:src/firebase.tsx
-export async function createUserAndStoreAccountType(
-    email: string,
-    pass: string,
-    accountType: string
-): Promise<boolean> {
-    try {
-        const newUser = await createUserWithEmailAndPassword(auth, email, pass);
-        const userRef = collection(db, "users");
-        await addDoc(userRef, {
-            uid: newUser.user.uid,
-            accountType: accountType,
-        });
-        return true;
-    } catch (e) {
-        alert(
-            "Error creating user and storing account type" + JSON.stringify(e)
-        );
-        return false;
-    }
-}
-
-export async function createUser(
-    email: string,
-    pass: string
-): Promise<boolean> {
-    try {
-        const newUser = await createUserWithEmailAndPassword(auth, email, pass);
-        return true;
-    } catch (e) {
-        console.error("Error creating user", e);
-        return false;
-    }
-}
-
-=======
->>>>>>> 824303cfe0ac817b76cef1d02eefa3aad49901bd:src/auth.tsx
 export async function authenticateUser(
     email: string,
     pass: string

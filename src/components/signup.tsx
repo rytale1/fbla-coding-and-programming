@@ -1,18 +1,7 @@
 import React, { useState } from "react";
-<<<<<<< HEAD:src/signup.tsx
-import "./signup.css";
-import { collection, addDoc } from "firebase/firestore";
-import {
-    authenticateWithGoogle,
-    createUser,
-    createUserAndStoreAccountType,
-    signUpWithGoogle,
-} from "./firebase";
-=======
 import "../css/signup.css";
 import { signUpWithGoogle } from "../auth";
 import { createUserAndStoreAccountType } from "../db";
->>>>>>> 824303cfe0ac817b76cef1d02eefa3aad49901bd:src/components/signup.tsx
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { Row } from "react-bootstrap";
@@ -81,15 +70,8 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
             password,
             accountType
         );
-<<<<<<< HEAD:src/signup.tsx
-        if (success) {
-            let path = `/dashboard`;
-            navigate(path);
-        } else setSignupError(true);
-=======
         if (success) navigate("/dashboard");
         else setSignupError(true);
->>>>>>> 824303cfe0ac817b76cef1d02eefa3aad49901bd:src/components/signup.tsx
     };
 
     const googleLogin = async () => {
@@ -103,19 +85,12 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                 let path = `/dashboard`;
                 navigate(path);
             } else {
-<<<<<<< HEAD:src/signup.tsx
                 alert("Google Sign In Unsuccessful");
-            }
-        } catch (error) {
-            alert("Google Sign In Unsuccessful");
-=======
-                alert("Google Sign In Unsuccessful")
                 setSignupError(true);
             }
         } catch (error) {
-            alert("Google Sign In Unsuccessful")
+            alert("Google Sign In Unsuccessful");
             setSignupError(true);
->>>>>>> 824303cfe0ac817b76cef1d02eefa3aad49901bd:src/components/signup.tsx
         }
     };
 
@@ -136,120 +111,12 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                     alignItems="center"
                     minHeight="100vh"
                 >
-<<<<<<< HEAD:src/signup.tsx
-                    <Paper
-                        elevation={8}
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            width: "300px",
-                            padding: "20px",
-                            marginTop: "100px",
-                        }}
-                    >
-                        <h2 style={{ marginBottom: "20px" }}>Sign Up</h2>
-                        <form onSubmit={handleSubmit}>
-                            <Row style={{ padding: "10px" }}>
-                                <Select
-                                    label="Account"
-                                    id="demo-simple-select"
-                                    value={accountType}
-                                    onChange={handleAccountTypeChange}
-                                    style={{ width: "241.54px" }}
-                                >
-                                    <MenuItem value={"Student"}>
-                                        Student
-                                    </MenuItem>
-                                    <MenuItem value={"Staff"}>
-                                        Administrator
-                                    </MenuItem>
-                                </Select>
-                            </Row>
-                            <Row style={{ padding: "10px" }}>
-                                <input
-                                    type="text"
-                                    id="email"
-                                    value={email}
-                                    onChange={handleEmailChange}
-                                    placeholder="Email"
-                                    required
-                                />
-                            </Row>
-                            <Row style={{ padding: "10px" }}>
-                                <input
-                                    type="password"
-                                    id="password"
-                                    placeholder="Password"
-                                    value={password}
-                                    onChange={handlePasswordChange}
-                                    required
-                                />
-                            </Row>
-                            <Row style={{ padding: "10px" }}>
-                                <input
-                                    type="password"
-                                    id="confirmPassword"
-                                    placeholder="Confirm Password"
-                                    value={confirmPassword}
-                                    onChange={handleConfirmPasswordChange}
-                                    required
-                                />
-                            </Row>
-                            {passwordError && (
-                                <Row style={{ color: "red", padding: "10px" }}>
-                                    Passwords do not match.
-                                </Row>
-                            )}
-                            {signUpError && (
-                                <Row style={{ color: "red", padding: "10px" }}>
-                                    Error registering user.
-                                    <br /> Try logging in
-                                </Row>
-                            )}
-                            <Button
-                                size="large"
-                                variant="contained"
-                                type="submit"
-                                sx={{
-                                    marginTop: "10px",
-                                    textAlign: "center",
-                                    fontSize: "1.0rem",
-                                    fontWeight: 600,
-                                    width: "100%",
-                                    height: 60,
-                                    backgroundColor: "primary.main",
-                                    textTransform: "none",
-                                }}
-                            >
-                                Sign Up
-                            </Button>
-                            <Button
-                                size="large"
-                                variant="contained"
-                                onClick={() => googleLogin()}
-                                sx={{
-                                    marginTop: "10px",
-                                    textAlign: "center",
-                                    fontSize: "1.0rem",
-                                    fontWeight: 600,
-                                    width: "100%",
-                                    height: 60,
-                                    backgroundColor: "primary.main",
-                                    textTransform: "none",
-                                }}
-                            >
-                                Sign up with Google
-                            </Button>
-                        </form>
-                    </Paper>
-                </Box>
-=======
                     <h2 style={{ marginBottom: "20px" }}>Sign Up</h2>
                     <form onSubmit={handleSubmit}>
                         <Row style={{ padding: "10px" }}>
-                        <InputLabel id="AccountTypeLabel">Account Type</InputLabel>
+                            <InputLabel id="AccountTypeLabel">
+                                Account Type
+                            </InputLabel>
                             <Select
                                 labelId="AccountTypeLabel"
                                 value={accountType}
@@ -258,7 +125,9 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                                 placeholder="Account Type"
                             >
                                 <MenuItem value={"Student"}>Student</MenuItem>
-                                <MenuItem value={"Staff"}>Administrator</MenuItem>
+                                <MenuItem value={"Staff"}>
+                                    Administrator
+                                </MenuItem>
                             </Select>
                         </Row>
                         <Row style={{ padding: "10px" }}>
@@ -347,9 +216,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                             Sign up with Google
                         </Button>
                     </form>
-                </Paper>
-            </Box>
->>>>>>> 824303cfe0ac817b76cef1d02eefa3aad49901bd:src/components/signup.tsx
+                </Box>
             </div>
         </Layout>
     );
