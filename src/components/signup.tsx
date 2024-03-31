@@ -118,14 +118,20 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                         <h2 style={{ marginBottom: "20px" }}>Sign Up</h2>
                         <form onSubmit={handleSubmit}>
                             <Row style={{ padding: "10px" }}>
-                                <InputLabel id="AccountTypeLabel">
+                                <InputLabel id="AccountTypeLabel"
+                                style = {{
+                                    marginLeft: "12.5px"
+                                }}>
                                     Account Type
                                 </InputLabel>
                                 <Select
                                     labelId="AccountTypeLabel"
                                     value={accountType}
                                     onChange={handleAccountTypeChange}
-                                    style={{ width: "241.54px" }}
+                                    style={{ 
+                                        width: "241.54px",
+                                        marginLeft: "12.5px"
+                                    }}
                                     placeholder="Account Type"
                                 >
                                     <MenuItem value={"Student"}>
@@ -143,6 +149,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                                     value={email}
                                     onChange={handleEmailChange}
                                     placeholder="Email"
+                                    style = {{marginLeft: "10px"}}
                                     required
                                 />
                             </Row>
@@ -158,6 +165,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                                     placeholder="Password"
                                     value={password}
                                     onChange={handlePasswordChange}
+                                    style = {{marginLeft: "10px"}}
                                     required
                                 />
                             </Row>
@@ -168,6 +176,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                                     placeholder="Confirm Password"
                                     value={confirmPassword}
                                     onChange={handleConfirmPasswordChange}
+                                    style = {{marginLeft: "10px"}}
                                     required
                                 />
                             </Row>

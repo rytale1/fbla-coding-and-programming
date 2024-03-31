@@ -142,12 +142,13 @@ const Home: React.FC<HomePageProps> = () => {
                     >
                         <p
                             style={{
-                                width: "75%",
+                                width: "100%",
+                                fontSize: "50"
                             }}
                         >
                             <img
                                 src="images/thumbnail1.png"
-                                width="450"
+                                width="750"
                                 style={{
                                     float: "left",
                                     marginRight: "30px",
@@ -196,12 +197,12 @@ const Home: React.FC<HomePageProps> = () => {
                     >
                         <p
                             style={{
-                                width: "75%",
+                                width: "100%",
                             }}
                         >
                             <img
                                 src="images/thumbnail2.png"
-                                width="450"
+                                width="750"
                                 style={{
                                     float: "left",
                                     marginRight: "30px",
