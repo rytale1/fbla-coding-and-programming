@@ -34,6 +34,7 @@ import { User, onAuthStateChanged } from "firebase/auth";
 import { auth, db, logout } from "../auth";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { validateLength, validateUrl } from "../utils";
 
 interface DashboardProps {}
 interface Entry {
@@ -83,6 +84,16 @@ const Dashboard: React.FC<DashboardProps> = () => {
     const [partners, setPartners] = useState<Entry[]>([]);
     const [refresh, setRefresh] = useState(true);
     const [isAdmin, setIsAdmin] = useState(false);
+
+    // Error state to validate the different fields
+    const [orgNameError, setOrgNameError] = useState(false);
+    const [urlError, setUrlError] = useState(false);
+    const [addressError, setAddressError] = useState(false);
+    const [descriptionError, setDescriptionError] = useState(false);
+    const [orgTypeError, setOrgTypeError] = useState(false);
+    const [partnershipError, setPartnershipError] = useState(false);
+    const [resourcesError, setResourcesError] = useState(false);
+    const [targetError, setTargetError] = useState(false);
 
     const fetchPartners = async () => {
         const partnersCollection = collection(db, "Partners"); // Assuming "partners" is your collection name
@@ -152,16 +163,64 @@ const Dashboard: React.FC<DashboardProps> = () => {
     };
 
     const handleOpenDialog = () => {
-        setOpenDialog(true);
+        resetErrors();
         setCurrentPage(0);
+        setOpenDialog(true);
     };
 
     const handleCloseDialog = () => {
         setOpenDialog(false);
     };
 
+    const resetErrors = () => {
+        // Reset all error codes
+        setOrgNameError(false);
+        setUrlError(false);
+        setAddressError(false);
+        setDescriptionError(false);
+        setOrgTypeError(false);
+        setPartnershipError(false);
+        setResourcesError(false);
+        setTargetError(false);
+    };
     const handleNext = () => {
-        setCurrentPage(1); // Switch to contact info page
+        resetErrors();
+        let errors = 0;
+        // Test all the different fields and validate them
+        if (!validateLength(formData.businessname)) {
+            setOrgNameError(true);
+            errors++;
+        }
+        if (!validateUrl(formData.website)) {
+            setUrlError(true);
+            errors++;
+        }
+        if (!validateLength(formData.address)) {
+            setAddressError(true);
+            errors++;
+        }
+        if (!validateLength(formData.description)) {
+            setDescriptionError(true);
+            errors++;
+        }
+        if (formData.organizationType === "") {
+            setOrgTypeError(true);
+            errors++;
+        }
+        if (formData.partnershipType === "") {
+            setPartnershipError(true);
+            errors++;
+        }
+        if (formData.resourcesAvailable.length === 0) {
+            setResourcesError(true);
+            errors++;
+        }
+        if (formData.targetAudience.length == 0) {
+            setTargetError(true);
+            errors++;
+        }
+        // Switch to next page if there are no errors
+        if (errors === 0) setCurrentPage(1);
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -194,7 +253,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 await addDoc(setRef, formData);
             }
         } catch (e: any) {
-            console.log("Error adding document" + e.message)
+            console.log("Error adding document" + e.message);
         }
         setEditMode(false); // Reset edit mode after submission
         setOpenDialog(false);
@@ -267,15 +326,18 @@ const Dashboard: React.FC<DashboardProps> = () => {
         useState<string>("");
     const [resourcesAvailableFilter, setResourcesAvailableFilter] =
         useState<string>("");
-    const [businessNameFilter, setBusinessNameFilter] =
-    useState<string>("");
+    const [businessNameFilter, setBusinessNameFilter] = useState<string>("");
 
     const handleOrganizationTypeChange = (
         event: React.ChangeEvent<HTMLSelectElement>
     ) => {
         const selectedOrganizationType = event.target.value;
         setOrganizationTypeFilter(selectedOrganizationType);
-        filterPartners(selectedOrganizationType, resourcesAvailableFilter, businessNameFilter);
+        filterPartners(
+            selectedOrganizationType,
+            resourcesAvailableFilter,
+            businessNameFilter
+        );
     };
 
     const handleResourcesAvailableChange = (
@@ -283,16 +345,24 @@ const Dashboard: React.FC<DashboardProps> = () => {
     ) => {
         const selectedResourcesAvailable = event.target.value;
         setResourcesAvailableFilter(selectedResourcesAvailable);
-        filterPartners(organizationTypeFilter, selectedResourcesAvailable, businessNameFilter);
+        filterPartners(
+            organizationTypeFilter,
+            selectedResourcesAvailable,
+            businessNameFilter
+        );
     };
 
     const handleBusinessNameChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        console.log("here", event)
+        console.log("here", event);
         const businessName = event.target.value;
         setBusinessNameFilter(businessName);
-        filterPartners(organizationTypeFilter, resourcesAvailableFilter, businessName);
+        filterPartners(
+            organizationTypeFilter,
+            resourcesAvailableFilter,
+            businessName
+        );
     };
 
     const filterPartners = async (
@@ -313,7 +383,9 @@ const Dashboard: React.FC<DashboardProps> = () => {
         }
         if (businessName) {
             filteredPartners = filteredPartners.filter((partner) =>
-                partner.businessname.toLowerCase().includes(businessName.toLowerCase())
+                partner.businessname
+                    .toLowerCase()
+                    .includes(businessName.toLowerCase())
             );
         }
         setPartners(filteredPartners);
@@ -324,193 +396,292 @@ const Dashboard: React.FC<DashboardProps> = () => {
             const uid = user.uid;
             const q = query(collection(db, "users"), where("uid", "==", uid));
             const qSnapshot = await getDocs(q);
-            qSnapshot.forEach(((doc) => {
-                if(doc.data().accountType === "Staff") {
+            qSnapshot.forEach((doc) => {
+                if (doc.data().accountType === "Staff") {
                     setIsAdmin(true);
                 } else {
                     setIsAdmin(false);
                 }
-            }));
-        } 
+            });
+        }
     });
 
     return (
         <Layout footer={2} headerBtn={true}>
-            {isAdmin && 
-            <Dialog
-                open={openDialog}
-                onClose={handleCloseDialog}
-                style={{ width: "1500px" }}
-            >
-                <DialogTitle>Add Partner</DialogTitle>
-                <DialogContent style={{ }}>
-                    {currentPage === 0 && (
-                        <form noValidate autoComplete="off" style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "20px"
-                        }}>
-                            <TextField
-                                name="businessname"
-                                label="Name"
-                                value={formData.businessname}
-                                onChange={handleInputChange}
+            {isAdmin && (
+                <Dialog
+                    open={openDialog}
+                    onClose={handleCloseDialog}
+                    style={{ width: "1500px" }}
+                >
+                    <DialogTitle>Add Partner</DialogTitle>
+                    <DialogContent style={{}}>
+                        {currentPage === 0 && (
+                            <form
+                                noValidate
+                                autoComplete="off"
                                 style={{
-                                    width: "550px",
-                                    marginTop: "5px",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: "20px",
                                 }}
-                            />
-                            <TextField
-                                name="website"
-                                label="Website"
-                                value={formData.website}
-                                onChange={handleInputChange}
-                                style={{ width: "550px",}}
-                            />
-                            <TextField
-                                name="address"
-                                label="Address"
-                                value={formData.address}
-                                onChange={handleInputChange}
-                                style={{ width: "550px",}}
-                            />
-                            <TextField
-                                name="description"
-                                label="Description"
-                                value={formData.description}
-                                onChange={handleInputChange}
-                                style={{ width: "550px",}}
-                                multiline
-                                rows={4}
-                            />
-                            <TextField
-                                select
-                                name="organizationType"
-                                label="Organization Type"
-                                value={formData.organizationType}
-                                onChange={handleInputChange}
-                                style={{ width: "550px",}}
                             >
-                                <MenuItem value="Education Institution">
-                                    Education Institution
-                                </MenuItem>
-                                <MenuItem value="Industry Partner">
-                                    Industry Partner
-                                </MenuItem>
-                                <MenuItem value="Non-profit Organization">
-                                    Non-profit Organization
-                                </MenuItem>
-                                <MenuItem value="Government Agency">
-                                    Government Agency
-                                </MenuItem>
-                                {/* Add more options as needed */}
-                            </TextField>
-                            <TextField
-                                select
-                                name="partnershipType"
-                                label="Partnership Type"
-                                value={formData.partnershipType}
-                                onChange={handleInputChange}
-                                style={{ width: "550px",}}
-                            >
-                                <MenuItem value="Internship Program">
-                                    Internship Program
-                                </MenuItem>
-                                <MenuItem value="Apprenticeship">
-                                    Apprenticeship
-                                </MenuItem>
-                                <MenuItem value="Work-Based Learning">
-                                    Work-Based Learning
-                                </MenuItem>
-                                <MenuItem value="Curriculum Development">
-                                    Curriculum Development
-                                </MenuItem>
-                                {/* Add more options as needed */}
-                            </TextField>
-                            <TextField
-                                select
-                                name="resourcesAvailable"
-                                label="Resources Available"
-                                value={formData.resourcesAvailable}
-                                onChange={handleInputChange}
-                                style={{ width: "550px",}}
-                            >
-                                <MenuItem value="Mentoring">Mentoring</MenuItem>
-                                <MenuItem value="Internships">
-                                    Internships
-                                </MenuItem>
-                                <MenuItem value="Workshops">Workshops</MenuItem>
-                                {/* Add more options as needed */}
-                            </TextField>
-                            <TextField
-                                select
-                                name="targetAudience"
-                                label="Target Audience"
-                                value={formData.targetAudience}
-                                onChange={handleInputChange}
-                                style={{ width: "550px",}}
-                            >
-                                <MenuItem value="Freshman">Freshmen</MenuItem>
-                                <MenuItem value="Sophomore">
-                                    Sophomores
-                                </MenuItem>
-                                <MenuItem value="Junior">Juniors</MenuItem>
-                                <MenuItem value="Senior">Seniors</MenuItem>
-                                <MenuItem value="Any">Any</MenuItem>
-                                {/* Add more options as needed */}
-                            </TextField>
-                        </form>
-                    )}
-                    {currentPage === 1 && (
-                        <form noValidate autoComplete="off" style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "20px"
-                        }}>
-                            <TextField
-                                name="name"
-                                label="Contact Name"
-                                value={formData.contactInfo.name}
-                                onChange={handleInputChange}
+                                <TextField
+                                    name="businessname"
+                                    label="Organization Name"
+                                    value={formData.businessname}
+                                    onChange={handleInputChange}
+                                    style={{
+                                        width: "550px",
+                                        marginTop: "5px",
+                                    }}
+                                />
+                                {orgNameError && (
+                                    <Row
+                                        style={{
+                                            color: "red",
+                                            padding: "10px",
+                                        }}
+                                    >
+                                        Please enter more than 5 characters.
+                                    </Row>
+                                )}
+                                <TextField
+                                    name="website"
+                                    label="Website"
+                                    value={formData.website}
+                                    onChange={handleInputChange}
+                                    style={{ width: "550px" }}
+                                />
+                                {urlError && (
+                                    <Row
+                                        style={{
+                                            color: "red",
+                                            padding: "10px",
+                                        }}
+                                    >
+                                        URL is invalid. Please enter a valid URL
+                                        starting with https://
+                                    </Row>
+                                )}
+                                <TextField
+                                    name="address"
+                                    label="Address"
+                                    value={formData.address}
+                                    onChange={handleInputChange}
+                                    style={{ width: "550px" }}
+                                />
+                                {addressError && (
+                                    <Row
+                                        style={{
+                                            color: "red",
+                                            padding: "10px",
+                                        }}
+                                    >
+                                        Please enter more than 5 characters.
+                                    </Row>
+                                )}
+                                <TextField
+                                    name="description"
+                                    label="Description"
+                                    value={formData.description}
+                                    onChange={handleInputChange}
+                                    style={{ width: "550px" }}
+                                    multiline
+                                    rows={4}
+                                />
+                                {descriptionError && (
+                                    <Row
+                                        style={{
+                                            color: "red",
+                                            padding: "10px",
+                                        }}
+                                    >
+                                        Please enter a more detailed
+                                        description.
+                                    </Row>
+                                )}
+                                <TextField
+                                    select
+                                    name="organizationType"
+                                    label="Organization Type"
+                                    value={formData.organizationType}
+                                    onChange={handleInputChange}
+                                    style={{ width: "550px" }}
+                                >
+                                    <MenuItem value="Education Institution">
+                                        Education Institution
+                                    </MenuItem>
+                                    <MenuItem value="Industry Partner">
+                                        Industry Partner
+                                    </MenuItem>
+                                    <MenuItem value="Non-profit Organization">
+                                        Non-profit Organization
+                                    </MenuItem>
+                                    <MenuItem value="Government Agency">
+                                        Government Agency
+                                    </MenuItem>
+                                    {/* Add more options as needed */}
+                                </TextField>
+                                {orgTypeError && (
+                                    <Row
+                                        style={{
+                                            color: "red",
+                                            padding: "10px",
+                                        }}
+                                    >
+                                        Please select an organization type.
+                                    </Row>
+                                )}
+                                <TextField
+                                    select
+                                    name="partnershipType"
+                                    label="Partnership Type"
+                                    value={formData.partnershipType}
+                                    onChange={handleInputChange}
+                                    style={{ width: "550px" }}
+                                >
+                                    <MenuItem value="Internship Program">
+                                        Internship Program
+                                    </MenuItem>
+                                    <MenuItem value="Apprenticeship">
+                                        Apprenticeship
+                                    </MenuItem>
+                                    <MenuItem value="Work-Based Learning">
+                                        Work-Based Learning
+                                    </MenuItem>
+                                    <MenuItem value="Curriculum Development">
+                                        Curriculum Development
+                                    </MenuItem>
+                                    {/* Add more options as needed */}
+                                </TextField>
+                                {partnershipError && (
+                                    <Row
+                                        style={{
+                                            color: "red",
+                                            padding: "10px",
+                                        }}
+                                    >
+                                        Please select a partnership type.
+                                    </Row>
+                                )}
+                                <TextField
+                                    select
+                                    name="resourcesAvailable"
+                                    label="Resources Available"
+                                    value={formData.resourcesAvailable}
+                                    onChange={handleInputChange}
+                                    style={{ width: "550px" }}
+                                >
+                                    <MenuItem value="Mentoring">
+                                        Mentoring
+                                    </MenuItem>
+                                    <MenuItem value="Internships">
+                                        Internships
+                                    </MenuItem>
+                                    <MenuItem value="Workshops">
+                                        Workshops
+                                    </MenuItem>
+                                    {/* Add more options as needed */}
+                                </TextField>
+                                {resourcesError && (
+                                    <Row
+                                        style={{
+                                            color: "red",
+                                            padding: "10px",
+                                        }}
+                                    >
+                                        Please select a resource.
+                                    </Row>
+                                )}
+                                <TextField
+                                    select
+                                    name="targetAudience"
+                                    label="Target Audience"
+                                    value={formData.targetAudience}
+                                    onChange={handleInputChange}
+                                    style={{ width: "550px" }}
+                                >
+                                    <MenuItem value="Freshman">
+                                        Freshmen
+                                    </MenuItem>
+                                    <MenuItem value="Sophomore">
+                                        Sophomores
+                                    </MenuItem>
+                                    <MenuItem value="Junior">Juniors</MenuItem>
+                                    <MenuItem value="Senior">Seniors</MenuItem>
+                                    <MenuItem value="Any">Any</MenuItem>
+                                    {/* Add more options as needed */}
+                                </TextField>
+                                {targetError && (
+                                    <Row
+                                        style={{
+                                            color: "red",
+                                            padding: "10px",
+                                        }}
+                                    >
+                                        Please select a target group.
+                                    </Row>
+                                )}
+                            </form>
+                        )}
+                        {currentPage === 1 && (
+                            <form
+                                noValidate
+                                autoComplete="off"
                                 style={{
-                                    width: "550px",
-                                    marginTop: "5px",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: "20px",
                                 }}
-                            />
-                            <TextField
-                                name="email"
-                                label="Contact Email"
-                                value={formData.contactInfo.email}
-                                onChange={handleInputChange}
-                                style={{ width: "550px", }}
-                            />
-                            <TextField
-                                name="phone"
-                                label="Contact Phone"
-                                value={formData.contactInfo.phone}
-                                onChange={handleInputChange}
-                                style={{ width: "550px", }}
-                            />
-                        </form>
-                    )}
-                </DialogContent>
-                <DialogActions>
-                    {currentPage === 0 && (
-                        <Button onClick={handleCloseDialog}>Cancel</Button>
-                    )}
-                    {currentPage === 0 && (
-                        <Button onClick={handleNext}>Next</Button>
-                    )}
-                    {currentPage === 1 && (
-                        <Button onClick={() => setCurrentPage(0)}>Back</Button>
-                    )}
-                    {currentPage === 1 && (
-                        <Button onClick={handleSubmit} color="primary">
-                            Submit
-                        </Button>
-                    )}
-                </DialogActions>
-            </Dialog>}
+                            >
+                                <TextField
+                                    name="name"
+                                    label="Contact Name"
+                                    value={formData.contactInfo.name}
+                                    onChange={handleInputChange}
+                                    style={{
+                                        width: "550px",
+                                        marginTop: "5px",
+                                    }}
+                                />
+                                <TextField
+                                    name="email"
+                                    label="Contact Email"
+                                    value={formData.contactInfo.email}
+                                    onChange={handleInputChange}
+                                    style={{ width: "550px" }}
+                                />
+                                <TextField
+                                    name="phone"
+                                    label="Contact Phone"
+                                    value={formData.contactInfo.phone}
+                                    onChange={handleInputChange}
+                                    style={{ width: "550px" }}
+                                />
+                            </form>
+                        )}
+                    </DialogContent>
+                    <DialogActions>
+                        {currentPage === 0 && (
+                            <Button onClick={handleCloseDialog}>Cancel</Button>
+                        )}
+                        {currentPage === 0 && (
+                            <Button onClick={handleNext}>Next</Button>
+                        )}
+                        {currentPage === 1 && (
+                            <Button onClick={() => setCurrentPage(0)}>
+                                Back
+                            </Button>
+                        )}
+                        {currentPage === 1 && (
+                            <Button onClick={handleSubmit} color="primary">
+                                Submit
+                            </Button>
+                        )}
+                    </DialogActions>
+                </Dialog>
+            )}
             <div style={{ marginTop: "100px", padding: "10px" }}>
                 <Row>
                     <Col>
@@ -547,10 +718,8 @@ const Dashboard: React.FC<DashboardProps> = () => {
                             <select
                                 id="resourcesAvailable"
                                 onChange={handleResourcesAvailableChange}
-                                style=
-                                {{ 
+                                style={{
                                     marginLeft: "5px",
-                                    
                                 }}
                             >
                                 <option value="">All</option>
@@ -569,22 +738,25 @@ const Dashboard: React.FC<DashboardProps> = () => {
                             <input
                                 id="businessName"
                                 onChange={handleBusinessNameChange}
-                                style={{ 
+                                style={{
                                     marginLeft: "5px",
                                     width: "150px",
                                     height: "30px",
                                     borderRadius: "0",
-                                    borderColor: "#000000"
+                                    borderColor: "#000000",
                                 }}
                             />
                         </div>
                     </Col>
                     <Col style={{ textAlign: "right" }}>
-                        {isAdmin && 
-                            <Button variant="outlined" onClick={handleOpenDialog}>
-                            Add Partner
+                        {isAdmin && (
+                            <Button
+                                variant="outlined"
+                                onClick={handleOpenDialog}
+                            >
+                                Add Partner
                             </Button>
-                        }
+                        )}
                     </Col>
                 </Row>
             </div>
@@ -729,7 +901,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                             cursor: "pointer",
                                             borderBottom: "1px solid #ddd",
                                             transition: "background-color 0.3s",
-                                            padding: "10px 0 0 0"
+                                            padding: "10px 0 0 0",
                                         }}
                                     >
                                         <Col md="2">{partner.businessname}</Col>
