@@ -42,9 +42,10 @@ import {
     validateLength,
     validateUrl,
 } from "../utils";
+import DashboardList from "./dashboard_list";
 
 interface DashboardProps {}
-interface Entry {
+export interface PartnerEntry {
     id: string;
     businessname: string; // Name of the partner
     organizationType: string; // Type of organization (e.g., Education Institution, Industry Partner, Non-profit Organization, Government Agency)
@@ -67,7 +68,8 @@ const Dashboard: React.FC<DashboardProps> = () => {
     const [sortField, setSortField] = useState("businessname");
     const navigate = useNavigate();
     const [openDialog, setOpenDialog] = useState(false);
-    const [selectedPartner, setSelectedPartner] = useState<Entry | null>();
+    const [selectedPartner, setSelectedPartner] =
+        useState<PartnerEntry | null>();
     const [openModal, setOpenModal] = useState(false);
     const initialFormData = {
         id: "",
@@ -85,11 +87,11 @@ const Dashboard: React.FC<DashboardProps> = () => {
         partnershipType: "",
         targetAudience: [],
     };
-    const [formData, setFormData] = useState<Entry>(initialFormData);
+    const [formData, setFormData] = useState<PartnerEntry>(initialFormData);
     const [uid, setUid] = useState("");
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
-    const [partners, setPartners] = useState<Entry[]>([]);
+    const [partners, setPartners] = useState<PartnerEntry[]>([]);
     const [refresh, setRefresh] = useState(true);
     const [isAdmin, setIsAdmin] = useState(false);
 
@@ -117,8 +119,8 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 //      console.log(JSON.stringify(doc.data()));
             });
         }
-        const partnersData: Entry[] = snapshot.docs.map((doc) => {
-            const data = doc.data() as Entry;
+        const partnersData: PartnerEntry[] = snapshot.docs.map((doc) => {
+            const data = doc.data() as PartnerEntry;
             return { ...data, id: doc.id }; // Include the id field from doc
         });
         //        const partnersData = snapshot.docs.map((doc) => doc.data() as Entry);
@@ -137,7 +139,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
             collection(db, "partners"),
             (snapshot) => {
                 const partnersData = snapshot.docs.map(
-                    (doc) => doc.data() as Entry
+                    (doc) => doc.data() as PartnerEntry
                 );
                 //setPartners(partnersData);
             }
@@ -147,13 +149,12 @@ const Dashboard: React.FC<DashboardProps> = () => {
     }, []);
 
     const handleSort = (
-        entries: Entry[],
-        field: keyof Entry,
-        ascending: boolean = true
-    ): Entry[] => {
+        entries: PartnerEntry[],
+        field: keyof PartnerEntry
+    ): PartnerEntry[] => {
         const sortedEntries = [...entries];
         setSortField(field);
-        setAscendingSort(!ascending);
+        setAscendingSort(!ascendingSort);
         sortedEntries.sort((a, b) => {
             let aValue = a[field];
             let bValue = b[field];
@@ -168,8 +169,8 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 bValue = bValue.toLowerCase();
             }
 
-            if (aValue < bValue) return ascending ? -1 : 1;
-            if (aValue > bValue) return ascending ? 1 : -1;
+            if (aValue < bValue) return ascendingSort ? -1 : 1;
+            if (aValue > bValue) return ascendingSort ? 1 : -1;
             return 0;
         });
         setPartners(sortedEntries);
@@ -314,7 +315,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
         fetchPartners();
     };
 
-    const handleDelete = async (partner: Entry) => {
+    const handleDelete = async (partner: PartnerEntry) => {
         const confirmation = window.confirm(
             "Are you sure you want to delete " + partner.businessname + "?"
         );
@@ -330,14 +331,14 @@ const Dashboard: React.FC<DashboardProps> = () => {
         }
     };
 
-    const handleEdit = async (partner: Entry) => {
+    const handleEdit = async (partner: PartnerEntry) => {
         setEditMode(true);
         const partnerDocRef = doc(db, "Partners", partner.id); // Create a reference to the specific document
         const partnerSnapshot = await getDoc(partnerDocRef); // Retrieve the document data
 
         if (partnerSnapshot.exists()) {
             // Document exists, access its data using .data()
-            let partnerData = partnerSnapshot.data() as Entry;
+            let partnerData = partnerSnapshot.data() as PartnerEntry;
             partnerData = { ...partnerData, id: partner.id };
             setFormData(partnerData);
             setOpenDialog(true);
@@ -349,7 +350,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
         }
     };
 
-    const handleRowClick = (partner: Entry) => {
+    const handleRowClick = (partner: PartnerEntry) => {
         if (selectedPartner === null) setSelectedPartner(partner);
         else {
             setSelectedPartner(null);
@@ -892,401 +893,15 @@ const Dashboard: React.FC<DashboardProps> = () => {
                     </Col>
                 </Row>
             </div>
-            <div style={{ padding: "5px", margin: "10px" }}>
-                <Paper
-                    elevation={10}
-                    style={{
-                        padding: "20px",
-                        background: "#f5f5f5",
-                        borderRadius: "10px",
-                        marginBottom: "20px",
-                    }}
-                >
-                    <div style={{ marginBottom: "20px" }}>
-                        <h2 style={{ color: "#333", marginBottom: "10px" }}>
-                            Partners
-                        </h2>
-                        <div>
-                            <Row style={{ minHeight: "30px" }}>
-                                <Col
-                                    md="2"
-                                    style={{
-                                        fontWeight: "bold",
-                                        borderBottom: "1px solid #ccc",
-                                    }}
-                                >
-                                    <a
-                                        href="#"
-                                        style={{ textDecoration: "underline" }}
-                                        onClick={() => {
-                                            handleSort(
-                                                partners,
-                                                "businessname",
-                                                ascendingSort
-                                            );
-                                        }}
-                                    >
-                                        Organization Name
-                                    </a>
-                                </Col>
-                                <Col
-                                    md="2"
-                                    style={{
-                                        fontWeight: "bold",
-                                        borderBottom: "1px solid #ccc",
-                                    }}
-                                >
-                                    <a
-                                        href="#"
-                                        style={{ textDecoration: "underline" }}
-                                        onClick={() => {
-                                            handleSort(
-                                                partners,
-                                                "organizationType",
-                                                ascendingSort
-                                            );
-                                        }}
-                                    >
-                                        Organization Type
-                                    </a>
-                                </Col>
-                                <Col
-                                    md="2"
-                                    style={{
-                                        fontWeight: "bold",
-                                        borderBottom: "1px solid #ccc",
-                                    }}
-                                >
-                                    <a
-                                        href="#"
-                                        style={{ textDecoration: "underline" }}
-                                        onClick={() => {
-                                            handleSort(
-                                                partners,
-                                                "partnershipType",
-                                                ascendingSort
-                                            );
-                                        }}
-                                    >
-                                        Partnership Type
-                                    </a>
-                                </Col>
-                                <Col
-                                    md="2"
-                                    style={{
-                                        fontWeight: "bold",
-                                        borderBottom: "1px solid #ccc",
-                                    }}
-                                >
-                                    <a
-                                        href="#"
-                                        style={{ textDecoration: "underline" }}
-                                        onClick={() => {
-                                            handleSort(
-                                                partners,
-                                                "resourcesAvailable",
-                                                ascendingSort
-                                            );
-                                        }}
-                                    >
-                                        Resources Available
-                                    </a>
-                                </Col>
-                                <Col
-                                    md="1"
-                                    style={{
-                                        fontWeight: "bold",
-                                        borderBottom: "1px solid #ccc",
-                                    }}
-                                >
-                                    <a
-                                        href="#"
-                                        style={{ textDecoration: "underline" }}
-                                        onClick={() => {
-                                            handleSort(
-                                                partners,
-                                                "targetAudience",
-                                                ascendingSort
-                                            );
-                                        }}
-                                    >
-                                        Audience
-                                    </a>
-                                </Col>
-                                <Col
-                                    md="2"
-                                    style={{
-                                        fontWeight: "bold",
-                                        borderBottom: "1px solid #ccc",
-                                    }}
-                                >
-                                    Contact
-                                </Col>
-                                <Col md="1"></Col>
-                            </Row>
-                            {partners.map((partner, index) => (
-                                <div>
-                                    <Row
-                                        key={index}
-                                        onClick={() => handleRowClick(partner)}
-                                        style={{
-                                            cursor: "pointer",
-                                            borderBottom: "1px solid #ddd",
-                                            transition: "background-color 0.3s",
-                                            padding: "10px 0 0 0",
-                                            backgroundColor:
-                                                hovered === partner.id
-                                                    ? "#ddd"
-                                                    : "inherit",
-                                        }}
-                                        onMouseEnter={() =>
-                                            setHovered(partner.id)
-                                        }
-                                        onMouseLeave={() =>
-                                            setHovered(partner.id)
-                                        }
-                                    >
-                                        <Col md="2">{partner.businessname}</Col>
-                                        <Col md="2">
-                                            {partner.organizationType}
-                                        </Col>
-                                        <Col md="2">
-                                            {partner.partnershipType}
-                                        </Col>
-                                        <Col md="2">
-                                            {partner.resourcesAvailable}
-                                        </Col>
-                                        <Col md="1">
-                                            {partner.targetAudience}
-                                        </Col>
-                                        <Col md="2">
-                                            {partner.contactInfo.name}
-                                        </Col>
-                                        <Col md="1">
-                                            {" "}
-                                            <IconButton
-                                                aria-label="delete"
-                                                onClick={() =>
-                                                    handleDelete(partner)
-                                                }
-                                            >
-                                                <DeleteIcon />
-                                            </IconButton>
-                                            <IconButton
-                                                aria-label="edit"
-                                                onClick={() =>
-                                                    handleEdit(partner)
-                                                }
-                                            >
-                                                <EditIcon />
-                                            </IconButton>
-                                        </Col>
-                                    </Row>
-                                    <div>
-                                        {selectedPartner &&
-                                            selectedPartner.businessname ===
-                                                partner.businessname && (
-                                                <div
-                                                    style={{
-                                                        background: "#fff",
-                                                        padding: "20px",
-                                                        borderRadius: "10px",
-                                                        boxShadow:
-                                                            "0px 4px 10px rgba(0, 0, 0, 0.1)",
-                                                    }}
-                                                >
-                                                    <h2
-                                                        style={{
-                                                            color: "#333",
-                                                            marginBottom:
-                                                                "20px",
-                                                        }}
-                                                    >
-                                                        {
-                                                            selectedPartner.businessname
-                                                        }
-                                                    </h2>
-                                                    <div
-                                                        style={{
-                                                            display: "flex",
-                                                            alignItems:
-                                                                "center",
-                                                            marginBottom:
-                                                                "10px",
-                                                        }}
-                                                    >
-                                                        <p
-                                                            style={{
-                                                                flex: "1",
-                                                                marginRight:
-                                                                    "20px",
-                                                            }}
-                                                        >
-                                                            <strong>
-                                                                Organization
-                                                                Type:
-                                                            </strong>{" "}
-                                                            {
-                                                                selectedPartner.organizationType
-                                                            }
-                                                        </p>
-                                                        <p
-                                                            style={{
-                                                                flex: "1",
-                                                                marginRight:
-                                                                    "20px",
-                                                            }}
-                                                        >
-                                                            <strong>
-                                                                Partnership
-                                                                Type:
-                                                            </strong>{" "}
-                                                            {
-                                                                selectedPartner.partnershipType
-                                                            }
-                                                        </p>
-                                                    </div>
-                                                    <div
-                                                        style={{
-                                                            display: "flex",
-                                                            alignItems:
-                                                                "center",
-                                                            marginBottom:
-                                                                "10px",
-                                                        }}
-                                                    >
-                                                        <p
-                                                            style={{
-                                                                flex: "1",
-                                                                marginRight:
-                                                                    "20px",
-                                                            }}
-                                                        >
-                                                            <strong>
-                                                                Resources
-                                                                Available:
-                                                            </strong>{" "}
-                                                            {
-                                                                selectedPartner.resourcesAvailable
-                                                            }
-                                                        </p>
-                                                        <p
-                                                            style={{
-                                                                flex: "1",
-                                                                marginRight:
-                                                                    "20px",
-                                                            }}
-                                                        >
-                                                            <strong>
-                                                                Target Audience:
-                                                            </strong>{" "}
-                                                            {
-                                                                selectedPartner.targetAudience
-                                                            }
-                                                        </p>
-                                                    </div>
-                                                    <div
-                                                        style={{
-                                                            display: "flex",
-                                                            alignItems:
-                                                                "center",
-                                                            marginBottom:
-                                                                "10px",
-                                                        }}
-                                                    >
-                                                        <p
-                                                            style={{
-                                                                flex: "1",
-                                                                marginRight:
-                                                                    "20px",
-                                                            }}
-                                                        >
-                                                            <strong>
-                                                                Contact:
-                                                            </strong>{" "}
-                                                            {`${selectedPartner.contactInfo.name} (${selectedPartner.contactInfo.email})`}
-                                                        </p>
-                                                        <p
-                                                            style={{
-                                                                flex: "1",
-                                                                marginRight:
-                                                                    "20px",
-                                                            }}
-                                                        >
-                                                            <strong>
-                                                                Website:
-                                                            </strong>{" "}
-                                                            <a
-                                                                href={
-                                                                    selectedPartner.website
-                                                                }
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                            >
-                                                                {
-                                                                    selectedPartner.website
-                                                                }
-                                                            </a>
-                                                        </p>
-                                                    </div>
-                                                    <div
-                                                        style={{
-                                                            display: "flex",
-                                                            alignItems:
-                                                                "center",
-                                                            marginBottom:
-                                                                "10px",
-                                                        }}
-                                                    >
-                                                        <p
-                                                            style={{
-                                                                flex: "1",
-                                                                marginRight:
-                                                                    "20px",
-                                                            }}
-                                                        >
-                                                            <strong>
-                                                                Address:
-                                                            </strong>{" "}
-                                                            {
-                                                                selectedPartner.address
-                                                            }
-                                                        </p>
-                                                    </div>
-                                                    <div
-                                                        style={{
-                                                            marginBottom:
-                                                                "10px",
-                                                        }}
-                                                    >
-                                                        <strong>
-                                                            Description:
-                                                        </strong>{" "}
-                                                        {
-                                                            selectedPartner.description
-                                                        }
-                                                    </div>
-                                                    <Button
-                                                        variant="contained"
-                                                        color="primary"
-                                                        onClick={
-                                                            handleCloseModal
-                                                        }
-                                                        style={{
-                                                            marginTop: "10px",
-                                                        }}
-                                                    >
-                                                        Close
-                                                    </Button>
-                                                </div>
-                                            )}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </Paper>
-            </div>
+            <DashboardList
+                partners={partners}
+                handleSort={handleSort}
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}
+                handleRowClick={handleRowClick}
+                handleCloseModal={handleCloseModal}
+                selectedPartner={selectedPartner}
+            />
         </Layout>
     );
 };
