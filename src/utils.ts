@@ -16,3 +16,11 @@ export const validateUrl = (url: string): boolean => {
 export const validateLength = (formField: string): boolean => {
     return formField.length > 5;
 };
+
+export const validatePhone = (phoneNumber: string): boolean => {
+    // Regular expression pattern for validating phone numbers
+    // This pattern matches numbers in the format: (123) 456-7890 or 123-456-7890
+    const phonePattern = /^\(?\d{3}\)?[- ]?\d{3}[- ]?\d{4}$/;
+    // Test if the phoneNumber matches the pattern
+    return phonePattern.test(phoneNumber);
+};

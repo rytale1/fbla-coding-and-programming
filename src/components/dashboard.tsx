@@ -28,13 +28,20 @@ import {
     Select,
     SelectChangeEvent,
     TextField,
+    Tooltip,
 } from "@mui/material";
 import { redirect, useNavigate } from "react-router-dom";
 import { User, onAuthStateChanged } from "firebase/auth";
 import { auth, db, logout } from "../auth";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { validateLength, validateUrl } from "../utils";
+import HelpIcon from "@mui/icons-material/Help";
+import {
+    validatePhone,
+    validateEmail,
+    validateLength,
+    validateUrl,
+} from "../utils";
 
 interface DashboardProps {}
 interface Entry {
@@ -62,7 +69,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedPartner, setSelectedPartner] = useState<Entry | null>();
     const [openModal, setOpenModal] = useState(false);
-    const [formData, setFormData] = useState<Entry>({
+    const initialFormData = {
         id: "",
         businessname: "",
         organizationType: "",
@@ -77,13 +84,17 @@ const Dashboard: React.FC<DashboardProps> = () => {
         description: "",
         partnershipType: "",
         targetAudience: [],
-    });
+    };
+    const [formData, setFormData] = useState<Entry>(initialFormData);
     const [uid, setUid] = useState("");
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
     const [partners, setPartners] = useState<Entry[]>([]);
     const [refresh, setRefresh] = useState(true);
     const [isAdmin, setIsAdmin] = useState(false);
+
+    // Fine tune the UI to make it nicer
+    const [hovered, setHovered] = useState("");
 
     // Error state to validate the different fields
     const [orgNameError, setOrgNameError] = useState(false);
@@ -94,6 +105,9 @@ const Dashboard: React.FC<DashboardProps> = () => {
     const [partnershipError, setPartnershipError] = useState(false);
     const [resourcesError, setResourcesError] = useState(false);
     const [targetError, setTargetError] = useState(false);
+    const [contactNameError, setContactNameError] = useState(false);
+    const [emailError, setEmailError] = useState(false);
+    const [phoneError, setPhoneError] = useState(false);
 
     const fetchPartners = async () => {
         const partnersCollection = collection(db, "Partners"); // Assuming "partners" is your collection name
@@ -164,6 +178,10 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
     const handleOpenDialog = () => {
         resetErrors();
+        if (editMode) {
+            setEditMode(false);
+            setFormData(initialFormData);
+        }
         setCurrentPage(0);
         setOpenDialog(true);
     };
@@ -182,6 +200,9 @@ const Dashboard: React.FC<DashboardProps> = () => {
         setPartnershipError(false);
         setResourcesError(false);
         setTargetError(false);
+        setContactNameError(false);
+        setEmailError(false);
+        setPhoneError(false);
     };
     const handleNext = () => {
         resetErrors();
@@ -241,6 +262,22 @@ const Dashboard: React.FC<DashboardProps> = () => {
     };
 
     const handleSubmit = async (e: FormEvent) => {
+        resetErrors();
+        let errors = 0;
+        if (formData.contactInfo.name.length < 3) {
+            setContactNameError(true);
+            errors++;
+        }
+        if (!validateEmail(formData.contactInfo.email)) {
+            setEmailError(true);
+            errors++;
+        }
+        if (!validatePhone(formData.contactInfo.phone)) {
+            setPhoneError(true);
+            errors++;
+        }
+        if (errors > 0) return;
+
         e.preventDefault();
         setLoading(true);
 
@@ -414,7 +451,9 @@ const Dashboard: React.FC<DashboardProps> = () => {
                     onClose={handleCloseDialog}
                     style={{ width: "1500px" }}
                 >
-                    <DialogTitle>Add Partner</DialogTitle>
+                    <DialogTitle>
+                        {editMode ? "Edit Partner" : "Add Partner"}
+                    </DialogTitle>
                     <DialogContent style={{}}>
                         {currentPage === 0 && (
                             <form
@@ -426,6 +465,26 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                     gap: "20px",
                                 }}
                             >
+                                {editMode ? (
+                                    <div>
+                                        To edit the form, review the existing
+                                        entries and make any necessary changes
+                                        to your business name, organization
+                                        type, contact information, available
+                                        resources, or other details. Ensure all
+                                        modifications are accurate before saving
+                                        the updated information.
+                                    </div>
+                                ) : (
+                                    <div>
+                                        Please fill out the form by providing
+                                        your business name, organization type,
+                                        contact information, and any available
+                                        resources. Ensure all required fields
+                                        are completed accurately before
+                                        submission.
+                                    </div>
+                                )}
                                 <TextField
                                     name="businessname"
                                     label="Organization Name"
@@ -437,14 +496,15 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                     }}
                                 />
                                 {orgNameError && (
-                                    <Row
+                                    <div
                                         style={{
+                                            fontSize: "15px",
                                             color: "red",
-                                            padding: "10px",
+                                            marginTop: "-15px",
                                         }}
                                     >
                                         Please enter more than 5 characters.
-                                    </Row>
+                                    </div>
                                 )}
                                 <TextField
                                     name="website"
@@ -454,15 +514,16 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                     style={{ width: "550px" }}
                                 />
                                 {urlError && (
-                                    <Row
+                                    <div
                                         style={{
+                                            fontSize: "15px",
                                             color: "red",
-                                            padding: "10px",
+                                            marginTop: "-15px",
                                         }}
                                     >
                                         URL is invalid. Please enter a valid URL
                                         starting with https://
-                                    </Row>
+                                    </div>
                                 )}
                                 <TextField
                                     name="address"
@@ -472,14 +533,15 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                     style={{ width: "550px" }}
                                 />
                                 {addressError && (
-                                    <Row
+                                    <div
                                         style={{
+                                            fontSize: "15px",
                                             color: "red",
-                                            padding: "10px",
+                                            marginTop: "-15px",
                                         }}
                                     >
                                         Please enter more than 5 characters.
-                                    </Row>
+                                    </div>
                                 )}
                                 <TextField
                                     name="description"
@@ -491,15 +553,16 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                     rows={4}
                                 />
                                 {descriptionError && (
-                                    <Row
+                                    <div
                                         style={{
+                                            fontSize: "15px",
                                             color: "red",
-                                            padding: "10px",
+                                            marginTop: "-15px",
                                         }}
                                     >
                                         Please enter a more detailed
                                         description.
-                                    </Row>
+                                    </div>
                                 )}
                                 <TextField
                                     select
@@ -524,14 +587,15 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                     {/* Add more options as needed */}
                                 </TextField>
                                 {orgTypeError && (
-                                    <Row
+                                    <div
                                         style={{
+                                            fontSize: "15px",
                                             color: "red",
-                                            padding: "10px",
+                                            marginTop: "-15px",
                                         }}
                                     >
                                         Please select an organization type.
-                                    </Row>
+                                    </div>
                                 )}
                                 <TextField
                                     select
@@ -556,14 +620,15 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                     {/* Add more options as needed */}
                                 </TextField>
                                 {partnershipError && (
-                                    <Row
+                                    <div
                                         style={{
+                                            fontSize: "15px",
                                             color: "red",
-                                            padding: "10px",
+                                            marginTop: "-15px",
                                         }}
                                     >
                                         Please select a partnership type.
-                                    </Row>
+                                    </div>
                                 )}
                                 <TextField
                                     select
@@ -585,14 +650,15 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                     {/* Add more options as needed */}
                                 </TextField>
                                 {resourcesError && (
-                                    <Row
+                                    <div
                                         style={{
+                                            fontSize: "15px",
                                             color: "red",
-                                            padding: "10px",
+                                            marginTop: "-15px",
                                         }}
                                     >
                                         Please select a resource.
-                                    </Row>
+                                    </div>
                                 )}
                                 <TextField
                                     select
@@ -614,14 +680,15 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                     {/* Add more options as needed */}
                                 </TextField>
                                 {targetError && (
-                                    <Row
+                                    <div
                                         style={{
+                                            fontSize: "15px",
                                             color: "red",
-                                            padding: "10px",
+                                            marginTop: "-15px",
                                         }}
                                     >
                                         Please select a target group.
-                                    </Row>
+                                    </div>
                                 )}
                             </form>
                         )}
@@ -645,6 +712,17 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                         marginTop: "5px",
                                     }}
                                 />
+                                {contactNameError && (
+                                    <div
+                                        style={{
+                                            fontSize: "15px",
+                                            color: "red",
+                                            marginTop: "-15px",
+                                        }}
+                                    >
+                                        Please enter a valid name.
+                                    </div>
+                                )}
                                 <TextField
                                     name="email"
                                     label="Contact Email"
@@ -652,6 +730,17 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                     onChange={handleInputChange}
                                     style={{ width: "550px" }}
                                 />
+                                {emailError && (
+                                    <div
+                                        style={{
+                                            fontSize: "15px",
+                                            color: "red",
+                                            marginTop: "-15px",
+                                        }}
+                                    >
+                                        Please enter a valid email.
+                                    </div>
+                                )}
                                 <TextField
                                     name="phone"
                                     label="Contact Phone"
@@ -659,6 +748,17 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                     onChange={handleInputChange}
                                     style={{ width: "550px" }}
                                 />
+                                {phoneError && (
+                                    <div
+                                        style={{
+                                            fontSize: "15px",
+                                            color: "red",
+                                            marginTop: "-15px",
+                                        }}
+                                    >
+                                        Please enter a valid phone number.
+                                    </div>
+                                )}
                             </form>
                         )}
                     </DialogContent>
@@ -684,15 +784,25 @@ const Dashboard: React.FC<DashboardProps> = () => {
             )}
             <div style={{ marginTop: "100px", padding: "10px" }}>
                 <Row>
-                    <Col>
+                    <Col
+                        style={{ textAlign: "center", padding: "5px" }}
+                        lg="3"
+                        md="3"
+                    >
                         <div>
                             <label htmlFor="organizationType">
-                                <b>Org</b>
+                                <b>Organization Filter</b>
                             </label>
+                            <Tooltip title="Allows you to filter by organization type (industry, government, non-profit)">
+                                <IconButton aria-label="help">
+                                    <HelpIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <br />
                             <select
                                 id="organizationType"
                                 onChange={handleOrganizationTypeChange}
-                                style={{ marginLeft: "5px" }}
+                                style={{ marginLeft: "5px", height: "40px" }}
                             >
                                 <option value="">All</option>
                                 <option value="Education Institution">
@@ -710,16 +820,27 @@ const Dashboard: React.FC<DashboardProps> = () => {
                             </select>
                         </div>
                     </Col>
-                    <Col style={{ textAlign: "left" }}>
+                    <Col
+                        style={{ textAlign: "center", padding: "5px" }}
+                        lg="2"
+                        md="3"
+                    >
                         <div>
                             <label htmlFor="resourcesAvailable">
-                                <b>Resources</b>
+                                <b>Resources Filter</b>
                             </label>
+                            <Tooltip title="Allows you to filter by resources the organization offers (workshops, internships)">
+                                <IconButton aria-label="help">
+                                    <HelpIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <br />
                             <select
                                 id="resourcesAvailable"
                                 onChange={handleResourcesAvailableChange}
                                 style={{
                                     marginLeft: "5px",
+                                    height: "40px",
                                 }}
                             >
                                 <option value="">All</option>
@@ -730,25 +851,36 @@ const Dashboard: React.FC<DashboardProps> = () => {
                             </select>
                         </div>
                     </Col>
-                    <Col>
+                    <Col
+                        style={{ textAlign: "center", padding: "5px" }}
+                        lg="5"
+                        md="6"
+                    >
                         <div>
                             <label htmlFor="businessName">
-                                <b>Name</b>
+                                <b>Search</b>
                             </label>
+                            <Tooltip title="Allows you to search in real-time based on organization name">
+                                <IconButton aria-label="help">
+                                    <HelpIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <br />
                             <input
+                                placeholder="Enter organization name to search..."
                                 id="businessName"
                                 onChange={handleBusinessNameChange}
                                 style={{
                                     marginLeft: "5px",
-                                    width: "150px",
-                                    height: "30px",
+                                    width: "380px",
+                                    height: "40px",
                                     borderRadius: "0",
                                     borderColor: "#000000",
                                 }}
                             />
                         </div>
                     </Col>
-                    <Col style={{ textAlign: "right" }}>
+                    <Col style={{ textAlign: "left", padding: "5px" }}>
                         {isAdmin && (
                             <Button
                                 variant="outlined"
@@ -794,7 +926,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                             );
                                         }}
                                     >
-                                        Name
+                                        Organization Name
                                     </a>
                                 </Col>
                                 <Col
@@ -902,7 +1034,17 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                             borderBottom: "1px solid #ddd",
                                             transition: "background-color 0.3s",
                                             padding: "10px 0 0 0",
+                                            backgroundColor:
+                                                hovered === partner.id
+                                                    ? "#ddd"
+                                                    : "inherit",
                                         }}
+                                        onMouseEnter={() =>
+                                            setHovered(partner.id)
+                                        }
+                                        onMouseLeave={() =>
+                                            setHovered(partner.id)
+                                        }
                                     >
                                         <Col md="2">{partner.businessname}</Col>
                                         <Col md="2">
