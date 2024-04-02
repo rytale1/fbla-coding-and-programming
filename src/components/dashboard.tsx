@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import {
     collection,
     addDoc,
@@ -11,30 +11,22 @@ import {
     where,
     query,
 } from "firebase/firestore";
-import { Col, Fade, Modal, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import Layout from "../layout/Layout";
 import {
-    Backdrop,
     Button,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
     IconButton,
-    InputLabel,
-    Menu,
     MenuItem,
-    Paper,
-    Select,
-    SelectChangeEvent,
     TextField,
     Tooltip,
 } from "@mui/material";
-import { redirect, useNavigate } from "react-router-dom";
-import { User, onAuthStateChanged } from "firebase/auth";
-import { auth, db, logout } from "../auth";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import { useNavigate } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "../auth";
 import HelpIcon from "@mui/icons-material/Help";
 import {
     validatePhone,
@@ -803,7 +795,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                             <select
                                 id="organizationType"
                                 onChange={handleOrganizationTypeChange}
-                                style={{ marginLeft: "5px", height: "40px" }}
+                                style={{ marginLeft: "5px", height: "40px", width: "250px" }}
                             >
                                 <option value="">All</option>
                                 <option value="Education Institution">
@@ -840,8 +832,9 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 id="resourcesAvailable"
                                 onChange={handleResourcesAvailableChange}
                                 style={{
-                                    marginLeft: "5px",
+                                    marginLeft: "0px",
                                     height: "40px",
+                                    width: "250px"
                                 }}
                             >
                                 <option value="">All</option>

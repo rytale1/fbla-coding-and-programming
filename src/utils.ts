@@ -1,11 +1,20 @@
 // Regular expression borrowed from https://stackoverflow.com/questions/46155/how-can-i-validate-an-email-address-in-javascript
-export const validateEmail = (email: string) => {
+export const validateEmail = (email: string): boolean => {
     return (
         email.match(
             /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         ) !== null
     );
 };
+
+// Regular expression borrowed from https://stackoverflow.com/questions/5142103/regex-to-validate-password-strength
+export const validatePasswordStrength = (pass: string): boolean => {
+    return (
+        pass.match(
+            /^(?=.*[!@#$&*])(?=.*[0-9].*[0-9]).{8,}$/
+        ) !== null
+    );
+}
 
 export const validateUrl = (url: string): boolean => {
     // Regular expression pattern for validating URLs

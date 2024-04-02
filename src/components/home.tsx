@@ -138,35 +138,41 @@ const Home: React.FC<HomePageProps> = () => {
                         style={{
                             display: "flex",
                             padding: "40px",
+                            alignItems: "center",
+                            gap: "20px",
                         }}
                     >
-                        <p
+                        <div>
+                            <img
+                                src="images/thumbnail1.png"
+                                width="750"
+
+                                alt="example dashboard"
+                            />
+                        </div>
+                        <div>
+                            <p
                             style={{
                                 width: "100%",
                                 fontSize: "50"
                             }}
-                        >
-                            <img
-                                src="images/thumbnail1.png"
-                                width="750"
-                                style={{
-                                    float: "left",
-                                    marginRight: "30px",
-                                }}
-                                alt="example dashboard"
-                            />
-                            Thank you for your interest in CareerBase!
+                         >
+                            
                             CareerBase is an open-source webapp designed to
                             empower the Career and Technical Education
                             Departments across high schools by providing a
                             dynamic database to store crucial information
                             regarding local/community business partners for the
-                            school. Administrator accounts can store information
+                            school. </p> 
+                            
+                            <p>
+                            Administrator accounts can store information
                             varying from business name, links to website, type,
                             location, or age etc. Students can then log on to
                             student accounts to view and search but not edit the
                             information.
-                        </p>
+                        </p></div>
+                        
                     </div>
                 </section>
                 {/* Getting Started Section */}
@@ -193,34 +199,32 @@ const Home: React.FC<HomePageProps> = () => {
                             display: "flex",
                             padding: "40px",
                             justifyContent: "vertical",
+                            alignItems: "center",
+                            gap: "20px"
                         }}
                     >
-                        <p
-                            style={{
-                                width: "100%",
-                            }}
-                        >
+                        <div>
                             <img
-                                src="images/thumbnail2.png"
-                                width="750"
-                                style={{
-                                    float: "left",
-                                    marginRight: "30px",
-                                }}
-                                alt="example signup"
+                                    src="images/thumbnail2.png"
+                                    width="750"
+                                    alt="example signup"
                             />
-                            Are you a registered user? Sign in by clicking the
-                            sign in button on the top right. If not, then please
-                            sign up.
-                            <br />
-                            <br />
-                            <h5>Signing up</h5>
-                            All we need is your email and a password! You can
-                            also choose to sign up with Google. You can sign up
-                            as either a school administrator or student. If you
-                            sign up as a student, you will have no edit
-                            permissions to the database.
-                        </p>
+                        </div>
+                        <div>
+                            <p>
+                                Are you a registered user? Sign in by clicking the
+                                sign in button on the top right. If not, then please
+                                sign up.
+                            </p>
+                            <p>
+                                <h5>Signing up</h5>
+                                All we need is your email and a password! You can
+                                also choose to sign up with Google. You can sign up
+                                as either a school administrator or student. If you
+                                sign up as a student, you will have no edit
+                                permissions to the database.
+                            </p>
+                        </div>
                     </div>
                 </section>
             </div>

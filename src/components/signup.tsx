@@ -14,7 +14,9 @@ import {
     SelectChangeEvent,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { validateEmail } from "../utils";
+import { validateEmail, validatePasswordStrength } from "../utils";
+
+type PasswordError = "mismatch" | "weak" | "";
 
 interface SignUpProps {
     onSubmit: (email: string, password: string) => void;
@@ -24,7 +26,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
-    const [passwordError, setPasswordError] = useState(false);
+    const [passwordError, setPasswordError] = useState<PasswordError>("");
     const [signUpError, setSignupError] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [accountTypeError, setAccountTypeError] = useState(false);
@@ -40,20 +42,29 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         setPassword(event.target.value);
+        let validationResult = !validatePasswordStrength(event.target.value);
+        if (validationResult) {
+            setPasswordError("weak");
+        } else {
+            setPasswordError("");
+        }
     };
     const handleConfirmPasswordChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         setConfirmPassword(event.target.value);
         if (password === confirmPassword) {
-            setPasswordError(false);
+            setPasswordError("mismatch");
         }
     };
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (password !== confirmPassword) {
-            setPasswordError(true);
+            setPasswordError("mismatch");
             return;
+        }
+        if (!validatePasswordStrength(password)) {
+            setPasswordError("weak");
         }
         if (!accountType) {
             setAccountTypeError(true);
@@ -180,9 +191,23 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                                     required
                                 />
                             </Row>
-                            {passwordError && (
+                            {passwordError === "mismatch" && (
                                 <Row style={{ color: "red", padding: "10px" }}>
                                     Passwords do not match.
+                                </Row>
+                            )}
+                            {passwordError === "weak" && (
+                                <Row style={{ color: "red", padding: "10px", fontSize: "12.2px" }}>
+                                    Password is too weak. Ensure password has: 
+                                    <li>
+                                        Length of at least 8 characters
+                                    </li>
+                                    <li>
+                                        2 numbers
+                                    </li>
+                                    <li>
+                                        One special character (!@#$&*)
+                                    </li>
                                 </Row>
                             )}
                             {accountTypeError && (
