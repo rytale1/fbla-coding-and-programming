@@ -34,21 +34,25 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
     const handleAccountTypeChange = (event: SelectChangeEvent) => {
         setAccountType(event.target.value as string);
     };
+
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
         setEmailError(!validateEmail(event.target.value));
     };
+
     const handlePasswordChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         setPassword(event.target.value);
         let validationResult = !validatePasswordStrength(event.target.value);
+        //Call to password strength validation
         if (validationResult) {
             setPasswordError("weak");
         } else {
             setPasswordError("");
         }
     };
+
     const handleConfirmPasswordChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
@@ -57,33 +61,42 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
             setPasswordError("mismatch");
         }
     };
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        //Input validation: password && confirm password fields mismatch
         if (password !== confirmPassword) {
             setPasswordError("mismatch");
             return;
+        //Input validation: password strength
         }
         if (!validatePasswordStrength(password)) {
             setPasswordError("weak");
         }
+        //Input validation: account type not filled out
         if (!accountType) {
             setAccountTypeError(true);
             return;
         }
+        //Calls the backend to store user data
         const success = await createUserAndStoreAccountType(
             email,
             password,
             accountType
         );
+        //Routes to dashboard upon successful sign-up
         if (success) navigate("/dashboard");
         else setSignupError(true);
     };
+
+    //Enables signing up/signing in with Google
     const googleLogin = async () => {
         if (!accountType) {
             setAccountTypeError(true);
             return;
         }
         try {
+            //Communication between frontend and backend
             const googleAuth = await signUpWithGoogle(accountType);
             if (googleAuth) {
                 let path = `/dashboard`;
@@ -103,8 +116,8 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
                 className="container"
                 style={{
                     backgroundImage: `url("/images/blurredbackground.jpg")`,
-                    backgroundSize: "cover", // Optional: Adjust background size as needed
-                    backgroundPosition: "center", // Optional: Adjust background position as needed
+                    backgroundSize: "cover", // Adjust background size as needed
+                    backgroundPosition: "center", // Adjust background position as needed
                     height: "800px",
                 }}
             >

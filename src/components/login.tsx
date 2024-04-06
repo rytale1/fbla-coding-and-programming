@@ -23,6 +23,7 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
 
     const routeDashboard = async () => {
         let path = `/dashboard`;
+        //Routes to dashboard through navigate
         const auth = await authenticateUser(email, password);
         if (auth) {
             navigate(path);
@@ -33,7 +34,7 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
         setEmail(event.target.value);
     }
 
-    /* Initiate authentication with google through Firebase. */
+    // Initiate authentication with google through Firebase
     const googleLogin = async () => {
         try {
             const googleAuth = await authenticateWithGoogle();
@@ -54,7 +55,7 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
         setPassword(event.target.value);
     };
 
-    /* Routes to dashboard once login is successful. */
+    //Routes to dashboard once login is successful.
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const success = await authenticateUser(email, password);

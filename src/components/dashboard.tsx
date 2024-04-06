@@ -1,4 +1,6 @@
 import React, { FormEvent, useEffect, useState } from "react";
+
+//Firebase imports; Connect frontend with backend
 import {
     collection,
     addDoc,
@@ -13,6 +15,8 @@ import {
 } from "firebase/firestore";
 import { Col, Row } from "react-bootstrap";
 import Layout from "../layout/Layout";
+
+//MUI imports to polish GUI
 import {
     Button,
     Dialog,
@@ -24,7 +28,6 @@ import {
     TextField,
     Tooltip,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../auth";
 import HelpIcon from "@mui/icons-material/Help";
@@ -58,11 +61,9 @@ const Dashboard: React.FC<DashboardProps> = () => {
     const [ascendingSort, setAscendingSort] = useState(true);
     const [editMode, setEditMode] = useState(false);
     const [sortField, setSortField] = useState("businessname");
-    const navigate = useNavigate();
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedPartner, setSelectedPartner] =
         useState<PartnerEntry | null>();
-    const [openModal, setOpenModal] = useState(false);
     const initialFormData = {
         id: "",
         businessname: "",
@@ -86,9 +87,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
     const [partners, setPartners] = useState<PartnerEntry[]>([]);
     const [refresh, setRefresh] = useState(true);
     const [isAdmin, setIsAdmin] = useState(false);
-
-    // Fine tune the UI to make it nicer
-    const [hovered, setHovered] = useState("");
 
     // Error state to validate the different fields
     const [orgNameError, setOrgNameError] = useState(false);
@@ -256,6 +254,8 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
     const handleSubmit = async (e: FormEvent) => {
         resetErrors();
+
+        //Error handling
         let errors = 0;
         if (formData.contactInfo.name.length < 3) {
             setContactNameError(true);
@@ -395,22 +395,26 @@ const Dashboard: React.FC<DashboardProps> = () => {
         );
     };
 
+    //Allows filtering by specific partner data
     const filterPartners = async (
         organizationType: string,
         resourcesAvailable: string,
         businessName: string
     ) => {
         let filteredPartners = await fetchPartners();
+        //Filter by organization
         if (organizationType) {
             filteredPartners = filteredPartners.filter(
                 (partner) => partner.organizationType === organizationType
             );
         }
+        //Filter by resources available
         if (resourcesAvailable) {
             filteredPartners = filteredPartners.filter((partner) =>
                 partner.resourcesAvailable.includes(resourcesAvailable)
             );
         }
+        //Filter by business name --> used in search function
         if (businessName) {
             filteredPartners = filteredPartners.filter((partner) =>
                 partner.businessname
@@ -421,6 +425,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
         setPartners(filteredPartners);
     };
 
+    //Checks user type for staff
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             const uid = user.uid;
@@ -428,8 +433,10 @@ const Dashboard: React.FC<DashboardProps> = () => {
             const qSnapshot = await getDocs(q);
             qSnapshot.forEach((doc) => {
                 if (doc.data().accountType === "Staff") {
+                    //Conditionally renders "Add Partner", delete, and edit icons
                     setIsAdmin(true);
                 } else {
+                    //Assumes user is a student type
                     setIsAdmin(false);
                 }
             });
@@ -670,7 +677,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                     <MenuItem value="Junior">Juniors</MenuItem>
                                     <MenuItem value="Senior">Seniors</MenuItem>
                                     <MenuItem value="Any">Any</MenuItem>
-                                    {/* Add more options as needed */}
                                 </TextField>
                                 {targetError && (
                                     <div
@@ -841,7 +847,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 <option value="Mentoring">Mentoring</option>
                                 <option value="Internships">Internships</option>
                                 <option value="Workshops">Workshops</option>
-                                {/* Add more options as needed */}
                             </select>
                         </div>
                     </Col>
@@ -874,7 +879,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                             />
                         </div>
                     </Col>
-                    <Col style={{ textAlign: "left", padding: "5px" }}>
+                    <Col style={{ textAlign: "center", padding: "5px", marginTop: "40px"}}>
                         {isAdmin && (
                             <Button
                                 variant="outlined"

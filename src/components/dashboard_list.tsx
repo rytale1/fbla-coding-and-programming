@@ -5,6 +5,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import { Row, Col } from "react-bootstrap";
 import { PartnerEntry } from "./dashboard";
 import DashboardDetail from "./dashboard_detail";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "../auth";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 interface Props {
     partners: PartnerEntry[];
@@ -30,6 +33,22 @@ const DashboardList: React.FC<Props> = ({
     selectedPartner,
 }) => {
     const [hovered, setHovered] = useState<string | null>(null);
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            const uid = user.uid;
+            const q = query(collection(db, "users"), where("uid", "==", uid));
+            const qSnapshot = await getDocs(q);
+            qSnapshot.forEach((doc) => {
+                if (doc.data().accountType === "Staff") {
+                    setIsAdmin(true);
+                } else {
+                    setIsAdmin(false);
+                }
+            });
+        }
+    });
 
     return (
         <div style={{ padding: "5px", margin: "10px" }}>
@@ -180,20 +199,20 @@ const DashboardList: React.FC<Props> = ({
                                     <Col md="2">{partner.contactInfo.name}</Col>
                                     <Col md="1">
                                         {" "}
-                                        <IconButton
-                                            aria-label="delete"
-                                            onClick={() =>
-                                                handleDelete(partner)
-                                            }
-                                        >
-                                            <DeleteIcon />
-                                        </IconButton>
-                                        <IconButton
-                                            aria-label="edit"
-                                            onClick={() => handleEdit(partner)}
-                                        >
-                                            <EditIcon />
-                                        </IconButton>
+                                        {isAdmin && (
+                                        <>
+                                            <IconButton
+                                                aria-label="delete"
+                                                onClick={() => handleDelete(partner)}
+                                            >
+                                                <DeleteIcon />
+                                            </IconButton><IconButton
+                                                aria-label="edit"
+                                                onClick={() => handleEdit(partner)}
+                                            >
+                                                    <EditIcon />
+                                                </IconButton>
+                                        </>)}
                                     </Col>
                                 </Row>
                                 <DashboardDetail

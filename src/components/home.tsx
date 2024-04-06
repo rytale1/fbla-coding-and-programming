@@ -6,6 +6,7 @@ import PageTitle from "../layout/PageTitle";
 import "../css/globals.css";
 import { Button } from "@mui/material";
 
+//Override: Firebase onAuthStateChanged()
 onAuthStateChanged(auth, (user) => {
     if (user) {
         const uid = user.uid;
@@ -14,11 +15,11 @@ onAuthStateChanged(auth, (user) => {
         console.log("signed out");
     }
 });
-//Ooga booga
 
 interface HomePageProps {}
 
 const Home: React.FC<HomePageProps> = () => {
+    //Scroll to specified element
     const scrollTo = (id: string) => {
         const element = document.getElementById(id);
         if (element) {
@@ -33,6 +34,7 @@ const Home: React.FC<HomePageProps> = () => {
                     pageTitle="CareerBase - Where careers are found"
                     description="CareerBase is a database created to help high schoolers find careers and job opportunities"
                 />
+                {/* General page layout */}
                 <section id="hero-3" className="bg-scroll division">
                     <div
                         className="container"
@@ -164,14 +166,7 @@ const Home: React.FC<HomePageProps> = () => {
                             dynamic database to store crucial information
                             regarding local/community business partners for the
                             school. </p> 
-                            
-                            <p>
-                            Administrator accounts can store information
-                            varying from business name, links to website, type,
-                            location, or age etc. Students can then log on to
-                            student accounts to view and search but not edit the
-                            information.
-                        </p></div>
+                            </div>
                         
                     </div>
                 </section>
@@ -214,15 +209,17 @@ const Home: React.FC<HomePageProps> = () => {
                             <p>
                                 Are you a registered user? Sign in by clicking the
                                 sign in button on the top right. If not, then please
-                                sign up.
+                                sign up. All we need is your email and a password! You can
+                                also choose to sign up with Google.
                             </p>
                             <p>
                                 <h5>Signing up</h5>
-                                All we need is your email and a password! You can
-                                also choose to sign up with Google. You can sign up
-                                as either a school administrator or student. If you
-                                sign up as a student, you will have no edit
-                                permissions to the database.
+                                <li>
+                                    Administrators: sign-up with school district provided email. You will be able to add, edit, and delete business partners.
+                                </li>
+                                <li>
+                                    Students: sign-up with any email. 
+                                </li>
                             </p>
                         </div>
                     </div>

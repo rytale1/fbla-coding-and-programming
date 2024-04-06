@@ -10,6 +10,7 @@ export const validateEmail = (email: string): boolean => {
 // Regular expression borrowed from https://stackoverflow.com/questions/5142103/regex-to-validate-password-strength
 export const validatePasswordStrength = (pass: string): boolean => {
     return (
+        //Returns true if password contains special character (!@#$&*), two digits, and is at least 8 characters long.
         pass.match(
             /^(?=.*[!@#$&*])(?=.*[0-9].*[0-9]).{8,}$/
         ) !== null
