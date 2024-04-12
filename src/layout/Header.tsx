@@ -1,6 +1,12 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useRef, useState } from "react";
-import {Button, Dialog, DialogTitle, DialogContent, TextField} from "@mui/material";
+import {
+    Button,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    TextField,
+} from "@mui/material";
 import { User, getAuth, onAuthStateChanged } from "firebase/auth";
 import { logout } from "../auth";
 
@@ -35,7 +41,13 @@ const Header = ({
     const signUp = () => {
         navigate("/signup");
     };
-    const auth = useRef(getAuth())
+    const auth = useRef(getAuth());
+
+    const routeDashboard = async () => {
+        let path = "/dashboard";
+        //Routes to dashboard through navigate
+        navigate(path);
+    };
 
     useEffect(() => {
         onAuthStateChanged(auth.current, (user) => {
@@ -60,11 +72,11 @@ const Header = ({
 
     const handleOpenDialog = () => {
         setOpenDialog(true);
-    }
+    };
 
     const handleCloseDialog = () => {
         setOpenDialog(false);
-    }
+    };
 
     return hideHeader ? (
         <div></div>
@@ -73,26 +85,39 @@ const Header = ({
             <Dialog
                 open={openDialog}
                 onClose={handleCloseDialog}
-                style={{ width: "1500px" }}>
-                <DialogTitle style = {{fontSize : "36px"}}>
+                style={{ width: "1500px" }}
+            >
+                <DialogTitle style={{ fontSize: "36px" }}>
                     Contact Us
                 </DialogTitle>
-                <DialogContent style = {{width : "500px", height: "300px"}}>
+                <DialogContent style={{ width: "500px", height: "300px" }}>
                     <form
-                    noValidate
-                    autoComplete="off"
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "20px",
-                    }}>
-                        <div style = {{display: "flex", flexDirection: "column", alignContent: "center"}}>
+                        noValidate
+                        autoComplete="off"
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "20px",
+                        }}
+                    >
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignContent: "center",
+                            }}
+                        >
                             <p>
-                                Our email: talus123@careerbase.org <br/>
-                                Our phone: +1(669)290-3192 <br/>
+                                Our email: talus123@careerbase.org <br />
+                                Our phone: +1(669)290-3192 <br />
                                 Or, use our help and feedback form below.
                             </p>
-                            <Link to={"https://www.youtube.com"} style = {{marginTop: "120px", color: "blue"}}>Help and feedback form</Link>
+                            <Link
+                                to={"https://www.youtube.com"}
+                                style={{ marginTop: "120px", color: "blue" }}
+                            >
+                                Help and feedback form
+                            </Link>
                         </div>
                     </form>
                 </DialogContent>
@@ -165,28 +190,8 @@ const Header = ({
                             />
                             <ul className="wsmenu-list">
                                 {/* DROPDOWN MENU */}
-                                <li onClick={() => activeFun("Tools")}>
-                                    <span
-                                        className={`wsmenu-click ${iconChange(
-                                            "Tools"
-                                        )}`}
-                                    >
-                                        <i className="wsmenu-arrow" />
-                                    </span>
-                                    <a href="#">
-                                        Tools <span className="wsarrow" />
-                                    </a>
-                                    <ul
-                                        className={`sub-menu ${activeLi(
-                                            "Tools"
-                                        )}`}
-                                    >
-                                        <li>
-                                            <Link to={"/dashboard"}>
-                                                Dashboard
-                                            </Link>
-                                        </li>
-                                    </ul>
+                                <li className="nl-simple">
+                                    <Link to="/dashboard">Dashboard</Link>
                                 </li>
                                 <li className="nl-simple">
                                     {authUser === null ? (
@@ -200,7 +205,7 @@ const Header = ({
                                     )}
                                 </li>
                                 <li className="nl-simple">
-                                    <Link to = "" onClick={handleOpenDialog}>
+                                    <Link to="" onClick={handleOpenDialog}>
                                         Contact Us
                                     </Link>
                                 </li>
@@ -232,9 +237,8 @@ const Header = ({
                                             </Button>
                                         )}
                                     </div>
-                                </li>
-                               {" "}
-                            {/* END DROPDOWN MENU */}
+                                </li>{" "}
+                                {/* END DROPDOWN MENU */}
                             </ul>
                         </nav>
 
