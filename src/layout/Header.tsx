@@ -43,12 +43,6 @@ const Header = ({
     };
     const auth = useRef(getAuth());
 
-    const routeDashboard = async () => {
-        let path = "/dashboard";
-        //Routes to dashboard through navigate
-        navigate(path);
-    };
-
     useEffect(() => {
         onAuthStateChanged(auth.current, (user) => {
             if (user) {
@@ -90,7 +84,14 @@ const Header = ({
                 <DialogTitle style={{ fontSize: "36px" }}>
                     Contact Us
                 </DialogTitle>
-                <DialogContent style={{ width: "500px", height: "300px" }}>
+                <DialogContent
+                    style={{
+                        width: "500px",
+                        height: "300px",
+                        padding: "20px",
+                        marginTop: "-40px",
+                    }}
+                >
                     <form
                         noValidate
                         autoComplete="off"
@@ -100,23 +101,42 @@ const Header = ({
                             gap: "20px",
                         }}
                     >
+                        <div>
+                            <p style={{ fontSize: "16px", lineHeight: "1.5" }}>
+                                <strong>Contact Us</strong>
+                                <br />
+                                <span style={{ color: "#666" }}>
+                                    Have questions or need assistance? Reach out
+                                    to us via email or phone, or use our help
+                                    and feedback form below.
+                                </span>
+                            </p>
+                        </div>
                         <div
                             style={{
                                 display: "flex",
                                 flexDirection: "column",
-                                alignContent: "center",
+                                gap: "10px",
                             }}
                         >
-                            <p>
-                                Our email: talus123@careerbase.org <br />
-                                Our phone: +1(669)290-3192 <br />
-                                Or, use our help and feedback form below.
+                            <p style={{ margin: "0", color: "#333" }}>
+                                <strong>Email:</strong> talus123@careerbase.org
                             </p>
+                            <p style={{ margin: "0", color: "#333" }}>
+                                <strong>Phone:</strong> +1 (669) 290-3192
+                            </p>
+                        </div>
+                        <div>
                             <Link
                                 to={"https://www.youtube.com"}
-                                style={{ marginTop: "120px", color: "blue" }}
+                                style={{
+                                    textDecoration: "none",
+                                    color: "#3f51b5",
+                                    fontSize: "16px",
+                                    fontWeight: "bold",
+                                }}
                             >
-                                Help and feedback form
+                                Help and Feedback Form
                             </Link>
                         </div>
                     </form>
@@ -190,9 +210,11 @@ const Header = ({
                             />
                             <ul className="wsmenu-list">
                                 {/* DROPDOWN MENU */}
-                                <li className="nl-simple">
-                                    <Link to="/dashboard">Dashboard</Link>
-                                </li>
+                                {authUser !== null && (
+                                    <li className="nl-simple">
+                                        <Link to="/dashboard">Dashboard</Link>
+                                    </li>
+                                )}
                                 <li className="nl-simple">
                                     {authUser === null ? (
                                         <Link to="/login?type=login">
