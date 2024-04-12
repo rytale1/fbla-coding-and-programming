@@ -55,14 +55,17 @@ const Login: React.FC<LoginProps> = ({ onSubmit }) => {
         setPassword(event.target.value);
     };
 
-    //Routes to dashboard once login is successful.
+    // Handles login process once initiated.
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        // Calls function to communication with backend directly.
         const success = await authenticateUser(email, password);
         if(success) {
+            // Routes to dashboard once login in successful.
             onSubmit(email, password);
             redirect("/dashboard");
         } else {
+            // Error handling.
             setAuthError(true);
             return;
         }

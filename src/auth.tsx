@@ -31,16 +31,19 @@ export { storage };
 export const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
+// Authenticates user based on two form fields (email and password).
+// Param: email, password.
 export async function authenticateUser(
     email: string,
     pass: string
+    // Promises state of authentication.
 ): Promise<boolean> {
     try {
+        // Initiate communication with Firebase services.
         const newUser = await signInWithEmailAndPassword(auth, email, pass);
-        console.log("Authenticated User ", newUser.user);
         return true;
     } catch (e) {
-        console.error("Error authenticating user", e);
+        // Error handling
         return false;
     }
 }

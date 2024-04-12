@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../auth";
 import Layout from "../layout/Layout";
@@ -19,6 +19,7 @@ onAuthStateChanged(auth, (user) => {
 interface HomePageProps {}
 
 const Home: React.FC<HomePageProps> = () => {
+
     //Scroll to specified element
     const scrollTo = (id: string) => {
         const element = document.getElementById(id);

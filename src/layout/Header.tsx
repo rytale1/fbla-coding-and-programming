@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useRef, useState } from "react";
-import Button from "@mui/material/Button";
+import {Button, Dialog, DialogTitle, DialogContent, TextField} from "@mui/material";
 import { User, getAuth, onAuthStateChanged } from "firebase/auth";
 import { logout } from "../auth";
 
@@ -30,6 +30,8 @@ const Header = ({
     const location = useLocation();
     const [, setCurrentLocation] = useState(location);
     const [authUser, setAuthUser] = useState<User | null>(null);
+    const [openDialog, setOpenDialog] = useState(false);
+    const linkRef = React.useRef<HTMLAnchorElement | null>(null);
     const signUp = () => {
         navigate("/signup");
     };
@@ -56,10 +58,45 @@ const Header = ({
         window.location.href = "/";
     };
 
+    const handleOpenDialog = () => {
+        setOpenDialog(true);
+    }
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    }
+
     return hideHeader ? (
         <div></div>
     ) : (
         <header id="header" className="white-menu navbar-dark">
+            <Dialog
+                open={openDialog}
+                onClose={handleCloseDialog}
+                style={{ width: "1500px" }}>
+                <DialogTitle style = {{fontSize : "36px"}}>
+                    Contact Us
+                </DialogTitle>
+                <DialogContent style = {{width : "500px", height: "300px"}}>
+                    <form
+                    noValidate
+                    autoComplete="off"
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "20px",
+                    }}>
+                        <div style = {{display: "flex", flexDirection: "column", alignContent: "center"}}>
+                            <p>
+                                Our email: talus123@careerbase.org <br/>
+                                Our phone: +1(669)290-3192 <br/>
+                                Or, use our help and feedback form below.
+                            </p>
+                            <Link to={"https://www.youtube.com"} style = {{marginTop: "120px", color: "blue"}}>Help and feedback form</Link>
+                        </div>
+                    </form>
+                </DialogContent>
+            </Dialog>
             <div className="header-wrapper">
                 {/* MOBILE HEADER */}
                 <div className="wsmobileheader clearfix">
@@ -128,28 +165,6 @@ const Header = ({
                             />
                             <ul className="wsmenu-list">
                                 {/* DROPDOWN MENU */}
-                                <li onClick={() => activeFun("About")}>
-                                    <span
-                                        className={`wsmenu-click ${iconChange(
-                                            "About"
-                                        )}`}
-                                    >
-                                        <i className="wsmenu-arrow" />
-                                    </span>
-                                    <a href="#">
-                                        Help
-                                        <span className="wsarrow" />
-                                    </a>
-                                    <ul
-                                        className={`sub-menu ${activeLi(
-                                            "About"
-                                        )}`}
-                                    >
-                                        <li>
-                                            <Link to="/">FAQ</Link>
-                                        </li>
-                                    </ul>
-                                </li>
                                 <li onClick={() => activeFun("Tools")}>
                                     <span
                                         className={`wsmenu-click ${iconChange(
@@ -184,6 +199,11 @@ const Header = ({
                                         </a>
                                     )}
                                 </li>
+                                <li className="nl-simple">
+                                    <Link to = "" onClick={handleOpenDialog}>
+                                        Contact Us
+                                    </Link>
+                                </li>
                                 <li>
                                     <div
                                         style={{
@@ -213,73 +233,8 @@ const Header = ({
                                         )}
                                     </div>
                                 </li>
-                                {/* DROPDOWN MENU 
-                <li onClick={() => activeFun("En")}>
-                  <span className={`wsmenu-click ${iconChange("En")}`}>
-                    <i className="wsmenu-arrow" />
-                  </span>
-                  <a href="#" className="lang-select">
-                    <img src="/images/icons/flags/uk.png" alt="flag-icon" /> En{" "}
-                    <span className="wsarrow" />
-                  </a>
-                  <ul className={`sub-menu last-sub-menu ${activeLi("En")}`}>
-                    <li>
-                      <a href="#">
-                        <img
-                          src="/images/icons/flags/germany.png"
-                          alt="flag-icon"
-                        />{" "}
-                        Deutch
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <img
-                          src="/images/icons/flags/spain.png"
-                          alt="flag-icon"
-                        />{" "}
-                        Español
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <img
-                          src="/images/icons/flags/france.png"
-                          alt="flag-icon"
-                        />{" "}
-                        Français
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <img
-                          src="/images/icons/flags/italy.png"
-                          alt="flag-icon"
-                        />{" "}
-                        Italiano
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <img
-                          src="/images/icons/flags/russia.png"
-                          alt="flag-icon"
-                        />{" "}
-                        Русский
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <img
-                          src="/images/icons/flags/china.png"
-                          alt="flag-icon"
-                        />{" "}
-                        简体中文
-                      </a>
-                    </li>
-                  </ul>
-              </li>*/}{" "}
-                                {/* END DROPDOWN MENU */}
+                               {" "}
+                            {/* END DROPDOWN MENU */}
                             </ul>
                         </nav>
 

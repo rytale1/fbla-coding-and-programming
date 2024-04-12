@@ -2,22 +2,15 @@ import { initializeApp } from "firebase/app";
 import {
     addDoc,
     collection,
-    doc,
     getFirestore,
-    setDoc,
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 import {
     getAuth,
     createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signInWithPopup,
     GoogleAuthProvider,
-    signOut,
 } from "firebase/auth";
-
-import { useNavigate } from "react-router-dom";
 
 const firebaseConfig = {
     apiKey: "AIzaSyB-v-uOf04-To60EGhs1cqSW4pzLuuGCFY",
@@ -36,19 +29,25 @@ export { storage };
 export const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
+// Creates a user and stores user data into Firestore.
+// Params: email, password, accountType
+// Return: boolean (state of authentication)
 export async function createUserAndStoreAccountType(
     email: string,
     pass: string,
     accountType: string
 ): Promise<boolean> {
     try {
+        // Creating a new user via Firebase.
         const newUser = await createUserWithEmailAndPassword(auth, email, pass);
         const userRef = collection(db, "users");
+        // Adding a document to NoSQL database to keep track of account type (administrator / student).
         await addDoc(userRef, {
             uid: newUser.user.uid,
             accountType: accountType,
         });
         return true;
+    //Error Handling
     } catch (e) {
         alert(
             "Error creating user and storing account type" + JSON.stringify(e)
