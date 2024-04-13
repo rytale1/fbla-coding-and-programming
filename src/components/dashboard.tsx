@@ -40,6 +40,7 @@ import {
 import DashboardList from "./dashboard_list";
 
 interface DashboardProps {}
+//Business entries on the dashboard, multiple parameters
 export interface PartnerEntry {
     id: string;
     businessname: string; // Name of the partner
@@ -124,19 +125,25 @@ const Dashboard: React.FC<DashboardProps> = () => {
         return partnersData;
     };
 
+    // useEffect hook to fetch partners data from Firestore database when component mounts
     useEffect(() => {
+        // Subscribe to changes in the "partners" collection in Firestore
         const unsubscribe = onSnapshot(
-            collection(db, "partners"),
+            collection(db, "partners"), // Reference to the "partners" collection in Firestore
             (snapshot) => {
+                // Map over the documents in the snapshot and extract the data
                 const partnersData = snapshot.docs.map(
                     (doc) => doc.data() as PartnerEntry
                 );
+                // Uncomment the following line to set the partners state with the fetched data
                 //setPartners(partnersData);
             }
         );
-        fetchPartners(); // Fetch partners when component mounts
-        return () => unsubscribe(); // Unsubscribe from snapshot listener when component unmounts
-    }, []);
+        // Call the fetchPartners function to fetch partners when the component mounts
+        fetchPartners();
+        // Return a cleanup function to unsubscribe from the snapshot listener when the component unmounts
+        return () => unsubscribe();
+    }, []); // Dependency array is empty to ensure the effect only runs once when the component mounts
 
     const handleSort = (
         entries: PartnerEntry[],
@@ -801,7 +808,11 @@ const Dashboard: React.FC<DashboardProps> = () => {
                             <select
                                 id="organizationType"
                                 onChange={handleOrganizationTypeChange}
-                                style={{ marginLeft: "5px", height: "40px", width: "250px" }}
+                                style={{
+                                    marginLeft: "5px",
+                                    height: "40px",
+                                    width: "250px",
+                                }}
                             >
                                 <option value="">All</option>
                                 <option value="Education Institution">
@@ -840,7 +851,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                                 style={{
                                     marginLeft: "0px",
                                     height: "40px",
-                                    width: "250px"
+                                    width: "250px",
                                 }}
                             >
                                 <option value="">All</option>
@@ -879,7 +890,13 @@ const Dashboard: React.FC<DashboardProps> = () => {
                             />
                         </div>
                     </Col>
-                    <Col style={{ textAlign: "center", padding: "5px", marginTop: "40px"}}>
+                    <Col
+                        style={{
+                            textAlign: "center",
+                            padding: "5px",
+                            marginTop: "40px",
+                        }}
+                    >
                         {isAdmin && (
                             <Button
                                 variant="outlined"
