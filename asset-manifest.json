@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/fbla-coding-and-programming/static/css/main.39becbd4.css",
+    "main.js": "/fbla-coding-and-programming/static/js/main.f18fd864.js",
+    "static/js/787.d4aba7ab.chunk.js": "/fbla-coding-and-programming/static/js/787.d4aba7ab.chunk.js",
+    "static/media/background.jpg": "/fbla-coding-and-programming/static/media/background.773fdced12dd0a4157b5.jpg",
+    "static/media/bg-map.png": "/fbla-coding-and-programming/static/media/bg-map.8626eda70c04690bc86a.png",
+    "index.html": "/fbla-coding-and-programming/index.html",
+    "main.39becbd4.css.map": "/fbla-coding-and-programming/static/css/main.39becbd4.css.map",
+    "main.f18fd864.js.map": "/fbla-coding-and-programming/static/js/main.f18fd864.js.map",
+    "787.d4aba7ab.chunk.js.map": "/fbla-coding-and-programming/static/js/787.d4aba7ab.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.39becbd4.css",
+    "static/js/main.f18fd864.js"
+  ]
+}
